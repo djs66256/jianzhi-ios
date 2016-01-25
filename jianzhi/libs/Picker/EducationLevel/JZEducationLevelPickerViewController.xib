@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JZEducationLevelPickerViewController" customModule="jianzhi" customModuleProvider="target">
+            <connections>
+                <outlet property="pickerView" destination="BH7-kk-Dn5" id="cl4-U1-ZfA"/>
+                <outlet property="view" destination="yMb-nq-xq3" id="Ckm-Zx-Jz8"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="yMb-nq-xq3">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TyV-Ip-Kul">
+                    <rect key="frame" x="0.0" y="296" width="320" height="272"/>
+                    <subviews>
+                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BH7-kk-Dn5">
+                            <rect key="frame" x="0.0" y="-6" width="320" height="216"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="216" id="ezU-bF-j2X"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="bfA-B4-Ff1"/>
+                                <outlet property="delegate" destination="-1" id="GTU-5S-Gvp"/>
+                            </connections>
+                        </pickerView>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FcU-uN-sRG">
+                            <rect key="frame" x="71" y="234" width="30" height="30"/>
+                            <state key="normal" title="确定"/>
+                            <connections>
+                                <action selector="ok:" destination="-1" eventType="touchUpInside" id="QRG-b5-9hi"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUw-uX-SDp">
+                            <rect key="frame" x="221" y="234" width="30" height="30"/>
+                            <state key="normal" title="取消"/>
+                            <connections>
+                                <action selector="cancel:" destination="-1" eventType="touchUpInside" id="MO1-f9-Sub"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="272" id="V4t-Qp-1oB"/>
+                        <constraint firstItem="BH7-kk-Dn5" firstAttribute="leading" secondItem="TyV-Ip-Kul" secondAttribute="leading" id="WcP-cm-VBU"/>
+                        <constraint firstItem="BH7-kk-Dn5" firstAttribute="top" secondItem="TyV-Ip-Kul" secondAttribute="top" constant="-6" id="gY0-MG-SN4"/>
+                        <constraint firstAttribute="trailing" secondItem="BH7-kk-Dn5" secondAttribute="trailing" id="tSI-PI-7aA"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="272" id="zu5-au-Ijh"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="TyV-Ip-Kul" secondAttribute="bottom" id="HDy-9z-16f"/>
+                <constraint firstItem="TyV-Ip-Kul" firstAttribute="leading" secondItem="yMb-nq-xq3" secondAttribute="leading" id="NbN-wL-QhY"/>
+                <constraint firstAttribute="trailing" secondItem="TyV-Ip-Kul" secondAttribute="trailing" id="cL3-dA-yud"/>
+            </constraints>
+            <point key="canvasLocation" x="410" y="348"/>
+        </view>
+    </objects>
+</document>
