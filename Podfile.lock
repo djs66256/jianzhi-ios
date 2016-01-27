@@ -21,6 +21,7 @@ PODS:
   - FMDB/standard (2.5):
     - FMDB/common
   - PureLayout (3.0.1)
+  - RSKImageCropper (1.4.1)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
@@ -30,6 +31,7 @@ DEPENDENCIES:
   - BaiduMapKit
   - FMDB
   - PureLayout
+  - RSKImageCropper
   - SDWebImage (~> 3.7)
 
 SPEC CHECKSUMS:
@@ -37,6 +39,7 @@ SPEC CHECKSUMS:
   BaiduMapKit: 97d2d44b41a876de2371fb91ddf78cdf84dafa05
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
+  RSKImageCropper: 98ae426eb4eb11b733ff87f8e2542a480f4fa8e6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
 
 COCOAPODS: 0.39.0

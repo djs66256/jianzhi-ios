@@ -10,7 +10,7 @@ import UIKit
 
 class JZUserViewModel: NSObject {
     
-    static func getPhoneIdentifyingCode(phone:String?, success:(String)->Void, failure:(String?)->Void) {
+    class func getPhoneIdentifyingCode(phone:String?, success:(String)->Void, failure:(String?)->Void) {
         if phone == nil && phone!.isEmpty {
             return failure("请输入手机号")
         }
@@ -32,7 +32,7 @@ class JZUserViewModel: NSObject {
         })
     }
     
-    static func register(userName:String?, password: String?, validate:String?, type:JZUserType, success:(JZUserInfo)->Void, failure:(String?)->Void) {
+    class func register(userName:String?, password: String?, validate:String?, type:JZUserType, success:(JZUserInfo)->Void, failure:(String?)->Void) {
         if userName == nil || userName!.isEmpty {
             failure("请输入用户名")
             return
@@ -66,7 +66,7 @@ class JZUserViewModel: NSObject {
                 })
     }
     
-    static func login(userName: String?, password: String?, success:(JZUserInfo)->Void, failure:(String?)->Void) {
+    class func login(userName: String?, password: String?, success:(JZUserInfo)->Void, failure:(String?)->Void) {
         if userName == nil || userName!.isEmpty {
             return failure("请输入用户名")
         }
@@ -96,7 +96,7 @@ class JZUserViewModel: NSObject {
         })
     }
     
-    static func changePassword(oldPassword: String, newPassword: String, newPassword2: String, success:()->Void, failure:(String?)->Void) {
+    class func changePassword(oldPassword: String, newPassword: String, newPassword2: String, success:()->Void, failure:(String?)->Void) {
         if oldPassword.isEmpty {
             return failure("请输入密码")
         }
@@ -120,13 +120,13 @@ class JZUserViewModel: NSObject {
             }, failure: failure)
     }
     
-    static func logout() {
+    class func logout() {
         JZRequestOperationManager.POSTParams("logout", params: nil, success: { (json: NSDictionary?) -> Void in
             
             }, failure: nil)
     }
     
-    static func editNickName(nickName:String?, success:()->Void, failure:(String?)->Void) {
+    class func editNickName(nickName:String?, success:()->Void, failure:(String?)->Void) {
         if nickName == nil || nickName!.isEmpty {
             return failure("请输入姓名")
         }
@@ -140,7 +140,7 @@ class JZUserViewModel: NSObject {
             }, failure: failure)
     }
     
-    static func editGender(gender:JZGenderType, success:()->Void, failure:(String?)->Void) {
+    class func editGender(gender:JZGenderType, success:()->Void, failure:(String?)->Void) {
         JZRequestOperationManager.POSTParams("user/my/edit/gender", params: ["gender": gender.rawValue], success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
@@ -151,7 +151,7 @@ class JZUserViewModel: NSObject {
             }, failure: failure)
     }
     
-    static func editDescription(description:String?, success:()->Void, failure:(String?)->Void) {
+    class func editDescription(description:String?, success:()->Void, failure:(String?)->Void) {
         JZRequestOperationManager.POSTParams("user/my/edit/description", params: ["description": description ?? ""], success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
@@ -162,7 +162,7 @@ class JZUserViewModel: NSObject {
             }, failure: failure)
     }
     
-    static func edit(nickName:String?, gender:JZGenderType, city:String?, description:String?, success:()->Void, failure:(String?)->Void) {
+    class func edit(nickName:String?, gender:JZGenderType, city:String?, description:String?, success:()->Void, failure:(String?)->Void) {
         var params = [String:AnyObject]()
         if nickName != nil && !nickName!.isEmpty {
             params["nickName"] = nickName!
@@ -187,7 +187,7 @@ class JZUserViewModel: NSObject {
             }, failure: failure)
     }
     
-    static func forgetPasswor(userName:String?, password:String?, validate:String?, success:()->Void, failure:(String?)->Void) {
+    class func forgetPasswor(userName:String?, password:String?, validate:String?, success:()->Void, failure:(String?)->Void) {
         if userName == nil || userName!.isEmpty {
             failure("请输入用户名")
             return
@@ -213,7 +213,7 @@ class JZUserViewModel: NSObject {
             }, failure: failure)
     }
     
-//    static func myInfo(success:(JZUserInfo)->Void, failure:(String?)->Void) {
+//    class func myInfo(success:(JZUserInfo)->Void, failure:(String?)->Void) {
 //        JZRequestOperationManager.POSTParams("user/my/info", params: nil, success: { (json:NSDictionary) -> Void in
 //            if (json["retCode"] as? Int == JZRequestResult.Success.rawValue) {
 //                let userInfo = Mapper<JZUserInfo>().map(json["content"])
@@ -230,7 +230,7 @@ class JZUserViewModel: NSObject {
 //            }, failure: failure)
 //    }
     
-    static func myAllInfo(success:(JZUserInfo)->Void, failure:(String?)->Void) {
+    class func myAllInfo(success:(JZUserInfo)->Void, failure:(String?)->Void) {
         JZRequestOperationManager.POSTParams("user/my/allinfo", params: nil, success: { (json:NSDictionary) -> Void in
             if (json["retCode"] as? Int == JZRequestResult.Success.rawValue) {
                 let userInfo = Mapper<JZUserInfo>().map(json["content"])
@@ -247,4 +247,19 @@ class JZUserViewModel: NSObject {
             }, failure: failure)
     }
 
+    class func uploadHeadImage(image:UIImage, success:(String)->Void, failure:(String?)->Void) {
+        JZRequestOperationManager.POSTImage("user/upload/head", image: image, fileName: "head.jpg", success: { (json:NSDictionary) -> Void in
+            if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
+                if let fileName = json["content"] as? String {
+                    success(fileName)
+                }
+                else {
+                    failure("上传失败")
+                }
+            }
+            else {
+                failure(json["content"] as? String)
+            }
+            }, failure: failure)
+    }
 }

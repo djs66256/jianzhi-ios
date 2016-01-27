@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="companyCellController" destination="XDQ-ho-Wot" id="xfr-Q1-Vx7"/>
                 <outlet property="genderLabel" destination="pCF-Sr-w7w" id="2Ci-DT-fRa"/>
+                <outlet property="headImageView" destination="eaN-5u-urF" id="e0n-gk-geM"/>
                 <outlet property="jobListCellController" destination="hWB-m2-DRA" id="GYq-iN-kDI"/>
                 <outlet property="nameLabel" destination="J5K-2Z-Evc" id="CsD-KR-ulv"/>
                 <outlet property="tableHeaderView" destination="LLk-zj-Ot3" id="bRr-fc-El6"/>

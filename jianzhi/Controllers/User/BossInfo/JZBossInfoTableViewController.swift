@@ -16,6 +16,7 @@ class JZBossInfoTableViewController: JZStaticTableViewController {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var genderLabel: UILabel!
+    @IBOutlet weak var headImageView: UIImageView!
     
     @IBOutlet var companyCellController: JZCompanyCellViewController!
     @IBOutlet var jobListCellController: JZJobListCellViewController!
@@ -54,6 +55,9 @@ class JZBossInfoTableViewController: JZStaticTableViewController {
     }
 
     func reloadData() {
+        if let url = userInfo?.headImageUrl {
+            headImageView.setImageWithURL(url, placeholderImage: nil)
+        }
         nameLabel.text = userInfo?.nickName
         genderLabel.text = userInfo?.gender?.nameValue()
         

@@ -46,8 +46,12 @@ class JZAlertViewController: UIViewController {
         controller.presentViewController(self, animated: true, completion: nil)
     }
     
+    func dismiss(completion:(()->Void)?) {
+        self.dismissViewControllerAnimated(true, completion: completion)
+    }
+    
     func dismiss() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismiss(nil)
     }
 
 }

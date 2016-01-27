@@ -40,6 +40,15 @@ class JZUserInfo: NSObject, Mappable, MappableCluster {
     
     var descriptions: String?
     
+    var headImageUrl: NSURL? {
+        if headImage != nil && !headImage!.isEmpty {
+            if let urlStr = HTTP.filePath("image/head/\(headImage!)") {
+                return NSURL(string: urlStr)
+            }
+        }
+        return nil
+    }
+    
     override init() {
         super.init()
         uid = 0
@@ -60,6 +69,7 @@ class JZUserInfo: NSObject, Mappable, MappableCluster {
         userName    <- map["name"]
         nickName    <- map["nickName"]
         gender      <- map["gender"]
+        headImage   <- map["headImage"]
         userType    <- map["groupType"]
         descriptions <- map["description"]
     }

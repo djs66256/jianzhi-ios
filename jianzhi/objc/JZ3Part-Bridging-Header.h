@@ -19,5 +19,6 @@
 #import <PureLayout/PureLayout.h>
 #import <YYModel.h>
 #import <FMDB.h>
+#import <RSKImageCropper/RSKImageCropper.h>
 
 #endif /* JZ3Part_Bridging_Header_h */

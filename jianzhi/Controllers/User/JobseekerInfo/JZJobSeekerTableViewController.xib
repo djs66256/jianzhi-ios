@@ -11,6 +11,7 @@
                 <outlet property="educationController" destination="Lss-FF-IPL" id="9ll-4I-3yB"/>
                 <outlet property="expectJobCell" destination="Im1-1L-1Se" id="Cv5-De-9ZH"/>
                 <outlet property="genderLabel" destination="ZsY-OC-Hju" id="HoE-1C-aNt"/>
+                <outlet property="headImageView" destination="N9N-Xx-grb" id="Qxz-gR-raF"/>
                 <outlet property="nameLabel" destination="eHb-jY-XL2" id="Lfw-SA-fIj"/>
                 <outlet property="tableHeaderView" destination="ZoQ-UP-lnA" id="PH8-MS-ge9"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

@@ -16,6 +16,7 @@ class JZJobSeekerTableViewController: JZStaticTableViewController {
     
     var editable = false
     
+    @IBOutlet weak var headImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var genderLabel: UILabel!
     @IBOutlet var descriptionCell: UITableViewCell!
@@ -68,6 +69,9 @@ class JZJobSeekerTableViewController: JZStaticTableViewController {
     }
     
     func reloadData() {
+        if let url = userInfo?.headImageUrl {
+            headImageView.setImageWithURL(url, placeholderImage: nil)
+        }
         nameLabel.text = userInfo?.nickName
         genderLabel.text = userInfo?.gender?.nameValue()
         descriptionCell.textLabel?.text = userInfo?.descriptions ?? "这个人很懒，什么都没有留下"

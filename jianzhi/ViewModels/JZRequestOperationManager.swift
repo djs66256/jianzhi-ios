@@ -14,14 +14,15 @@ enum JZRequestResult : Int {
 
 class JZRequestOperationManager: NSObject {
     
-    static let jsonBaseUrl = NSURL(string: "http://" + HTTP.location + "/json/")
+    static let jsonBaseUrlString = "http://" + HTTP.location + "/json/"
+    static let jsonBaseUrl = NSURL(string: JZRequestOperationManager.jsonBaseUrlString)
     static let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
     
     static let paramsManager = JZRequestOperationManager.buildParamsManager()
     static let jsonManager = JZRequestOperationManager.buildJsonManager()
     
     // json manager
-    static func buildParamsManager() -> AFHTTPSessionManager {
+    private class func buildParamsManager() -> AFHTTPSessionManager {
         let manager = AFHTTPSessionManager(baseURL:JZRequestOperationManager.jsonBaseUrl, sessionConfiguration: sessionConfiguration)
         manager.requestSerializer = AFHTTPRequestSerializer()
         manager.requestSerializer.HTTPShouldHandleCookies = true
@@ -31,7 +32,7 @@ class JZRequestOperationManager: NSObject {
     }
     
     // json manager
-    static func buildJsonManager() -> AFHTTPSessionManager {
+    private class func buildJsonManager() -> AFHTTPSessionManager {
         let manager = AFHTTPSessionManager(baseURL:JZRequestOperationManager.jsonBaseUrl, sessionConfiguration: sessionConfiguration)
         manager.requestSerializer = AFJSONRequestSerializer()
         manager.requestSerializer.HTTPShouldHandleCookies = true
@@ -40,7 +41,7 @@ class JZRequestOperationManager: NSObject {
         return manager
     }
     
-    static func POST(manager:AFHTTPSessionManager, urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
+    private class func POST(manager:AFHTTPSessionManager, urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
         JZLogInfo("URL: " + urlString)
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
@@ -50,7 +51,7 @@ class JZRequestOperationManager: NSObject {
             success: { (task:NSURLSessionDataTask, data:AnyObject?) -> Void in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 if let json = data as? NSDictionary {
-                    if let error = JZRequestFilter.sharedFilter.doFilter(task, json) {
+                    if let error = JZRequestFilter.sharedFilter.doFilter(task.originalRequest?.URL, json) {
                         failure?(error)
                     }
                     else {
@@ -72,14 +73,14 @@ class JZRequestOperationManager: NSObject {
         )
     }
     
-    static func GET(manager:AFHTTPSessionManager, urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
+    private class func GET(manager:AFHTTPSessionManager, urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
         JZLogInfo("URL: " + urlString)
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         manager.GET(urlString, parameters: params, progress: nil, success: { (task:NSURLSessionDataTask, data:AnyObject?) -> Void in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             if let json = data as? NSDictionary {
-                if let error = JZRequestFilter.sharedFilter.doFilter(task, json) {
+                if let error = JZRequestFilter.sharedFilter.doFilter(task.originalRequest?.URL, json) {
                     failure?(error)
                 }
                 else {
@@ -101,18 +102,63 @@ class JZRequestOperationManager: NSObject {
         )
     }
     
-    static func GETParams(urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
+    class func GETParams(urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
         GET(paramsManager, urlString:urlString, params: params,
             success: success, failure: failure)
     }
     
-    static func POSTParams(urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
+    class func POSTParams(urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
         POST(paramsManager, urlString:urlString, params: params,
             success: success, failure: failure)
     }
     
-    static func POSTJSON(urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
+    class func POSTJSON(urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
         POST(jsonManager, urlString:urlString, params: params,
             success: success, failure: failure)
+    }
+    
+    class func POSTImage(urlString:String, image:UIImage, fileName:String, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
+        let data = UIImageJPEGRepresentation(image, 0)
+        if data == nil {
+            failure?("图片格式错误")
+            return
+        }
+        
+        POSTFile(urlString, data: data!, filename: fileName, mimeType: "image/jpeg", success: success, failure: failure)
+    }
+    
+    class func POSTFile(urlString:String, data:NSData, filename:String, mimeType:String, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
+        JZLogInfo("URL: " + urlString)
+        
+        let urlStr = jsonBaseUrlString + urlString
+        let request = paramsManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: urlStr, parameters: nil, constructingBodyWithBlock: { (formData:AFMultipartFormData) -> Void in
+                formData.appendPartWithFileData(data, name: "file", fileName: filename, mimeType: mimeType)
+            }, error: nil)
+        let task = paramsManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response:NSURLResponse, data:AnyObject?, error:NSError?) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            if error == nil {
+                if let json = data as? NSDictionary {
+                    if let error = JZRequestFilter.sharedFilter.doFilter(response.URL, json) {
+                        failure?(error)
+                    }
+                    else {
+                        success(json)
+                    }
+                }
+                else {
+                    failure?("数据格式错误")
+                }
+                
+            }
+            else {
+                #if DEBUG
+                    failure?(error?.localizedDescription)
+                #else
+                    failure?("请求失败")
+                #endif
+            }
+        }
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        task.resume()
     }
 }

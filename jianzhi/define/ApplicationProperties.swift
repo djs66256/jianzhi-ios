@@ -22,6 +22,13 @@
         static let ip = "192.168.1.104"
         static let port = 8080
         static let location = "\(HTTP.ip):\(HTTP.port)"
+        
+        static func filePath(file: String?) -> String? {
+            if file != nil {
+                return "http://\(self.location)/file/\(file!)"
+            }
+            return nil
+        }
     }
     
     struct WEB {
@@ -33,3 +40,5 @@
 #else
     
 #endif
+
+let kJZHeadImageSize = 128 // px

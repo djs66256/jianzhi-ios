@@ -8,9 +8,11 @@
 
 import UIKit
 
-class JZEditUserBaseInfoTableViewController: JZStaticTableViewController, JZTextFieldEditTableViewControllerDelegate, JZTextViewEditTableViewControllerDelegate, JZEditUserGenderTableViewControllerDelegate {
+class JZEditUserBaseInfoTableViewController: JZStaticTableViewController, JZTextFieldEditTableViewControllerDelegate, JZTextViewEditTableViewControllerDelegate, JZEditUserGenderTableViewControllerDelegate, JZImagePickerComponentViewControllerDelegate {
     
     var userInfo: JZUserInfo?
+    
+    let imagePickerComponent = JZImagePickerComponentViewController()
     
     @IBOutlet var headImageCell: JZEditUserHeadImageTableViewCell!
     @IBOutlet var nameCell: UITableViewCell!
@@ -20,6 +22,9 @@ class JZEditUserBaseInfoTableViewController: JZStaticTableViewController, JZText
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        imagePickerComponent.delegate = self
+        addChildViewController(imagePickerComponent)
+        
         reloadData()
     }
 
@@ -32,7 +37,7 @@ class JZEditUserBaseInfoTableViewController: JZStaticTableViewController, JZText
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let cell = cellAtIndexPath(indexPath)
         if cell == headImageCell {
-            
+            imagePickerComponent.showController()
         }
         else if cell == nameCell {
             let viewController = JZTextFieldEditTableViewController()
@@ -84,7 +89,21 @@ class JZEditUserBaseInfoTableViewController: JZStaticTableViewController, JZText
         })
     }
     
+    func imagePickerComponentDidSelect(controller: JZImagePickerComponentViewController, image: UIImage) {
+        let compressImage = image.compress(CGSize(width: kJZHeadImageSize, height: kJZHeadImageSize))
+        
+        JZUserViewModel.uploadHeadImage(compressImage, success: { (id:String) -> Void in
+            self.userInfo?.headImage = id
+            self.reloadData()
+            }, failure: {
+                JZAlertView.show($0)
+        })
+    }
+    
     func reloadData() {
+        if let url = userInfo?.headImageUrl {
+            headImageCell.headImageView.setImageWithURL(url, placeholderImage: nil)
+        }
         nameCell.detailTextLabel?.text = userInfo?.nickName
         genderCell.detailTextLabel?.text = userInfo?.gender?.nameValue()
         descriptionCell.detailTextLabel?.text = userInfo?.descriptions

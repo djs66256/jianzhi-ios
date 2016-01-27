@@ -7,16 +7,16 @@
 //
 
 protocol JZRequestFilterProtocol {
-    func doFilter(task:NSURLSessionTask, _ json:NSDictionary) -> String?
+    func doFilter(url:NSURL?, _ json:NSDictionary) -> String?
 }
 
 class JZRequestFilter: NSObject, JZRequestFilterProtocol {
     static let sharedFilter = JZRequestFilter()
     private var filters = [JZRequestLoginFilter()]
     
-    func doFilter(task:NSURLSessionTask, _ json:NSDictionary) -> String? {
+    func doFilter(url:NSURL?, _ json:NSDictionary) -> String? {
         for filter in filters {
-            if let error = filter.doFilter(task, json) {
+            if let error = filter.doFilter(url, json) {
                 return error
             }
         }
@@ -26,8 +26,11 @@ class JZRequestFilter: NSObject, JZRequestFilterProtocol {
 
 
 class JZRequestLoginFilter: JZRequestFilterProtocol {
-    func doFilter(task:NSURLSessionTask, _ json:NSDictionary) -> String? {
-        let path = task.originalRequest?.URL?.path
+    func doFilter(url:NSURL?, _ json:NSDictionary) -> String? {
+        if url == nil {
+            return nil
+        }
+        let path = url!.path
         if path != nil && path!.hasPrefix("/json/user") {
             if (json["retCode"] as? Int == JZRequestResult.NeedLogin.rawValue) {
                 NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.NeedLogin, object: nil)
