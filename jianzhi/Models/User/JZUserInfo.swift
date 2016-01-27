@@ -19,7 +19,7 @@ enum JZGenderType : String {
         switch self {
         case .male: return "男"
         case .female: return "女"
-        default : return "未知"
+        default : return "保密"
         }
     }
 }
@@ -37,6 +37,8 @@ class JZUserInfo: NSObject, Mappable, MappableCluster {
     var gender: JZGenderType?
     
     var userType: JZUserType?
+    
+    var descriptions: String?
     
     override init() {
         super.init()
@@ -59,6 +61,7 @@ class JZUserInfo: NSObject, Mappable, MappableCluster {
         nickName    <- map["nickName"]
         gender      <- map["gender"]
         userType    <- map["groupType"]
+        descriptions <- map["description"]
     }
     
     static func objectForMapping(map: Map) -> Mappable? {

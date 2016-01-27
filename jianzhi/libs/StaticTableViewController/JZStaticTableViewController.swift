@@ -16,8 +16,12 @@ class JZStaticTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.tableHeaderView = tableHeaderView
-        self.tableView.tableFooterView = tableFooterView
+        if tableHeaderView != nil {
+            self.tableView.tableHeaderView = tableHeaderView
+        }
+        if tableFooterView != nil {
+            self.tableView.tableFooterView = tableFooterView
+        }
     }
 
     override func didReceiveMemoryWarning() {

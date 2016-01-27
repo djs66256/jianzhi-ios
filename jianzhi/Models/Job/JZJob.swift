@@ -25,7 +25,7 @@ enum JZSalaryTypeBy : Int {
     }
 }
 
-class JZJob: NSObject, Mappable {
+class JZJob: NSObject, Mappable, NSCopying {
     
     var id : Int?
     
@@ -37,7 +37,7 @@ class JZJob: NSObject, Mappable {
     
     var salary : Int?
     
-    var salaryType : JZSalaryTypeBy?
+    var salaryType : JZSalaryTypeBy = .month
     
     var status : Int? = 0
     
@@ -52,6 +52,24 @@ class JZJob: NSObject, Mappable {
     
     override init() {
         super.init()
+    }
+    
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        let j = JZJob()
+        j.id = id
+        j.user = user
+        j.title = title
+        j.detail = detail
+        j.salary = salary
+        j.salaryType = salaryType
+        return j
+    }
+    
+    func mergeFrom(job:JZJob) {
+        title = job.title
+        detail = job.detail
+        salary = job.salary
+        salaryType = job.salaryType
     }
     
     required init?(_ map: Map) {

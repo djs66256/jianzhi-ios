@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol JZYearMonthPickerViewControllerDelegate {
+protocol JZYearMonthPickerViewControllerDelegate : NSObjectProtocol {
     func yearMonthPicker(controller: JZYearMonthPickerViewController, _ data: NSDate?, _ year: Int, _ month: Int)
 }
 
 class JZYearMonthPickerViewController: JZAlertViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    var delegate : JZYearMonthPickerViewControllerDelegate?
+    weak var delegate : JZYearMonthPickerViewControllerDelegate?
     
     var minYear = 1970
     var maxYear = NSCalendar.currentCalendar().components(NSCalendarUnit.Year, fromDate: NSDate()).year

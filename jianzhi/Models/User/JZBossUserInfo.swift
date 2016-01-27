@@ -16,6 +16,6 @@ class JZBossUserInfo: JZUserInfo {
         super.mapping(map)
         
         company <- map["company"]
-        jobList <- map["jobList"]
+        jobList <- map["jobs"]
     }
 }

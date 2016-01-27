@@ -25,7 +25,7 @@ class JZWorkExperienceViewModel: NSObject {
         let params = Mapper().toJSON(work)
         JZRequestOperationManager.POSTJSON("user/resume/work/create", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
-                let work : JZWorkExperience? = JZWorkExperience.yy_modelWithJSON(json["content"])
+                let work : JZWorkExperience? = Mapper<JZWorkExperience>().map(json["content"])
                 if work != nil {
                     success(work!)
                 }
@@ -62,7 +62,14 @@ class JZWorkExperienceViewModel: NSObject {
         })
     }
     
-    static func delete() {
-        
+    static func delete(wid:Int, success:()->Void, failure:(String?)->Void) {
+        JZRequestOperationManager.POSTParams("user/resume/work/delete", params: ["id": wid], success: { (json:NSDictionary) -> Void in
+            if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
+                success()
+            }
+            else {
+                failure(json["content"] as? String)
+            }
+            }, failure: failure)
     }
 }

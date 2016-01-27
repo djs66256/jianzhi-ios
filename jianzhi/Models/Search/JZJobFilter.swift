@@ -40,5 +40,5 @@ class JZJobFilter: JZBaseFilter, Mappable {
 
 
 class JZPersonFilter: JZBaseFilter {
-    
+    var educationLevel: JZEducationLevel?
 }

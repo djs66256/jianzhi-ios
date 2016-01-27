@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZCompany: NSObject, Mappable {
+class JZCompany: NSObject, Mappable, NSCopying {
     
     var id : Int?
     
@@ -28,6 +28,19 @@ class JZCompany: NSObject, Mappable {
         super.init()
     }
     
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        let cmp = JZCompany()
+        cmp.id = id
+        cmp.user = user
+        cmp.name = name
+        cmp.logo = logo
+        cmp.descriptions = descriptions
+        cmp.addressCode = addressCode
+        cmp.address = address
+        
+        return cmp
+    }
+    
     required init?(_ map: Map) {
     }
     
@@ -38,4 +51,5 @@ class JZCompany: NSObject, Mappable {
         addressCode     <- map["addressCode"]
         address         <- map["address"]
     }
+    
 }

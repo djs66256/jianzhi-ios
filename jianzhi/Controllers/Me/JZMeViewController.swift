@@ -11,13 +11,12 @@ import UIKit
 class JZMeViewController: UITableViewController {
     
     let dataArray = [
-        ["title":"个人信息","controller":JZMyInfoTableViewController.self],
-        ["title":"我的简历", "controller":JZResumeTableViewController.self],
-        ["title":"我的公司","controller":JZMyCompanyTableViewController.self],
-        ["title":"我的工作","controller":JZMyJobListTableViewController.self],
+        ["title":"个人信息"],
+        ["title":"我的简历", "controller":JZJobSeekerTableViewController.self],
         ["title":"修改密码","controller":JZChangePasswordTableViewController.self],
         ["title":"关于我们","controller":JZAboutUsViewController.self],
-        ["title":"意见反馈","controller":JZFeedbackViewController.self]]
+        ["title":"意见反馈","controller":JZFeedbackViewController.self],
+        ["title":"退出登录"]]
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +65,24 @@ class JZMeViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        if indexPath.row == 0 {
+            let viewController: UIViewController
+            if JZUserManager.sharedManager.currentUser?.userType == .boss {
+                viewController = JZBossInfoTableViewController()
+            }
+            else {
+                viewController = JZJobSeekerTableViewController()
+            }
+            viewController.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(viewController, animated: true)
+            return
+        }
+        if indexPath.row == dataArray.count - 1 {
+            JZUserManager.sharedManager.currentUser = nil
+            self.tabBarController?.selectedIndex = 0
+            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.NeedLogin, object: nil)
+        }
         
         if let viewControllerClass = dataArray[indexPath.row]["controller"] as? UIViewController.Type {
             let viewController : UIViewController = viewControllerClass.init()

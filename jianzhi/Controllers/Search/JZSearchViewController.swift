@@ -44,7 +44,12 @@ class JZSearchViewController: UIViewController, JZBaseFilterViewControllerDelega
     
     func prepareSearchJobViewController() {
         filterViewController?.removeFromParentViewController()
-        filterViewController = JZJobFilterViewController()
+        if JZUserManager.sharedManager.currentUser?.userType == .boss {
+            filterViewController = JZPersonFilterViewController()
+        }
+        else {
+            filterViewController = JZJobFilterViewController()
+        }
         filterViewController!.delegate = self
         view.addSubview(filterViewController!.view)
         filterViewController!.view.autoPinEdgeToSuperviewEdge(ALEdge.Left)
@@ -53,7 +58,12 @@ class JZSearchViewController: UIViewController, JZBaseFilterViewControllerDelega
         self.addChildViewController(filterViewController!)
 
         tableViewController?.removeFromParentViewController()
-        tableViewController = JZSearchJobTableViewController()
+        if JZUserManager.sharedManager.currentUser?.userType == .boss {
+            tableViewController = JZSearchPersonTableViewController()
+        }
+        else {
+            tableViewController = JZSearchJobTableViewController()
+        }
         view.addSubview(tableViewController!.view)
         tableViewController!.view.autoPinEdgeToSuperviewEdge(ALEdge.Left)
         tableViewController!.view.autoPinEdgeToSuperviewEdge(ALEdge.Right)

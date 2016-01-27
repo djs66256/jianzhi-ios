@@ -14,7 +14,7 @@ protocol JZSelectAreaViewControllerDelegate : NSObjectProtocol {
 
 class JZSelectAreaViewController: JZAlertViewController, JZSelectAreaViewControllerDelegate {
     
-    var delegate: JZSelectAreaViewControllerDelegate?
+    weak var delegate: JZSelectAreaViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

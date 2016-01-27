@@ -67,7 +67,7 @@ class JZRegisterDetailInfoTableViewController: UITableViewController {
     }
 
     @IBAction func nextStep() {
-        JZUserViewModel.edit(nickNameCell.textField?.text, gender: genderCell.genderType, city: "", success: { () -> Void in
+        JZUserViewModel.edit(nickNameCell.textField?.text, gender: genderCell.genderType, city: "", description: "", success: { () -> Void in
             if let boss = self.userInfo as? JZBossUserInfo {
                 let viewController = JZRegisterCompanyTableViewController()
                 viewController.userInfo = boss

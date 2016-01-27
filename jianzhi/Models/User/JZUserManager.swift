@@ -11,13 +11,39 @@ import UIKit
 class JZUserManager: NSObject {
     static let sharedManager = JZUserManager()
     
-    var isLogin: Bool = false
+    let myInfoKey = "myInfoKey"
     
-    var currentUser: JZUserInfo?
+    var isLogin: Bool {
+        get {
+            return self.currentUser != nil
+        }
+    }
     
-//    var myInfo: JZMyInfo? = NSUserDefaults.standardUserDefaults().objectForKey("myInfo") as? JZMyInfo
-//
-//    func updateMyInfo(myInfo: JZMyInfo) {
-//        NSUserDefaults.standardUserDefaults().setObject(myInfo, forKey: "myInfo")
-//    }
+    private var user: JZUserInfo?
+    
+    var currentUser: JZUserInfo? {
+        get {
+            if self.user == nil {
+                let json = NSUserDefaults.standardUserDefaults().objectForKey(myInfoKey) as? NSDictionary
+                let user = Mapper<JZUserInfo>().map(json)
+                self.user = user
+                return user
+            }
+            else {
+                return self.user
+            }
+        }
+        set {
+            if newValue != nil {
+                let user = Mapper().toJSON(newValue!)
+                NSUserDefaults.standardUserDefaults().setObject(user, forKey: myInfoKey)
+                self.user = newValue
+            }
+            else {
+                self.user = nil
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(myInfoKey)
+            }
+        }
+    }
+    
 }

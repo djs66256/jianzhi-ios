@@ -55,6 +55,20 @@ class JZEducation: NSObject, Mappable {
         super.init()
     }
     
+    convenience init(_ education:JZEducation) {
+        self.init()
+        id = education.id
+        mergeFrom(education)
+    }
+    
+    func mergeFrom(education:JZEducation) {
+        school = education.school
+        major = education.major
+        level = education.level
+        fromTime = education.fromTime
+        toTime = education.toTime
+    }
+    
     required init?(_ map: Map) {
     }
     
@@ -63,7 +77,7 @@ class JZEducation: NSObject, Mappable {
         school      <- map["school"]
         major       <- map["major"]
         level       <- map["level"]
-        fromTime    <- (map["fromTime"], DateTransform())
-        toTime      <- (map["toTime"], DateTransform())
+        fromTime    <- (map["fromTime"], JZServerDateTransforms())
+        toTime      <- (map["toTime"], JZServerDateTransforms())
     }
 }

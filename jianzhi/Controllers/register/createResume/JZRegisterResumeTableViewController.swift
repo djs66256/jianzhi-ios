@@ -160,6 +160,7 @@ class JZRegisterResumeTableViewController: UITableViewController, JZCreateEducat
     }
     
     func createWorkExperience(viewController: JZCreateWorkExperienceTableViewController, _ workExperience: JZWorkExperience) {
+        viewController.navigationController?.popViewControllerAnimated(true)
         userInfo.resume?.workExperiences?.append(workExperience)
         self.tableView.reloadData()
     }

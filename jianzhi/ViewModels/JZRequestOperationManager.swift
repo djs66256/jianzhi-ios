@@ -43,10 +43,12 @@ class JZRequestOperationManager: NSObject {
     static func POST(manager:AFHTTPSessionManager, urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
         JZLogInfo("URL: " + urlString)
         
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         manager.POST(urlString,
             parameters: params,
             progress: nil,
             success: { (task:NSURLSessionDataTask, data:AnyObject?) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 if let json = data as? NSDictionary {
                     if let error = JZRequestFilter.sharedFilter.doFilter(task, json) {
                         failure?(error)
@@ -60,8 +62,9 @@ class JZRequestOperationManager: NSObject {
                 }
             },
             failure: {(task:NSURLSessionDataTask?, error:NSError) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 #if DEBUG
-                    failure?(error.description)
+                    failure?(error.localizedDescription)
                 #else
                     failure?("请求失败")
                 #endif
@@ -71,7 +74,10 @@ class JZRequestOperationManager: NSObject {
     
     static func GET(manager:AFHTTPSessionManager, urlString:String, params:AnyObject?, success:(NSDictionary)->Void, failure:((String?)->Void)?) {
         JZLogInfo("URL: " + urlString)
+        
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         manager.GET(urlString, parameters: params, progress: nil, success: { (task:NSURLSessionDataTask, data:AnyObject?) -> Void in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             if let json = data as? NSDictionary {
                 if let error = JZRequestFilter.sharedFilter.doFilter(task, json) {
                     failure?(error)
@@ -85,8 +91,9 @@ class JZRequestOperationManager: NSObject {
             }
             },
             failure: {(task:NSURLSessionDataTask?, error:NSError) -> Void in
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 #if DEBUG
-                    failure?(error.description)
+                    failure?(error.localizedDescription)
                 #else
                     failure?("请求失败")
                 #endif

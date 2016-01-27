@@ -23,7 +23,6 @@ class JZJobFilterViewController: JZBaseFilterViewController, JZSelectAreaViewCon
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        jobFilter = JZJobFilter()
         filterView.backgroundColor = UIColor.redColor()
     }
 

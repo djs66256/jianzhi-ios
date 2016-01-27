@@ -62,13 +62,6 @@ class JZLoginTableViewController: JZStaticTableViewController {
                 sender.userInteractionEnabled = true
                 JZAlertView.show(error)
         })
-        
-        if self.navigationController != nil {
-            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-        }
-        else {
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
     }
     
     

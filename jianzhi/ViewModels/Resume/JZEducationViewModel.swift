@@ -58,12 +58,17 @@ class JZEducationViewModel: NSObject {
             else {
                 failure(json["content"] as? String)
             }
-            }, failure: { (error:String?) -> Void in
-                failure(error)
-        })
+            }, failure: failure)
     }
     
-    static func delete() {
-        
+    static func delete(eid:Int, success:()->Void, failure:(String?)->Void) {
+        JZRequestOperationManager.POSTParams("user/resume/education/delete", params: ["id": eid], success: { (json:NSDictionary) -> Void in
+            if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
+                success()
+            }
+            else {
+                failure(json["content"] as? String)
+            }
+            }, failure: failure)
     }
 }

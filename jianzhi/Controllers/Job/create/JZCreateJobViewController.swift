@@ -12,45 +12,32 @@ protocol JZCreateJobViewControllerDelegate : NSObjectProtocol {
     func createJob(viewController: JZCreateJobViewController, _ job: JZJob)
 }
 
-class JZCreateJobViewController: JZStaticTableViewController, JZSalaryTypePickerViewControllerDelegate {
+class JZCreateJobViewController: UIViewController {
 
     weak var delegate : JZCreateJobViewControllerDelegate?
     
-    @IBOutlet var jobTitleCell: JZTextFieldTableViewCell!
-    @IBOutlet var wageCell: JZWageTableViewCell!
-    @IBOutlet var descriptionCell: JZTextViewTableViewCell!
+    let jobViewController = JZJobEditableTableViewController()
     
-    var job = JZJob()
+    var job : JZJob {
+        get {
+            return jobViewController.job
+        }
+    }
+    
+    @IBOutlet var tableFooterView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        view.addSubview(jobViewController.view)
+        jobViewController.view.autoPinEdgesToSuperviewEdges()
+        jobViewController.tableView.tableFooterView = tableFooterView
+        addChildViewController(jobViewController)
     }
     
-    func salaryTypeSelected(viewController: JZSalaryTypePickerViewController, type: JZSalaryTypeBy) {
-        job.salaryType = type
-    }
-
-    @IBAction func salaryTypeClicked(sender: AnyObject) {
-        let viewController = JZSalaryTypePickerViewController()
-        viewController.delegate = self
-        viewController.showInController(self)
-    }
-
     @IBAction func saveButtonClicked(sender: AnyObject) {
-        job.title = jobTitleCell.textField?.text
-        job.detail = descriptionCell.textView?.text
-        job.salary = Int(wageCell.textField?.text ?? "0")
-        
         JZJobViewModel.create(job, success: { (job:JZJob) -> Void in
             self.delegate?.createJob(self, job)
-            self.navigationController?.popViewControllerAnimated(true)
             }, failure: { (error:String?) -> Void in
                 JZAlertView.show(error)
         })

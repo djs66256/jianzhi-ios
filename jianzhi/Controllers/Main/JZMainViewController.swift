@@ -27,20 +27,14 @@ class JZMainViewController: UITabBarController {
         
         self.viewControllers = [mapViewController, searchViewController, chatViewControlelr, meViewController];
         
-        
-       
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("needLoginNotification:"), name: JZNotification.NeedLogin, object: nil)
     }
-    
-    static var isLogin : Bool = false
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-//        if !JZUserManager.sharedManager.isLogin {
-        if !JZMainViewController.isLogin {
-            JZMainViewController.isLogin = true
-            let loginController = JZLoginTableViewController()
-            self.presentViewController(UINavigationController(rootViewController: loginController), animated: true, completion: nil)
+        if !JZUserManager.sharedManager.isLogin {
+            presentLoginViewController()
         }
     }
 
@@ -50,14 +44,12 @@ class JZMainViewController: UITabBarController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func needLoginNotification(notification: NSNotification) {
+        presentLoginViewController()
     }
-    */
 
+    func presentLoginViewController() {
+        let loginController = JZLoginTableViewController()
+        self.presentViewController(UINavigationController(rootViewController: loginController), animated: true, completion: nil)
+    }
 }

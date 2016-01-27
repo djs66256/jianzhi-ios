@@ -12,10 +12,10 @@ class JZJobViewModel: NSObject {
 
     static func create(job:JZJob, success:(JZJob)->Void, failure:(String?)->Void) {
         if job.title == nil || job.title!.isEmpty {
-            return failure("职位名称为空")
+            return failure("请输入职位名称")
         }
         if job.detail == nil || job.detail!.isEmpty {
-            return failure("职位详情为空")
+            return failure("请输入职位详情")
         }
         
         let params = Mapper().toJSON(job)
@@ -32,9 +32,38 @@ class JZJobViewModel: NSObject {
             else {
                 failure(json["content"] as? String)
             }
-            }, failure: { (error:String?) -> Void in
-                failure(error)
-        })
+            }, failure: failure)
+    }
+    
+    static func edit(job:JZJob, success:()->Void, failure:(String?)->Void) {
+        if job.title == nil || job.title!.isEmpty {
+            return failure("请输入职位名称")
+        }
+        if job.detail == nil || job.detail!.isEmpty {
+            return failure("请输入职位详情")
+        }
+        
+        let params = Mapper().toJSON(job)
+        JZRequestOperationManager.POSTJSON("user/job/edit", params: params, success: { (json:NSDictionary) -> Void in
+            if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
+                success()
+            }
+            else {
+                failure(json["content"] as? String)
+            }
+            }, failure: failure)
+    }
+    
+    static func delete(jobId:Int, success:()->Void, failure:(String?)->Void) {
+        let params = ["id": jobId]
+        JZRequestOperationManager.POSTParams("user/job/delete", params: params, success: { (json:NSDictionary) -> Void in
+            if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
+                success()
+            }
+            else {
+                failure(json["content"] as? String)
+            }
+            }, failure: failure)
     }
     
     static func info(jobId:Int, success:(JZJobDetailInfo)->Void, failure:(String?)->Void) {
@@ -52,9 +81,7 @@ class JZJobViewModel: NSObject {
             else {
                 failure(json["content"] as? String)
             }
-            }, failure: { (error:String?) -> Void in
-                failure(error)
-        })
+            }, failure: failure)
     }
     
     static func myInfo(success:([JZJob])->Void, failure:(String?)->Void) {

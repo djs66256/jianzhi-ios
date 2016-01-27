@@ -26,6 +26,20 @@ class JZWorkExperience: NSObject, Mappable {
         
     }
     
+    convenience init(_ copy: JZWorkExperience) {
+        self.init()
+        id = copy.id
+        mergeFrom(copy)
+    }
+    
+    func mergeFrom(copy: JZWorkExperience) {
+        companyName = copy.companyName
+        position = copy.position
+        descriptions = copy.descriptions
+        fromTime = copy.fromTime
+        toTime = copy.toTime
+    }
+    
     required init?(_ map: Map) {
     }
     
@@ -34,7 +48,7 @@ class JZWorkExperience: NSObject, Mappable {
         companyName     <- map["companyName"]
         position        <- map["position"]
         descriptions    <- map["description"]
-        fromTime        <- map["fromTime"]
-        toTime          <- map["toTime"]
+        fromTime        <- (map["fromTime"], JZServerDateTransforms())
+        toTime          <- (map["toTime"], JZServerDateTransforms())
     }
 }
