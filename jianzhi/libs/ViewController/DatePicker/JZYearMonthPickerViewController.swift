@@ -12,16 +12,13 @@ protocol JZYearMonthPickerViewControllerDelegate : NSObjectProtocol {
     func yearMonthPicker(controller: JZYearMonthPickerViewController, _ data: NSDate?, _ year: Int, _ month: Int)
 }
 
-class JZYearMonthPickerViewController: JZAlertViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class JZYearMonthPickerViewController: JZPickerViewController {
     
     weak var delegate : JZYearMonthPickerViewControllerDelegate?
     
     var minYear = 1970
     var maxYear = NSCalendar.currentCalendar().components(NSCalendarUnit.Year, fromDate: NSDate()).year
 
-    var tagString : String?
-    
-    @IBOutlet weak var pickerView: UIPickerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,11 +33,11 @@ class JZYearMonthPickerViewController: JZAlertViewController, UIPickerViewDelega
     
     // MARK: - picker delegate
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    override func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 2
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    override func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if component == 0 {
             return maxYear - minYear + 1
         }
@@ -58,14 +55,7 @@ class JZYearMonthPickerViewController: JZAlertViewController, UIPickerViewDelega
         }
     }
     
-    // MARK: -
-    
-    @IBAction func cancel(sender: AnyObject) {
-        dismiss()
-    }
-    
-    
-    @IBAction func ok(sender: AnyObject) {
+    @IBAction override func ok(sender: AnyObject) {
         let components = NSDateComponents()
         components.year = maxYear - pickerView.selectedRowInComponent(0)
         components.month = pickerView.selectedRowInComponent(1) + 1

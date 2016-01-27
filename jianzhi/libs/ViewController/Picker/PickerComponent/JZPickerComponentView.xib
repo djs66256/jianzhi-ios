@@ -10,26 +10,39 @@
         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UQ8-b2-UaW" customClass="JZPickerComponentView" customModule="jianzhi" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="275"/>
             <subviews>
-                <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FSR-Kl-rIu">
-                    <rect key="frame" x="0.0" y="-6" width="320" height="216"/>
+                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FSR-Kl-rIu">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
                 </pickerView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gkp-r5-OsY">
-                    <rect key="frame" x="71" y="234" width="30" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gkp-r5-OsY">
+                    <rect key="frame" x="20" y="230" width="130" height="30"/>
                     <state key="normal" title="确定"/>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jju-hB-KfP">
-                    <rect key="frame" x="221" y="234" width="30" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jju-hB-KfP">
+                    <rect key="frame" x="170" y="230" width="130" height="30"/>
                     <state key="normal" title="取消"/>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Jju-hB-KfP" secondAttribute="trailing" constant="20" id="459-7A-aVQ"/>
+                <constraint firstItem="FSR-Kl-rIu" firstAttribute="top" secondItem="UQ8-b2-UaW" secondAttribute="top" id="54Y-9h-vWx"/>
+                <constraint firstItem="Gkp-r5-OsY" firstAttribute="top" secondItem="FSR-Kl-rIu" secondAttribute="bottom" constant="10" id="8H0-Rb-kU2"/>
+                <constraint firstItem="Jju-hB-KfP" firstAttribute="leading" secondItem="Gkp-r5-OsY" secondAttribute="trailing" constant="20" id="QjP-iU-ig3"/>
+                <constraint firstItem="Gkp-r5-OsY" firstAttribute="width" secondItem="Jju-hB-KfP" secondAttribute="width" id="XB4-Fy-npq"/>
+                <constraint firstAttribute="bottom" secondItem="Gkp-r5-OsY" secondAttribute="bottom" constant="15" id="YkM-l8-3RU"/>
+                <constraint firstItem="Gkp-r5-OsY" firstAttribute="leading" secondItem="UQ8-b2-UaW" secondAttribute="leading" constant="20" id="Zlz-co-MQk"/>
+                <constraint firstItem="Jju-hB-KfP" firstAttribute="height" secondItem="Gkp-r5-OsY" secondAttribute="height" id="gqH-yI-qpB"/>
+                <constraint firstAttribute="trailing" secondItem="FSR-Kl-rIu" secondAttribute="trailing" id="nOU-n4-h5C"/>
+                <constraint firstItem="Jju-hB-KfP" firstAttribute="baseline" secondItem="Gkp-r5-OsY" secondAttribute="baseline" id="wWR-tq-s9S"/>
+                <constraint firstItem="FSR-Kl-rIu" firstAttribute="leading" secondItem="UQ8-b2-UaW" secondAttribute="leading" id="yyz-1C-dhS"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="cancelButton" destination="Jju-hB-KfP" id="vyU-jD-V7j"/>
                 <outlet property="okButton" destination="Gkp-r5-OsY" id="bB8-XE-SjU"/>
                 <outlet property="pickerView" destination="FSR-Kl-rIu" id="yeJ-sU-BHY"/>
             </connections>
-            <point key="canvasLocation" x="675" y="81.5"/>
+            <point key="canvasLocation" x="394" y="101.5"/>
         </view>
     </objects>
 </document>

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZPickerViewController: JZAlertViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class JZPickerViewController: JZActionSheetViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var tagString : String?
     
@@ -23,13 +23,9 @@ class JZPickerViewController: JZAlertViewController, UIPickerViewDelegate, UIPic
     }
     
     override func loadView() {
-        super.loadView()
         pickerComponentView = (NSBundle.mainBundle().loadNibNamed("JZPickerComponentView", owner: nil, options: nil)[0] as? JZPickerComponentView) ?? JZPickerComponentView()
-        self.view.addSubview(pickerComponentView)
-        pickerComponentView.autoPinEdgeToSuperviewEdge(ALEdge.Bottom)
-        pickerComponentView.autoPinEdgeToSuperviewEdge(ALEdge.Left)
-        pickerComponentView.autoPinEdgeToSuperviewEdge(ALEdge.Right)
-        pickerComponentView.autoSetDimension(ALDimension.Height, toSize: pickerComponentView.frame.height)
+        self.contentView = pickerComponentView
+        super.loadView()
     }
     
     override func viewDidLoad() {
