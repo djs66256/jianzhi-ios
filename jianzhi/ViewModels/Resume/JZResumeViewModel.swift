@@ -11,7 +11,7 @@ import UIKit
 class JZResumeViewModel: NSObject {
     static func create(resume:JZResume, _ success:()->Void, _ failure:(String?)->Void) {
         let params = Mapper().toJSON(resume)
-        JZRequestOperationManager.POSTJSON("user/resume/create", params: params, success: {(json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTJSON("json/user/resume/create", params: params, success: {(json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -39,7 +39,7 @@ class JZResumeViewModel: NSObject {
             return success()
         }
         
-        JZRequestOperationManager.POSTParams("user/resume/edit", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/resume/edit", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -53,7 +53,7 @@ class JZResumeViewModel: NSObject {
     }
     
     static func myInfo(success:(JZResume)->Void, failure:(String?)->Void) {
-        JZRequestOperationManager.POSTParams("user/resume/my/info", params: nil, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/resume/my/info", params: nil, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 let resume = Mapper<JZResume>().map(json["content"])
                 if resume != nil {

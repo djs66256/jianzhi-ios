@@ -14,7 +14,7 @@ enum JZRequestResult : Int {
 
 class JZRequestOperationManager: NSObject {
     
-    static let jsonBaseUrlString = "http://" + HTTP.location + "/json/"
+    static let jsonBaseUrlString = "http://" + HTTP.location + "/"
     static let jsonBaseUrl = NSURL(string: JZRequestOperationManager.jsonBaseUrlString)
     static let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
     

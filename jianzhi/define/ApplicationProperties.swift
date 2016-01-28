@@ -12,10 +12,14 @@
         static let accessKey = "MVZVRMg3H5dFSG416avM53Xw"
     }
     
-    struct Soket {
-        static let address = "localhost"
-        static let port    = 3333
+    struct Socket {
+        static let address = HTTP.ip //"localhost"
+        static let port    = 3000
         static let timeout = 60
+        
+        static func url() -> NSURL {
+            return NSURL(string: "http://\(address):\(port)")!
+        }
     }
     
     struct HTTP {

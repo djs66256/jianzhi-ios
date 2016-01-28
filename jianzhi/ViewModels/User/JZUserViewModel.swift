@@ -15,7 +15,7 @@ class JZUserViewModel: NSObject {
             return failure("请输入手机号")
         }
         let params = ["phone":phone!]
-        JZRequestOperationManager.GETParams("phone/validate", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.GETParams("json/phone/validate", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 if let validate = json["content"] as? String {
                     success(validate)
@@ -48,7 +48,7 @@ class JZUserViewModel: NSObject {
         
         let group = (type==JZUserType.boss) ? "boss" : "jobseeker"
         let params = ["username": userName!, "password":password!, "validate":validate!, "group":group]
-        JZRequestOperationManager.POSTParams("register", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/register", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 let userInfo : JZUserInfo? = Mapper<JZUserInfo>().map(json["content"])
                 if userInfo == nil {
@@ -75,7 +75,7 @@ class JZUserViewModel: NSObject {
         }
         
         let params = ["username":userName!, "password":password!]
-        JZRequestOperationManager.POSTParams("login",
+        JZRequestOperationManager.POSTParams("json/login",
             params: params,
             success: { (json:NSDictionary) -> Void in
                 if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
@@ -110,7 +110,7 @@ class JZUserViewModel: NSObject {
             return failure("输入密码不一致，请重新输入")
         }
         let params = ["oldPassword":oldPassword, "newPassword":newPassword, "newPassword2":newPassword2]
-        JZRequestOperationManager.POSTParams("user/changePassword", params: params, success: { (json: NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/changePassword", params: params, success: { (json: NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -130,7 +130,7 @@ class JZUserViewModel: NSObject {
         if nickName == nil || nickName!.isEmpty {
             return failure("请输入姓名")
         }
-        JZRequestOperationManager.POSTParams("user/my/edit/nickname", params: ["nickname": nickName!], success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/my/edit/nickname", params: ["nickname": nickName!], success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -141,7 +141,7 @@ class JZUserViewModel: NSObject {
     }
     
     class func editGender(gender:JZGenderType, success:()->Void, failure:(String?)->Void) {
-        JZRequestOperationManager.POSTParams("user/my/edit/gender", params: ["gender": gender.rawValue], success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/my/edit/gender", params: ["gender": gender.rawValue], success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -152,7 +152,7 @@ class JZUserViewModel: NSObject {
     }
     
     class func editDescription(description:String?, success:()->Void, failure:(String?)->Void) {
-        JZRequestOperationManager.POSTParams("user/my/edit/description", params: ["description": description ?? ""], success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/my/edit/description", params: ["description": description ?? ""], success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -177,7 +177,7 @@ class JZUserViewModel: NSObject {
         }
         params["description"] = description ?? ""
         
-        JZRequestOperationManager.POSTParams("user/my/edit/info", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/my/edit/info", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -203,7 +203,7 @@ class JZUserViewModel: NSObject {
         
         let params = ["username":userName!, "password":password!, "validate":validate!]
         
-        JZRequestOperationManager.POSTParams("forgetPassword", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/forgetPassword", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -231,7 +231,7 @@ class JZUserViewModel: NSObject {
 //    }
     
     class func myAllInfo(success:(JZUserInfo)->Void, failure:(String?)->Void) {
-        JZRequestOperationManager.POSTParams("user/my/allinfo", params: nil, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/my/allinfo", params: nil, success: { (json:NSDictionary) -> Void in
             if (json["retCode"] as? Int == JZRequestResult.Success.rawValue) {
                 let userInfo = Mapper<JZUserInfo>().map(json["content"])
                 if userInfo != nil {
@@ -248,7 +248,7 @@ class JZUserViewModel: NSObject {
     }
 
     class func uploadHeadImage(image:UIImage, success:(String)->Void, failure:(String?)->Void) {
-        JZRequestOperationManager.POSTImage("user/upload/head", image: image, fileName: "head.jpg", success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTImage("json/user/upload/head", image: image, fileName: "head.jpg", success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 if let fileName = json["content"] as? String {
                     success(fileName)

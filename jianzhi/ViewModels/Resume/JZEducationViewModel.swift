@@ -28,7 +28,7 @@ class JZEducationViewModel: NSObject {
         }
         
         let params = Mapper().toJSON(education)
-        JZRequestOperationManager.POSTJSON("user/resume/education/create", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTJSON("json/user/resume/education/create", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 let education = Mapper<JZEducation>().map(json["content"])
                 if education != nil {
@@ -51,7 +51,7 @@ class JZEducationViewModel: NSObject {
             return failure("学校为空")
         }
         let params = Mapper().toJSON(education)
-        JZRequestOperationManager.POSTJSON("user/resume/education/edit", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTJSON("json/user/resume/education/edit", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -62,7 +62,7 @@ class JZEducationViewModel: NSObject {
     }
     
     static func delete(eid:Int, success:()->Void, failure:(String?)->Void) {
-        JZRequestOperationManager.POSTParams("user/resume/education/delete", params: ["id": eid], success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/resume/education/delete", params: ["id": eid], success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }

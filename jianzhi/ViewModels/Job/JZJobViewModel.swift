@@ -19,7 +19,7 @@ class JZJobViewModel: NSObject {
         }
         
         let params = Mapper().toJSON(job)
-        JZRequestOperationManager.POSTJSON("user/job/create", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTJSON("json/user/job/create", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 let job : JZJob? = Mapper<JZJob>().map(json["content"])
                 if job != nil {
@@ -44,7 +44,7 @@ class JZJobViewModel: NSObject {
         }
         
         let params = Mapper().toJSON(job)
-        JZRequestOperationManager.POSTJSON("user/job/edit", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTJSON("json/user/job/edit", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -56,7 +56,7 @@ class JZJobViewModel: NSObject {
     
     static func delete(jobId:Int, success:()->Void, failure:(String?)->Void) {
         let params = ["id": jobId]
-        JZRequestOperationManager.POSTParams("user/job/delete", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/job/delete", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
@@ -68,7 +68,7 @@ class JZJobViewModel: NSObject {
     
     static func info(jobId:Int, success:(JZJobDetailInfo)->Void, failure:(String?)->Void) {
         let params = ["id": jobId]
-        JZRequestOperationManager.POSTParams("user/job/info", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/job/info", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 let job : JZJobDetailInfo? = Mapper<JZJobDetailInfo>().map(json["content"])
                 if job != nil {
@@ -85,7 +85,7 @@ class JZJobViewModel: NSObject {
     }
     
     static func myInfo(success:([JZJob])->Void, failure:(String?)->Void) {
-        JZRequestOperationManager.POSTParams("user/job/my/info", params: nil, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/job/my/info", params: nil, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 let jobs = Mapper<JZJob>().mapArray(json["content"])
                 success(jobs ?? [JZJob]())

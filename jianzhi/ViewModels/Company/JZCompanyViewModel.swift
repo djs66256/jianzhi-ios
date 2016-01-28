@@ -19,20 +19,18 @@ class JZCompanyViewModel: NSObject {
         }
         
         let params = Mapper().toJSON(company)
-        JZRequestOperationManager.POSTJSON("user/company/edit", params: params, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTJSON("json/user/company/edit", params: params, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 success()
             }
             else {
                 failure(json["content"] as? String)
             }
-            }, failure: { (error:String?) -> Void in
-                failure(error)
-        })
+            }, failure: failure)
     }
     
     static func myInfo(success:(JZCompany)->Void, failure:(String?)->Void) {
-        JZRequestOperationManager.POSTParams("user/company/my/info", params: nil, success: { (json:NSDictionary) -> Void in
+        JZRequestOperationManager.POSTParams("json/user/company/my/info", params: nil, success: { (json:NSDictionary) -> Void in
             if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
                 let company = Mapper<JZCompany>().map(json["content"])
                 if company != nil {

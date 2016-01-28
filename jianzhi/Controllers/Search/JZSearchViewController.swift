@@ -26,15 +26,13 @@ class JZSearchViewController: UIViewController, JZBaseFilterViewControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.edgesForExtendedLayout = UIRectEdge.None
-//        self.tableView.registerNib(UINib.init(nibName: "JZJobSearchTableCell", bundle: nil), forCellReuseIdentifier: jobCellIdentifier)
-
-        prepareSearchJobViewController()
+        self.edgesForExtendedLayout = .None
         
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        prepareSearchJobViewController()
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,6 +41,13 @@ class JZSearchViewController: UIViewController, JZBaseFilterViewControllerDelega
     }
     
     func prepareSearchJobViewController() {
+        if JZUserManager.sharedManager.currentUser?.userType == .boss && filterViewController is JZPersonFilterViewController {
+            return
+        }
+        if JZUserManager.sharedManager.currentUser?.userType == .jobseeker && filterViewController is JZJobFilterViewController {
+            return
+        }
+        
         filterViewController?.removeFromParentViewController()
         if JZUserManager.sharedManager.currentUser?.userType == .boss {
             filterViewController = JZPersonFilterViewController()
