@@ -9,29 +9,29 @@
 import UIKit
 
 enum JZMessageType : Int {
-    case message = 1, job = 2, card = 3
+    case None = 0, Message = 1, Job = 2, Person = 3
 }
 
 class JZMessage: NSObject {
 
-    var fromUser : JZUserInfo
+//    var fromUser : JZUserInfo?
+//    
+//    var toUser : JZUserInfo?
     
-    var toUser : JZUserInfo
+    var user: JZUserInfo?
     
     var content : String?
     
-    var typeValue : Int?
+    var type : JZMessageType = .None
     
-    var type : JZMessageType
+    var group: JZMessageGroup?
     
-    var job : JZJob?
+    var time: NSDate?
     
-    init(fromUser: JZUserInfo, toUser: JZUserInfo, type: JZMessageType) {
-        self.fromUser = fromUser
-        self.toUser = toUser
-        self.type = type
-        super.init()
-    }
-    
-    
+//    init(fromUser: JZUserInfo, toUser: JZUserInfo, type: JZMessageType) {
+//        self.fromUser = fromUser
+//        self.toUser = toUser
+//        self.type = type
+//        super.init()
+//    }
 }

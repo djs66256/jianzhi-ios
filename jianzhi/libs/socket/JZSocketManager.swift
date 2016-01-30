@@ -12,6 +12,8 @@ class JZSocketManager: NSObject {
 
     static let sharedManager = JZSocketManager()
     
+    var logined: Bool = false
+    
     private static let options = [
         "reconnects": true,
         "forceWebsockets":true,
@@ -24,17 +26,35 @@ class JZSocketManager: NSObject {
     private override init() {
         super.init()
         
+        initListener()
+    }
+    
+    private func initListener() {
         socket.on("connect") { (data, ack) -> Void in
             JZLogInfo("[SOCK] connect")
         }
+        
+        socket.on("needlogin") { (data, ack) -> Void in
+            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.NeedLogin, object: nil)
+        }
+        
+        socket.on("login") { [weak self](data, ack) -> Void in
+            self?.logined = true
+        }
+        
+        socket.on("message") { (data, ack) -> Void in
+            
+        }
+        
     }
 
     func connect() {
-        let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(Socket.url())
-        if cookies != nil {
-            socket.options.insert(.Cookies(cookies!))
-            socket.connect(timeoutAfter: Socket.timeout) { () -> Void in
-                
+        if let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(Socket.url()) {
+            if cookies.count > 0 {
+                socket.options.insert(.Cookies(cookies))
+                socket.connect(timeoutAfter: Socket.timeout) { () -> Void in
+                    
+                }
             }
         }
     }
@@ -51,7 +71,9 @@ class JZSocketManager: NSObject {
         socket.disconnect()
     }
     
-    func send() {
-        socket.emit("message", ["lalala":"fff"])
+    func sendMessage(object:AnyObject) {
+        socket.emitWithAck("message", object)(timeoutAfter: UInt64(Socket.timeout)) { data in
+            
+        }
     }
 }

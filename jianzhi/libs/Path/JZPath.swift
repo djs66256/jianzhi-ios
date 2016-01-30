@@ -9,28 +9,37 @@
 import UIKit
 
 class JZPath: NSObject {
+    static let sharedPath = JZPath()
+    
     let cache = {()->String in
         let cache = "\(NSHomeDirectory())/Cache"
         return cache
         }()
     
-    let user = {()->String in
-        let user = "\(NSHomeDirectory())/Documents"
-        return user
-    }()
+    class func userPath(file: String) -> String? {
+        if let id = JZUserManager.sharedManager.currentUser?.uid {
+            let user = "\(NSHomeDirectory())/Documents/user/\(id)/\(file)"
+            if initPath(user) {
+                return user
+            }
+        }
+        return nil
+    }
     
-    static func documents() -> String {
+    func documents() -> String {
         return NSHomeDirectory()+"/Document"
     }
     
-    static func initPath(path: String) {
-        if !NSFileManager.defaultManager().fileExistsAtPath(path) {
+    class func initPath(path: String) -> Bool {
+        guard NSFileManager.defaultManager().fileExistsAtPath(path) else {
             do {
                 try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil)
+                return true
             }
             catch {
-                
+                return false
             }
         }
+        return true
     }
 }

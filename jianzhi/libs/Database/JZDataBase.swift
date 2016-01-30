@@ -55,4 +55,53 @@ class JZDataBase: NSObject {
         dispatch_async(dispatch_get_main_queue(), block)
     }
     
+    func update(sql:String, _ params:[NSObject: AnyObject]?) {
+        execuse {
+            self.db.executeUpdate(sql, withParameterDictionary: params)
+        }
+    }
+    
+    func queryOne<T>(query:String, params:[NSObject: AnyObject]?, unpack:(FMResultSet)->T?, callback:(T?)->Void) {
+        execuse {
+            var obj : T?
+            if let result = self.db.executeQuery(query, withParameterDictionary: params) {
+                while result.next() {
+                    obj = unpack(result)
+                    break
+                }
+                result.close()
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                callback(obj)
+            }
+        }
+    }
+    
+    func queryAll<T>(query:String, params:[NSObject: AnyObject]?, unpack:(FMResultSet)->T?, callback:([T])->Void) {
+        execuse {
+            var ret = [T]()
+            if let result = self.db.executeQuery(query, withParameterDictionary: params) {
+                while result.next() {
+                    if let obj = unpack(result) {
+                        ret.append(obj)
+                    }
+                }
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                callback(ret)
+            }
+        }
+    }
+    
+    func queryAll<T: JZDataBaseObject>(sql:String, params:[String: AnyObject]?, callback:([T])->Void) {
+        queryAll(sql, params: params, unpack: { (result) -> T? in
+            return JZDataBaseUnpackageMapper.unpack(result)
+            }, callback: callback)
+    }
+    
+    func queryAll<T: JZDataBaseObject>(sql:String, callback:([T])->Void) {
+        queryAll(sql, params: nil, callback: callback)
+    }
 }
+

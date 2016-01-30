@@ -9,6 +9,9 @@
 import UIKit
 
 class JZChatBaseTableViewCell: UITableViewCell {
+    
+    var userInfo: JZUserInfo?
+    var message: String?
 
     override func awakeFromNib() {
         super.awakeFromNib()

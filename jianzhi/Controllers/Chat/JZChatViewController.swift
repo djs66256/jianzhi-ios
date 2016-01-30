@@ -50,7 +50,7 @@ class JZChatViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        let messageController = JZMessageTableViewController()
+        let messageController = JZMessageViewController()
         messageController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(messageController, animated: true)
     }

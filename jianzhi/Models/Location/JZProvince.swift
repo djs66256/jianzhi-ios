@@ -8,14 +8,23 @@
 
 import UIKit
 
-class JZProvince: NSObject {
+class JZProvince: NSObject, JZDataBaseObject {
 
-    var id : Int!
-    var province : String!
+    var id : Int = 0
+    var province : String = ""
     
     init(id: Int, province: String) {
         self.id = id
         self.province = province
         super.init()
+    }
+    
+    override required init() {
+        super.init()
+    }
+    
+    func database(map: JZDataBaseMapper) {
+        id          <- (map, "id")
+        province    <- (map, "province")
     }
 }

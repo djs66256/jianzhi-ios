@@ -10,12 +10,13 @@ import UIKit
 
 class JZMessageResumeCell: JZMessageBaseCell {
 
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
+    override class func heightForMessage(message:JZMessage, width: CGFloat) -> CGFloat {
+        return 0
     }
-    */
 
+    override func updateMessage(message:JZMessage) {
+        super.updateMessage(message)
+        
+        
+    }
 }

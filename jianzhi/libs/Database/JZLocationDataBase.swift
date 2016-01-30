@@ -16,26 +16,11 @@ class JZLocationDataBase: JZDataBase {
     }
     
     func findAllProvice(block:([JZProvince])->Void) {
-        execuse { () -> Void in
-            let result = self.db.executeQuery("SELECT id, province FROM province;", withArgumentsInArray: nil);
-            var provinceList = [JZProvince]()
-            if result != nil {
-                while result.next() {
-                    let id = result.intForColumn("id")
-                    let provinceName = result.stringForColumn("province")
-                    let province = JZProvince(id: Int(id), province: provinceName)
-                    provinceList.append(province)
-                }
-            }
-            
-            self.callback { () -> Void in
-                block(provinceList)
-            }
-        }
+        self.queryAll("SELECT * FROM province;", callback: block)
     }
     
     func findCity(province:JZProvince, block:([JZCity])->Void) {
-        execuse { () -> Void in
+        execuse {
             let result = self.db.executeQuery("SELECT id, city FROM city WHERE provinceId = ?;", withArgumentsInArray: [province.id]);
             var cityList = [JZCity]()
             if result != nil {
@@ -47,7 +32,7 @@ class JZLocationDataBase: JZDataBase {
                     cityList.append(city)
                 }
             }
-            self.callback { () -> Void in
+            self.callback {
                 block(cityList)
             }
         }
@@ -71,5 +56,4 @@ class JZLocationDataBase: JZDataBase {
             }
         }
     }
-    
 }
