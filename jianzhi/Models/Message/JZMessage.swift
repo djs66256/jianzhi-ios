@@ -12,26 +12,32 @@ enum JZMessageType : Int {
     case None = 0, Message = 1, Job = 2, Person = 3
 }
 
-class JZMessage: NSObject {
-
-//    var fromUser : JZUserInfo?
-//    
-//    var toUser : JZUserInfo?
+class JZMessage: JZBaseMessage {
     
-    var user: JZUserInfo?
-    
-    var content : String?
-    
+    var user: JZUserInfo
+    //var text: String = ""
+    //var date: NSDate
     var type : JZMessageType = .None
+    var group: JZMessageGroup
     
-    var group: JZMessageGroup?
+    init(user: JZUserInfo, text: String, date: NSDate, type: JZMessageType, group: JZMessageGroup) {
+        self.user = user
+        self.type = type
+        self.group = group
+        super.init()
+        self.text = text
+        self.date = date
+    }
     
-    var time: NSDate?
+    override var senderId: String {
+        return String(user.uid)
+    }
     
-//    init(fromUser: JZUserInfo, toUser: JZUserInfo, type: JZMessageType) {
-//        self.fromUser = fromUser
-//        self.toUser = toUser
-//        self.type = type
-//        super.init()
-//    }
+    override var senderDisplayName: String {
+        return user.nickName ?? ""
+    }
+    
+    override var isMediaMessage: Bool {
+        return false
+    }
 }

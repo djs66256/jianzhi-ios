@@ -14,3 +14,5 @@ pod 'RSKImageCropper'
 #pod 'CocoaLumberjack/Swift'
 #pod 'CocoaAsyncSocket'
 #pod 'Socket.IO-Client-Swift', '~> 4.1.6'
+
+pod 'JSQMessagesViewController'

@@ -20,5 +20,8 @@
 #import <YYModel.h>
 #import <FMDB.h>
 #import <RSKImageCropper/RSKImageCropper.h>
+#import <JSQMessagesViewController/JSQMessages.h>
+
+#import "JZBaseMessage.h"
 
 #endif /* JZ3Part_Bridging_Header_h */
