@@ -7,6 +7,7 @@
 //
 
 enum JZUserType : Int {
+    case unknow = 0
     case jobseeker = 1
     case boss = 2
 }
@@ -34,11 +35,13 @@ class JZUserInfo: NSObject, Mappable, MappableCluster {
     
     var headImage: String?
     
-    var gender: JZGenderType?
+    var gender: JZGenderType = .unknow
     
-    var userType: JZUserType?
+    var userType: JZUserType = .unknow
     
     var descriptions: String?
+    
+    var updateTime: NSDate?
     
     var headImageUrl: NSURL? {
         if headImage != nil && !headImage!.isEmpty {

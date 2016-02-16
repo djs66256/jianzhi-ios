@@ -12,25 +12,40 @@ class JZMessageViewController: JSQMessagesViewController {
     
     var messages = [JZMessage]()
     var group = JZMessageGroup()
+    
+    init(group: JZMessageGroup) {
+        super.init(nibName: nil, bundle: nil)
+        self.group = group
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.senderId = "5"
-        self.senderDisplayName = "Me"
-        self.showLoadEarlierMessagesHeader = true
-
-        // Do any additional setup after loading the view.
-        for i in 0...10 {
-            let user = JZUserInfo()
-            user.uid = i
-            user.nickName = "user\(i)"
-            let message = JZMessage(user: user, text: "text \(i)", date: NSDate(), type: .Message, group: group)
-            message.text = "message content: \(i)"
-            message.date = NSDate()
-            messages.append(message)
+        self.edgesForExtendedLayout = .None
+        if let userid = JZUserManager.sharedManager.currentUser?.uid {
+            self.senderId = String(userid)
         }
-        
+        else {
+            self.senderId = "0"
+        }
+        self.senderDisplayName = JZUserManager.sharedManager.currentUser?.nickName ?? ""
+
+        JZUserDataBase.sharedDataBase.findMessageByGroup(group, index: 0, count: kJZMessageQueryCount) { messages in
+            self.messages.insertContentsOf(messages, at: 0)
+            self.collectionView?.reloadData()
+            self.scrollToBottomAnimated(true)
+            
+            if messages.count < kJZMessageQueryCount {
+                self.showLoadEarlierMessagesHeader = false
+            }
+            else {
+                self.showLoadEarlierMessagesHeader = true
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,7 +75,7 @@ class JZMessageViewController: JSQMessagesViewController {
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.row]
         let bubbleFectory = JSQMessagesBubbleImageFactory()
-        if message.senderId == self.senderId {
+        if message.user.uid == JZUserManager.sharedManager.currentUser?.uid {
             return bubbleFectory.outgoingMessagesBubbleImageWithColor(UIColor.blueColor())
         }
         else {
@@ -74,12 +89,14 @@ class JZMessageViewController: JSQMessagesViewController {
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        let user = JZUserInfo()
-        user.nickName = self.senderDisplayName
-        user.uid = Int(self.senderId)!
-        let message = JZMessage(user: user, text: text, date: date, type: .Message, group: group)
-        messages.append(message)
-        finishSendingMessageAnimated(true)
+        if let user = JZUserManager.sharedManager.currentUser {
+            let message = JZMessage(user: user, text: text, date: date, type: .Message, group: group)
+            
+            JZMessageService.instance.save(message)
+            
+            messages.append(message)
+            finishSendingMessageAnimated(true)
+        }
     }
     
     override func didPressAccessoryButton(sender: UIButton!) {

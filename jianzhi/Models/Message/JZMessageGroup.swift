@@ -13,9 +13,27 @@ enum JZMessageGroupType : Int {
 }
 
 class JZMessageGroup: NSObject {
-    var id: Int?
-    var title: String?
+    var id: Int = 0
+    var title: String = ""
+    var type = JZMessageGroupType.None
+    var resume: JZResume?
+    var user: JZUserInfo?
     var lastMessage: JZMessage?
+    var unread: Int = 0
+    var createDate = NSDate()
+    
+    override func isEqual(object: AnyObject?) -> Bool {
+        if let object = object as? JZMessageGroup {
+            guard type == object.type else { return false }
+            
+            switch type {
+            case .Person: return user != nil && object.user != nil && user!.uid == object.user!.uid
+            case .Resume: return false
+            default: return false
+            }
+        }
+        else { return false }
+    }
 }
 
 

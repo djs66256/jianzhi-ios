@@ -43,7 +43,7 @@ class JZSocketManager: NSObject {
         }
         
         socket.on("message") { (data, ack) -> Void in
-            
+            JZMessageManager.sharedManager.parse(data)
         }
         
     }

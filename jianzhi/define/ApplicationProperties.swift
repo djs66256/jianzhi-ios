@@ -46,3 +46,4 @@
 #endif
 
 let kJZHeadImageSize = 128 // px
+let kJZMessageQueryCount = 20

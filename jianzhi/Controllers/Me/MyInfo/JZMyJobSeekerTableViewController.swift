@@ -52,7 +52,7 @@ class JZMyJobSeekerTableViewController: JZStaticTableViewController {
     
     func reloadData() {
         nameLabel.text = userInfo?.nickName
-        genderLabel.text = userInfo?.gender?.nameValue()
+        genderLabel.text = userInfo?.gender.nameValue()
         descriptionCell.textLabel?.text = userInfo?.resume?.descriptions ?? "这个人很懒，什么都没有留下"
         expectJobCell.textLabel?.text = userInfo?.resume?.expectJob
         

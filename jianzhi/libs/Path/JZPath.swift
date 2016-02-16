@@ -16,11 +16,11 @@ class JZPath: NSObject {
         return cache
         }()
     
-    class func userPath(file: String) -> String? {
+    class func userPath(path: String, file: String) -> String? {
         if let id = JZUserManager.sharedManager.currentUser?.uid {
-            let user = "\(NSHomeDirectory())/Documents/user/\(id)/\(file)"
+            let user = "\(NSHomeDirectory())/Documents/user/\(id)/\(path)"
             if initPath(user) {
-                return user
+                return user + "/\(file)"
             }
         }
         return nil

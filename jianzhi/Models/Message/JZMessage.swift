@@ -14,13 +14,25 @@ enum JZMessageType : Int {
 
 class JZMessage: JZBaseMessage {
     
+    var id: Int = 0
+    var uuid: String
     var user: JZUserInfo
     //var text: String = ""
     //var date: NSDate
     var type : JZMessageType = .None
     var group: JZMessageGroup
     
-    init(user: JZUserInfo, text: String, date: NSDate, type: JZMessageType, group: JZMessageGroup) {
+    var readed = false
+    var uploaded = false
+    
+    convenience init(user: JZUserInfo, text: String, date: NSDate, type: JZMessageType, group: JZMessageGroup) {
+        let uuid = NSUUID().UUIDString.stringByReplacingOccurrencesOfString("-", withString: "")
+        self.init(id: 0, uuid: uuid, user: user, text: text, date: date, type: type, group: group)
+    }
+    
+    init(id: Int, uuid: String, user: JZUserInfo, text: String, date: NSDate, type: JZMessageType, group: JZMessageGroup) {
+        self.id = id
+        self.uuid = uuid
         self.user = user
         self.type = type
         self.group = group

@@ -9,15 +9,32 @@
 import UIKit
 
 class JZMessageService: JZService {
-    let db = JZDataBase()
+    static let instance = JZMessageService()
     
-    func findByIdentifier(id: String, callback:([JZMessage]?)->Void) {
-        db.queryAll("", params: ["":""], unpack: { (set: FMResultSet) -> JZMessage? in
-            return nil
-            }, callback: callback)
+    let db = JZUserDataBase()
+    
+    func save(message: JZMessage) {
+        db.saveMessage(message)
     }
     
-    func find() {
-//        JZDataBaseCreaterMapper.buildSql(JZMessage.self)
+    func markUploaded(message: JZMessage) {
+        message.uploaded = true
     }
+    
+    func findAllUnuploaded() -> [JZMessage] {
+        return []
+    }
+    
+//    func findByGroup(group: JZMessageGroup, index: Int, count: Int, callback: ([JZMessage])->Void) {
+//        if group.id != 0 {
+//            db.findByGroupId(group.id, index: index, count: count) { messages in
+//                messages.forEach { $0.group = group }
+//                callback(messages)
+//            }
+//        }
+//        else {
+//            JZLogError("group id can not be 0")
+//            callback([])
+//        }
+//    }
 }

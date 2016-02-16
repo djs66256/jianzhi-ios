@@ -59,7 +59,7 @@ class JZBossInfoTableViewController: JZStaticTableViewController {
             headImageView.setImageWithURL(url, placeholderImage: nil)
         }
         nameLabel.text = userInfo?.nickName
-        genderLabel.text = userInfo?.gender?.nameValue()
+        genderLabel.text = userInfo?.gender.nameValue()
         
         companyCellController.reloadData()
         jobListCellController.reloadData()

@@ -9,14 +9,14 @@
 import UIKit
 
 class JZMessageManager: UIView {
-    
+    static let sharedManager = JZMessageManager()
 
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
+    func parse(data: String) {
+        if let json = try? NSJSONSerialization.JSONObjectWithData(data.dataUsingEncoding(NSUTF8StringEncoding), options: 0) {
+            if let json = json as? [String: AnyObject] {
+                let type = Int(json["type"])
+            }
+        }
     }
-    */
 
 }

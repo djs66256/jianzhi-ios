@@ -12,6 +12,8 @@ class JZChatViewController: UITableViewController {
     
     static let myChatCellIdentifier = "myChat"
     let otherChatCellIdentifier = "otherChat"
+    
+    var groups = [JZMessageGroup]()
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +21,32 @@ class JZChatViewController: UITableViewController {
         self.tableView.registerClass(JZChatBaseTableViewCell.self, forCellReuseIdentifier: JZChatViewController.myChatCellIdentifier)
         
         self.navigationItem.title = "消息"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "insert", style: .Bordered, target: self, action: Selector("insertGroup"))
+        
+        
+        reloadGroups()
+    }
+    
+    func insertGroup() {
+        let group = JZMessageGroup()
+        group.title = "test group"
+        group.type = .Person
+        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
+        reloadGroups()
+    }
+    
+    func reloadGroups() {
+    
+        JZUserDataBase.sharedDataBase.findUserById(JZUserManager.sharedManager.currentUser?.uid ?? 0) { (user:JZUserInfo?) -> Void in
+            if user == nil {
+                JZUserDataBase.sharedDataBase.insertUser(JZUserManager.sharedManager.currentUser!)
+            }
+        }
+        
+        JZUserDataBase.sharedDataBase.findGroups {
+            self.groups = $0
+            self.tableView.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,13 +63,15 @@ class JZChatViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        return groups.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(JZChatViewController.myChatCellIdentifier, forIndexPath: indexPath)
 
+        let group = groups[indexPath.row]
+        cell.textLabel?.text = group.title
         
 
         return cell
@@ -50,7 +80,7 @@ class JZChatViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        let messageController = JZMessageViewController()
+        let messageController = JZMessageViewController(group: groups[indexPath.row])
         messageController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(messageController, animated: true)
     }

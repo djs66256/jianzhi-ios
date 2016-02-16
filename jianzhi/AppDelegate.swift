@@ -20,7 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.rootViewController = JZMainViewController()
         window!.makeKeyAndVisible();
         
-        JZDataBaseManager.sharedManager
+//        JZDataBaseManager.sharedManager
+        JZMessageGroupService.instance.initGroups { () -> Void in
+            JZSocketManager.sharedManager.connect()
+        }
         
         return true
     }
@@ -37,11 +40,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        JZSocketManager.sharedManager.connect()
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        JZSocketManager.sharedManager.connect()
+        
     }
 
     func applicationWillTerminate(application: UIApplication) {

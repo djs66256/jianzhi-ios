@@ -105,7 +105,7 @@ class JZEditUserBaseInfoTableViewController: JZStaticTableViewController, JZText
             headImageCell.headImageView.setImageWithURL(url, placeholderImage: nil)
         }
         nameCell.detailTextLabel?.text = userInfo?.nickName
-        genderCell.detailTextLabel?.text = userInfo?.gender?.nameValue()
+        genderCell.detailTextLabel?.text = userInfo?.gender.nameValue()
         descriptionCell.detailTextLabel?.text = userInfo?.descriptions
         tableView.reloadData()
     }

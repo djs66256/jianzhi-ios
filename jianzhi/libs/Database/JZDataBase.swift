@@ -55,6 +55,10 @@ class JZDataBase: NSObject {
         dispatch_async(dispatch_get_main_queue(), block)
     }
     
+    func update(sql:String) {
+        update(sql, nil)
+    }
+    
     func update(sql:String, _ params:[NSObject: AnyObject]?) {
         execuse {
             self.db.executeUpdate(sql, withParameterDictionary: params)
@@ -103,5 +107,6 @@ class JZDataBase: NSObject {
     func queryAll<T: JZDataBaseObject>(sql:String, callback:([T])->Void) {
         queryAll(sql, params: nil, callback: callback)
     }
+    
 }
 

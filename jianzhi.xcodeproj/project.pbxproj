@@ -96,7 +96,6 @@
 		652884DF1C59C5370039BFB6 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652884C91C59C5370039BFB6 /* WebSocket.swift */; };
 		652884E21C59C84A0039BFB6 /* JZSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652884E11C59C84A0039BFB6 /* JZSocketManager.swift */; };
 		652884E41C5AA7AC0039BFB6 /* JZMessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652884E31C5AA7AC0039BFB6 /* JZMessageManager.swift */; };
-		652884E61C5AA9500039BFB6 /* JZMessageDataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652884E51C5AA9500039BFB6 /* JZMessageDataBase.swift */; };
 		652884E81C5AB7490039BFB6 /* JZService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652884E71C5AB7490039BFB6 /* JZService.swift */; };
 		652884EA1C5AB7590039BFB6 /* JZMessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652884E91C5AB7590039BFB6 /* JZMessageService.swift */; };
 		652884ED1C5AC4160039BFB6 /* JZDataBaseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652884EC1C5AC4160039BFB6 /* JZDataBaseParser.swift */; };
@@ -104,6 +103,7 @@
 		652AEBC41C334DF5005D08B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 652AEBC31C334DF5005D08B8 /* Assets.xcassets */; };
 		652AEBC71C334DF5005D08B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 652AEBC51C334DF5005D08B8 /* LaunchScreen.storyboard */; };
 		652AEBD21C334DF6005D08B8 /* jianzhiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652AEBD11C334DF6005D08B8 /* jianzhiTests.swift */; };
+		65363AF41C71D10700ACFBC7 /* JZMessageGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65363AF31C71D10700ACFBC7 /* JZMessageGroupService.swift */; };
 		65419B581C5875E70007C4F1 /* JZAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65419B381C5875E70007C4F1 /* JZAlertViewController.swift */; };
 		65419B591C5875E70007C4F1 /* JZTableCellTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65419B3A1C5875E70007C4F1 /* JZTableCellTableViewController.swift */; };
 		65419B5A1C5875E70007C4F1 /* JZTableCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65419B3B1C5875E70007C4F1 /* JZTableCellViewController.swift */; };
@@ -342,7 +342,6 @@
 		652884C91C59C5370039BFB6 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		652884E11C59C84A0039BFB6 /* JZSocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZSocketManager.swift; sourceTree = "<group>"; };
 		652884E31C5AA7AC0039BFB6 /* JZMessageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMessageManager.swift; sourceTree = "<group>"; };
-		652884E51C5AA9500039BFB6 /* JZMessageDataBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMessageDataBase.swift; sourceTree = "<group>"; };
 		652884E71C5AB7490039BFB6 /* JZService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZService.swift; sourceTree = "<group>"; };
 		652884E91C5AB7590039BFB6 /* JZMessageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMessageService.swift; sourceTree = "<group>"; };
 		652884EC1C5AC4160039BFB6 /* JZDataBaseParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZDataBaseParser.swift; sourceTree = "<group>"; };
@@ -354,6 +353,7 @@
 		652AEBCD1C334DF6005D08B8 /* jianzhiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jianzhiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		652AEBD11C334DF6005D08B8 /* jianzhiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jianzhiTests.swift; sourceTree = "<group>"; };
 		652AEBD31C334DF6005D08B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65363AF31C71D10700ACFBC7 /* JZMessageGroupService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMessageGroupService.swift; sourceTree = "<group>"; };
 		65419B381C5875E70007C4F1 /* JZAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZAlertViewController.swift; sourceTree = "<group>"; };
 		65419B3A1C5875E70007C4F1 /* JZTableCellTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZTableCellTableViewController.swift; sourceTree = "<group>"; };
 		65419B3B1C5875E70007C4F1 /* JZTableCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZTableCellViewController.swift; sourceTree = "<group>"; };
@@ -1721,9 +1721,9 @@
 				65E282B81C443C4D006EDA4D /* JZDataBase.swift */,
 				65BE0E3C1C4AC29E00E84442 /* JZLocationDataBase.swift */,
 				65E282BA1C443D2D006EDA4D /* JZUserDataBase.swift */,
-				652884E51C5AA9500039BFB6 /* JZMessageDataBase.swift */,
 				652884E71C5AB7490039BFB6 /* JZService.swift */,
 				652884E91C5AB7590039BFB6 /* JZMessageService.swift */,
+				65363AF31C71D10700ACFBC7 /* JZMessageGroupService.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -1994,6 +1994,7 @@
 				65DB4ED71C39BA180014DB94 /* JZRegisterDetailInfoTableViewController.swift in Sources */,
 				65E282C61C46991B006EDA4D /* JZIdentifyingCodeCellTableViewCell.swift in Sources */,
 				65419B581C5875E70007C4F1 /* JZAlertViewController.swift in Sources */,
+				65363AF41C71D10700ACFBC7 /* JZMessageGroupService.swift in Sources */,
 				65BE0E211C473E5200E84442 /* JZWageTableViewCell.swift in Sources */,
 				65419B6A1C5875E70007C4F1 /* JZSalaryTypePickerViewController.swift in Sources */,
 				65E282B41C44177A006EDA4D /* JZPaopaoView.swift in Sources */,
@@ -2089,7 +2090,6 @@
 				6590241B1C54EE4A00A9255E /* JZSearchViewModel.swift in Sources */,
 				65BD116E1C36C70900EB79F9 /* JZChatBaseTableViewCell.swift in Sources */,
 				650C0AE71C39213900F7E885 /* JZResumeViewModel.swift in Sources */,
-				652884E61C5AA9500039BFB6 /* JZMessageDataBase.swift in Sources */,
 				657E46771C3DBBDF00A628D8 /* JZLogoPicker.swift in Sources */,
 				65BD115A1C3685F900EB79F9 /* JZMeViewController.swift in Sources */,
 				65E282B91C443C4D006EDA4D /* JZDataBase.swift in Sources */,
