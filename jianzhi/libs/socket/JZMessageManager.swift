@@ -12,10 +12,12 @@ class JZMessageManager: UIView {
     static let sharedManager = JZMessageManager()
 
     func parse(data: String) {
-        if let json = try? NSJSONSerialization.JSONObjectWithData(data.dataUsingEncoding(NSUTF8StringEncoding), options: 0) {
+        if let data = data.dataUsingEncoding(NSUTF8StringEncoding) {
+        if let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) {
             if let json = json as? [String: AnyObject] {
-                let type = Int(json["type"])
+//                let type = Int(json["type"])
             }
+        }
         }
     }
 

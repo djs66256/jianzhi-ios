@@ -61,7 +61,7 @@ class JZJobSeekerTableViewController: JZStaticTableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 0 {
+        if editable && indexPath.row == 0 {
             let viewController = JZEditUserBaseInfoTableViewController()
             viewController.userInfo = userInfo
             navigationController?.pushViewController(viewController, animated: true)

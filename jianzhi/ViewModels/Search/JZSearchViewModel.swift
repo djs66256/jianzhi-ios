@@ -45,4 +45,29 @@ class JZSearchViewModel: NSObject {
             }
             }, failure: failure)
     }
+    
+    class func mapSearch(success:([JZMapAnnotation])->Void, failure:(String?)->Void) {
+        
+        var annotations = [JZMapAnnotation]()
+        for i in 0...3 {
+            let annotation = JZPersonMapAnnotation()
+            annotation.coordinate = CLLocationCoordinate2DMake(39.915 + 0.04 * Double(i), 116.404 + 0.04 * Double(i))
+            annotation.title = "person"
+            annotation.subtitle = "person description"
+            
+            annotations.append(annotation)
+        }
+        
+        for i in 0...3 {
+            let annotation = JZCompanyMapAnnotation()
+            annotation.coordinate = CLLocationCoordinate2DMake(39.905 - 0.04 * Double(i), 116.404 + 0.04 * Double(i))
+            annotation.title = "company"
+            annotation.subtitle = "company detail"
+            
+            annotations.append(annotation)
+        }
+        
+        success(annotations)
+        
+    }
 }

@@ -45,8 +45,16 @@ class JZWorkExperiencesCellViewController: JZTableCellTableViewController, JZCre
             if cell == nil {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: tipIdentifier)
                 cell!.textLabel?.textAlignment = .Center
+            }
+            if editable {
                 cell!.textLabel?.text = "你还没有任何工作经验，马上去添加"
                 cell!.accessoryType = .DisclosureIndicator
+                cell!.selectionStyle = .Default
+            }
+            else {
+                cell!.textLabel?.text = "没有工作经验"
+                cell!.accessoryType = .None
+                cell!.selectionStyle = .None
             }
             return cell!
         }

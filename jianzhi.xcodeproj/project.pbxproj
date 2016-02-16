@@ -103,6 +103,10 @@
 		652AEBC41C334DF5005D08B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 652AEBC31C334DF5005D08B8 /* Assets.xcassets */; };
 		652AEBC71C334DF5005D08B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 652AEBC51C334DF5005D08B8 /* LaunchScreen.storyboard */; };
 		652AEBD21C334DF6005D08B8 /* jianzhiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652AEBD11C334DF6005D08B8 /* jianzhiTests.swift */; };
+		652AFBE71C7307160093BCEC /* JZBossInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652AFBE51C7307160093BCEC /* JZBossInfoViewController.swift */; };
+		652AFBE81C7307160093BCEC /* JZBossInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 652AFBE61C7307160093BCEC /* JZBossInfoViewController.xib */; };
+		652AFBEB1C73092F0093BCEC /* JZJobSeekerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652AFBE91C73092F0093BCEC /* JZJobSeekerViewController.swift */; };
+		652AFBEC1C73092F0093BCEC /* JZJobSeekerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 652AFBEA1C73092F0093BCEC /* JZJobSeekerViewController.xib */; };
 		65363AF41C71D10700ACFBC7 /* JZMessageGroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65363AF31C71D10700ACFBC7 /* JZMessageGroupService.swift */; };
 		65419B581C5875E70007C4F1 /* JZAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65419B381C5875E70007C4F1 /* JZAlertViewController.swift */; };
 		65419B591C5875E70007C4F1 /* JZTableCellTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65419B3A1C5875E70007C4F1 /* JZTableCellTableViewController.swift */; };
@@ -353,6 +357,10 @@
 		652AEBCD1C334DF6005D08B8 /* jianzhiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jianzhiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		652AEBD11C334DF6005D08B8 /* jianzhiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jianzhiTests.swift; sourceTree = "<group>"; };
 		652AEBD31C334DF6005D08B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		652AFBE51C7307160093BCEC /* JZBossInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZBossInfoViewController.swift; sourceTree = "<group>"; };
+		652AFBE61C7307160093BCEC /* JZBossInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZBossInfoViewController.xib; sourceTree = "<group>"; };
+		652AFBE91C73092F0093BCEC /* JZJobSeekerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobSeekerViewController.swift; sourceTree = "<group>"; };
+		652AFBEA1C73092F0093BCEC /* JZJobSeekerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZJobSeekerViewController.xib; sourceTree = "<group>"; };
 		65363AF31C71D10700ACFBC7 /* JZMessageGroupService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMessageGroupService.swift; sourceTree = "<group>"; };
 		65419B381C5875E70007C4F1 /* JZAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZAlertViewController.swift; sourceTree = "<group>"; };
 		65419B3A1C5875E70007C4F1 /* JZTableCellTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZTableCellTableViewController.swift; sourceTree = "<group>"; };
@@ -601,6 +609,8 @@
 				65132B9F1C56C4A5001815AD /* JobListCell */,
 				65132BA41C56C528001815AD /* JZBossInfoTableViewController.swift */,
 				65132BA51C56C528001815AD /* JZBossInfoTableViewController.xib */,
+				652AFBE51C7307160093BCEC /* JZBossInfoViewController.swift */,
+				652AFBE61C7307160093BCEC /* JZBossInfoViewController.xib */,
 			);
 			path = BossInfo;
 			sourceTree = "<group>";
@@ -612,6 +622,8 @@
 				65132B911C56BED0001815AD /* WorkExperiencesCell */,
 				655BA6A21C581AE600EE152C /* JZJobSeekerTableViewController.swift */,
 				655BA6A31C581AE600EE152C /* JZJobSeekerTableViewController.xib */,
+				652AFBE91C73092F0093BCEC /* JZJobSeekerViewController.swift */,
+				652AFBEA1C73092F0093BCEC /* JZJobSeekerViewController.xib */,
 			);
 			path = JobseekerInfo;
 			sourceTree = "<group>";
@@ -1858,6 +1870,7 @@
 				652754671C57BD16007672EF /* JZWorkExperienceEditableTableViewController.xib in Resources */,
 				65132B971C56BED0001815AD /* JZEducationCellTableViewCell.xib in Resources */,
 				659024181C54DB1C00A9255E /* JZJobSearchTableCell.xib in Resources */,
+				652AFBE81C7307160093BCEC /* JZBossInfoViewController.xib in Resources */,
 				652754571C56F8C3007672EF /* JZJobEditableTableViewController.xib in Resources */,
 				655BA69E1C57D70800EE152C /* JZCreateEducationTableViewController.xib in Resources */,
 				65BE0E1E1C46EA6B00E84442 /* JZRegisterJobTableViewCell.xib in Resources */,
@@ -1897,6 +1910,7 @@
 				65C8438B1C3AB8F300D8FAD5 /* JZFeedbackViewController.xib in Resources */,
 				65132BAC1C56C671001815AD /* JZJobListCellTableViewCell.xib in Resources */,
 				65419B601C5875E70007C4F1 /* JZTextFieldEditTableViewController.xib in Resources */,
+				652AFBEC1C73092F0093BCEC /* JZJobSeekerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2011,6 +2025,7 @@
 				65C843761C3A6A9900D8FAD5 /* JZInviteTableViewController.swift in Sources */,
 				65BE0E441C4AD46400E84442 /* JZSelectDistrictTableViewController.swift in Sources */,
 				650C0ACA1C37FF7000F7E885 /* JZUserViewModel.swift in Sources */,
+				652AFBE71C7307160093BCEC /* JZBossInfoViewController.swift in Sources */,
 				65419B741C592BFE0007C4F1 /* JZImagePickerComponentViewController.swift in Sources */,
 				655BA6A41C581AE600EE152C /* JZJobSeekerTableViewController.swift in Sources */,
 				652884A71C59720F0039BFB6 /* JZEditUserHeadImageTableViewCell.swift in Sources */,
@@ -2032,6 +2047,7 @@
 				652884DF1C59C5370039BFB6 /* WebSocket.swift in Sources */,
 				65419B681C5875E70007C4F1 /* JZPickerComponentView.swift in Sources */,
 				65132B9B1C56BED0001815AD /* JZWorkExperiencesCellTableViewCell.swift in Sources */,
+				652AFBEB1C73092F0093BCEC /* JZJobSeekerViewController.swift in Sources */,
 				655BA6A11C57D9C800EE152C /* JZServerDateTransforms.swift in Sources */,
 				65E282C41C46948A006EDA4D /* JZAlertView.swift in Sources */,
 				652884D41C59C5370039BFB6 /* SocketEventHandler.swift in Sources */,

@@ -45,8 +45,16 @@ class JZEducationsCellViewController: JZTableCellTableViewController, JZEditEduc
             if cell == nil {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: tipIdentifier)
                 cell!.textLabel?.textAlignment = .Center
+            }
+            if editable {
+                cell!.selectionStyle = .Default
                 cell!.textLabel?.text = "你还没有任何教育经验，马上去添加"
                 cell!.accessoryType = .DisclosureIndicator
+            }
+            else {
+                cell!.selectionStyle = .None
+                cell!.textLabel?.text = "没有教育经验"
+                cell!.accessoryType = .None
             }
             return cell!
         }

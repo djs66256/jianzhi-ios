@@ -52,7 +52,14 @@ class JZJobListCellViewController: JZTableCellTableViewController, JZCreateJobVi
             if cell == nil {
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: addIdentifier)
                 cell?.textLabel?.textAlignment = .Center
+            }
+            if editable {
+                cell?.selectionStyle = .Default
                 cell?.textLabel?.text = "你还没有任何职位，马上添加"
+            }
+            else {
+                cell?.selectionStyle = .None
+                cell?.textLabel?.text = "没有职位"
             }
             return cell!
         }
@@ -78,14 +85,16 @@ class JZJobListCellViewController: JZTableCellTableViewController, JZCreateJobVi
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         
-        if jobList.count != 0 {
-            let job = jobList[indexPath.row]
-            let viewController = JZEditJobViewController(job)
-            viewController.delegate = self
-            navigationController?.pushViewController(viewController, animated: true)
-        }
-        else {
-            addJobClicked()
+        if editable {
+            if jobList.count != 0 {
+                let job = jobList[indexPath.row]
+                let viewController = JZEditJobViewController(job)
+                viewController.delegate = self
+                navigationController?.pushViewController(viewController, animated: true)
+            }
+            else {
+                addJobClicked()
+            }
         }
     }
     

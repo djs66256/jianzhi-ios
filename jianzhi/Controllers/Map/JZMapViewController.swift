@@ -10,7 +10,8 @@ import UIKit
 
 class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDelegate {
 
-    let annotionIdentifier = "annotaion"
+    let personAnnotationIdentifier = "person"
+    let companyAnnotationIdentifier = "company"
     
     @IBOutlet weak var mapView: BMKMapView!
     private let mapManager = BMKMapManager()
@@ -45,11 +46,17 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let annotation = JZMapAnnotation()
-        annotation.coordinate = CLLocationCoordinate2DMake(39.915, 116.404)
-        annotation.title = "title"
-        annotation.subtitle = "subtitle"
-        mapView.addAnnotation(annotation)
+//        let annotation = JZMapAnnotation()
+//        annotation.coordinate = CLLocationCoordinate2DMake(39.915, 116.404)
+//        annotation.title = "title"
+//        annotation.subtitle = "subtitle"
+//        mapView.addAnnotation(annotation)
+//        
+        JZSearchViewModel.mapSearch({ (annotations) -> Void in
+            self.mapView.addAnnotations(annotations)
+            }, failure: {
+                JZAlertView.show($0)
+        })
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -66,31 +73,52 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
     // MARK: map view delegate
     
     func mapView(mapView: BMKMapView!, viewForAnnotation annotation: BMKAnnotation!) -> BMKAnnotationView! {
-        var annotionView = mapView.dequeueReusableAnnotationViewWithIdentifier(annotionIdentifier)
-        if annotionView == nil {
-            annotionView = JZMapUserAnnotationView(annotation: annotation, reuseIdentifier: annotionIdentifier)
-            
-//            let customView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 50))
-//            annotionView.paopaoView = BMKActionPaopaoView(customView: customView)
-//            customView.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.3)
-            
-            let left = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 50))
-            left.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.3)
-            annotionView.leftCalloutAccessoryView = left
-            
+        
+        if let annotation = annotation as? JZPersonMapAnnotation {
+            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(personAnnotationIdentifier)
+            if annotationView == nil {
+                annotationView = JZMapUserAnnotationView(annotation: annotation, reuseIdentifier: personAnnotationIdentifier)
+            }
+            return annotationView
         }
-        annotionView.image = UIImage(named: "anno")
+        else if let annotation = annotation as? JZCompanyMapAnnotation {
+            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(companyAnnotationIdentifier)
+            if annotationView == nil {
+                annotationView = JZMapCompanyAnnotationView(annotation: annotation, reuseIdentifier: companyAnnotationIdentifier)
+            }
+            return annotationView
+        }
         
-        
-        return annotionView
+        return JZMapAnnotationView(annotation: annotation, reuseIdentifier: "")
     }
     
     func mapView(mapView: BMKMapView!, didSelectAnnotationView view: BMKAnnotationView!) {
-        
+//        if let anno = view.annotation as? JZPersonMapAnnotation {
+//            let controller = JZMyJobSeekerTableViewController()
+//            
+//            navigationController?.pushViewController(controller, animated: true)
+//        }
+//        else if let anno = view.annotation as? JZCompanyMapAnnotation {
+//            let controller = JZMyBossTableViewController()
+//            
+//            navigationController?.pushViewController(controller, animated: true)
+//        }
     }
     
     func mapView(mapView: BMKMapView!, annotationViewForBubble view: BMKAnnotationView!) {
-        
+        if let anno = view.annotation as? JZPersonMapAnnotation {
+            let controller = JZJobSeekerViewController()
+            controller.userId = anno.uid
+            controller.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(controller, animated: true)
+        }
+        else if let anno = view.annotation as? JZCompanyMapAnnotation {
+            let controller = JZBossInfoViewController()
+            controller.userId = anno.uid
+            controller.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(controller, animated: true)
+        }
+
     }
     
     func selectMap() {
