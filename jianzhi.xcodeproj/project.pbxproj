@@ -48,6 +48,9 @@
 		6514C2D21C3D71C900B144E7 /* JZWorkExperienceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6514C2D01C3D71C900B144E7 /* JZWorkExperienceTableViewCell.swift */; };
 		6514C2D31C3D71C900B144E7 /* JZWorkExperienceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6514C2D11C3D71C900B144E7 /* JZWorkExperienceTableViewCell.xib */; };
 		6514C2D51C3D76FE00B144E7 /* JZTextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6514C2D41C3D76FE00B144E7 /* JZTextViewTableViewCell.swift */; };
+		6526A4991C73114B0052CEDF /* JZPostJobTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6526A4971C73114B0052CEDF /* JZPostJobTableViewController.swift */; };
+		6526A49A1C73114B0052CEDF /* JZPostJobTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6526A4981C73114B0052CEDF /* JZPostJobTableViewController.xib */; };
+		6526A49D1C7311640052CEDF /* JZSelectMyJobTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6526A49C1C7311640052CEDF /* JZSelectMyJobTableViewController.swift */; };
 		652754481C56DB01007672EF /* JZJobListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652754471C56DB01007672EF /* JZJobListHeaderView.swift */; };
 		6527544D1C56E759007672EF /* JZCompanyEditableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527544B1C56E759007672EF /* JZCompanyEditableTableViewController.swift */; };
 		6527544E1C56E759007672EF /* JZCompanyEditableTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6527544C1C56E759007672EF /* JZCompanyEditableTableViewController.xib */; };
@@ -298,6 +301,9 @@
 		6514C2D01C3D71C900B144E7 /* JZWorkExperienceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZWorkExperienceTableViewCell.swift; sourceTree = "<group>"; };
 		6514C2D11C3D71C900B144E7 /* JZWorkExperienceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZWorkExperienceTableViewCell.xib; sourceTree = "<group>"; };
 		6514C2D41C3D76FE00B144E7 /* JZTextViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZTextViewTableViewCell.swift; sourceTree = "<group>"; };
+		6526A4971C73114B0052CEDF /* JZPostJobTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZPostJobTableViewController.swift; sourceTree = "<group>"; };
+		6526A4981C73114B0052CEDF /* JZPostJobTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZPostJobTableViewController.xib; sourceTree = "<group>"; };
+		6526A49C1C7311640052CEDF /* JZSelectMyJobTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZSelectMyJobTableViewController.swift; sourceTree = "<group>"; };
 		652754471C56DB01007672EF /* JZJobListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobListHeaderView.swift; sourceTree = "<group>"; };
 		6527544B1C56E759007672EF /* JZCompanyEditableTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZCompanyEditableTableViewController.swift; sourceTree = "<group>"; };
 		6527544C1C56E759007672EF /* JZCompanyEditableTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZCompanyEditableTableViewController.xib; sourceTree = "<group>"; };
@@ -719,6 +725,14 @@
 				6514C2D11C3D71C900B144E7 /* JZWorkExperienceTableViewCell.xib */,
 			);
 			path = cell;
+			sourceTree = "<group>";
+		};
+		6526A49B1C7311640052CEDF /* SelectJobController */ = {
+			isa = PBXGroup;
+			children = (
+				6526A49C1C7311640052CEDF /* JZSelectMyJobTableViewController.swift */,
+			);
+			path = SelectJobController;
 			sourceTree = "<group>";
 		};
 		652754491C56E718007672EF /* Company */ = {
@@ -1617,6 +1631,9 @@
 		65C8436F1C3A6A4A00D8FAD5 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				6526A49B1C7311640052CEDF /* SelectJobController */,
+				6526A4971C73114B0052CEDF /* JZPostJobTableViewController.swift */,
+				6526A4981C73114B0052CEDF /* JZPostJobTableViewController.xib */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -1898,6 +1915,7 @@
 				6514C2D31C3D71C900B144E7 /* JZWorkExperienceTableViewCell.xib in Resources */,
 				65132B7F1C56B21D001815AD /* JZMyJobSeekerTableViewController.xib in Resources */,
 				652754521C56EF3C007672EF /* JZEditCompanyViewController.xib in Resources */,
+				6526A49A1C73114B0052CEDF /* JZPostJobTableViewController.xib in Resources */,
 				65C843771C3A6A9900D8FAD5 /* JZInviteTableViewController.xib in Resources */,
 				65BD11571C3685E800EB79F9 /* JZChatViewController.xib in Resources */,
 				65DB4ED31C39B9E60014DB94 /* JZRegisterResumeTableViewController.xib in Resources */,
@@ -2029,6 +2047,7 @@
 				65419B741C592BFE0007C4F1 /* JZImagePickerComponentViewController.swift in Sources */,
 				655BA6A41C581AE600EE152C /* JZJobSeekerTableViewController.swift in Sources */,
 				652884A71C59720F0039BFB6 /* JZEditUserHeadImageTableViewCell.swift in Sources */,
+				6526A4991C73114B0052CEDF /* JZPostJobTableViewController.swift in Sources */,
 				65E282B11C44002C006EDA4D /* JZMapUserAnnotationView.swift in Sources */,
 				65C1E6F61C61A06700D02053 /* JZBaseMessage.m in Sources */,
 				65BD114E1C36856000EB79F9 /* JZMapViewController.swift in Sources */,
@@ -2094,6 +2113,7 @@
 				6514C2B61C3D63A700B144E7 /* JZTextFieldTableViewCell.swift in Sources */,
 				65419B671C5875E70007C4F1 /* JZStringPickerViewController.swift in Sources */,
 				65C8438A1C3AB8F300D8FAD5 /* JZFeedbackViewController.swift in Sources */,
+				6526A49D1C7311640052CEDF /* JZSelectMyJobTableViewController.swift in Sources */,
 				65BD11841C36CDF000EB79F9 /* JZUserManager.swift in Sources */,
 				6590240C1C54D76300A9255E /* JZSearchBaseTableViewController.swift in Sources */,
 				65DB4ECE1C39B9C40014DB94 /* JZRegisterJobTableViewController.swift in Sources */,

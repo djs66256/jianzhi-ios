@@ -118,7 +118,7 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
             controller.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(controller, animated: true)
         }
-
+        
     }
     
     func selectMap() {

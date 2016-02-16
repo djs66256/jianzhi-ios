@@ -69,4 +69,8 @@ class JZResumeViewModel: NSObject {
             }, failure: failure)
         
     }
+    
+    class func post(uid:Int, success:()->Void, failure:(String?)->Void) {
+        success()
+    }
 }
