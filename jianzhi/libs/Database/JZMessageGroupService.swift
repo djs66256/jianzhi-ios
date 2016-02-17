@@ -47,4 +47,25 @@ class JZMessageGroupService: JZService {
         
         JZUserDataBase.sharedDataBase.insertMessageGroup(group)
     }
+    
+    func createChatGroup(user: JZUserInfo) -> JZMessageGroup {
+        let group = JZMessageGroup()
+        group.type = .Chat
+        group.user = user
+        return group
+    }
+    
+    func findGroupByReceivedMessage(message: JZSockMessage) -> JZMessageGroup {
+        let groupType : JZMessageGroupType = (message.type == .Post) ? .Post : .Chat
+        if let index = groups.indexOf({ ($0.type == .Chat && $0.user?.uid == message.uid) }) {
+            return groups[index]
+        }
+        else {
+            let group = JZMessageGroup()
+            group.type = groupType;
+            return createChatGroup(message.uid)
+        }
+        
+        return JZMessageGroup()
+    }
 }

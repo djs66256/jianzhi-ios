@@ -23,7 +23,7 @@
     }
     
     struct HTTP {
-        static let ip = "192.168.1.104"
+        static let ip = "localhost" //"192.168.1.104"
         static let port = 8080
         static let location = "\(HTTP.ip):\(HTTP.port)"
         

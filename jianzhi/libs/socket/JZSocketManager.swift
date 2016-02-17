@@ -8,11 +8,15 @@
 
 import UIKit
 
+enum JZSocketState {
+    case Unconnect, Connect, Logined
+}
+
 class JZSocketManager: NSObject {
 
     static let sharedManager = JZSocketManager()
     
-    var logined: Bool = false
+    var status = JZSocketState.Unconnect
     
     private static let options = [
         "reconnects": true,
@@ -32,20 +36,51 @@ class JZSocketManager: NSObject {
     private func initListener() {
         socket.on("connect") { (data, ack) -> Void in
             JZLogInfo("[SOCK] connect")
+            self.status = .Connect
+        }
+        
+        socket.on("disconnect") { (data, ack) -> Void in
+            self.status = .Unconnect
         }
         
         socket.on("needlogin") { (data, ack) -> Void in
             NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.NeedLogin, object: nil)
         }
         
-        socket.on("login") { [weak self](data, ack) -> Void in
-            self?.logined = true
+        socket.on("login") { (data, ack) -> Void in
+            self.status = .Logined
         }
         
         socket.on("message") { (data, ack) -> Void in
-            JZMessageManager.sharedManager.parse(data.first! as! String)
+            if let jsons = data[0] as? [[String:AnyObject]] {
+                var uuids = [String]()
+                jsons.forEach {
+                    if let message = JZMessageManager.sharedManager.parse($0) {
+                        uuids.append(message.uuid)
+                    }
+                }
+                
+                if !uuids.isEmpty {
+//                    socket.emitWithAck("messageAck", uuids)
+                }
+            }
         }
         
+        socket.on("messageAck") { (data, ack) -> Void in
+            if let uuids = data as? [String] {
+                uuids.forEach {
+                    JZMessageManager.sharedManager.uploaded($0)
+                }
+            }
+        }
+        
+        socket.on("messageError") { (data, ack) -> Void in
+            if let uuids = data as? [String] {
+                uuids.forEach {
+                    JZMessageManager.sharedManager.error($0)
+                }
+            }
+        }
     }
 
     func connect() {
@@ -69,11 +104,14 @@ class JZSocketManager: NSObject {
     
     func disconnect() {
         socket.disconnect()
+        status = .Unconnect
     }
     
-    func sendMessage(object:AnyObject) {
-        socket.emitWithAck("message", object)(timeoutAfter: UInt64(Socket.timeout)) { data in
+    func sendMessage(message:JZSockMessage) {
+        let json = message.toJSON()
+        socket.emitWithAck("message", json)(timeoutAfter: UInt64(Socket.timeout)) { data in
             
         }
+        
     }
 }

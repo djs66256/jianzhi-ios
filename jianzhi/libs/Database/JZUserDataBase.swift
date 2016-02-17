@@ -20,7 +20,8 @@ class JZUserDataBase: JZDataBase {
         let sqls = [
             "CREATE TABLE IF NOT EXISTS message (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "uid INTEGER," +
+                "from_uid INTEGER," +
+                "to_uid INTEGER," +
                 "gid INTEGER," +
                 "uuid CHAR(32)," +
                 "text TEXT," +
@@ -54,11 +55,12 @@ class JZUserDataBase: JZDataBase {
     
     func insertMessage(message: JZMessage) {
         let sql = "INSERT INTO message" +
-            " (uid, gid, uuid, text, date, type, uploaded, readed)" +
-        " VALUES (:uid, :gid, :uuid, :text, :date, :type, :uploaded, :readed);"
+            " (from_uid, to_uid, gid, uuid, text, date, type, uploaded, readed)" +
+        " VALUES (:from_uid, :to_uid, :gid, :uuid, :text, :date, :type, :uploaded, :readed);"
         let params : [String: AnyObject] = [
-            "uid": message.user.uid,
-            "gid": message.group.id,
+            "from_uid": message.fromUser!.uid,
+            "to_uid": message.toUser!.uid,
+            "gid": message.group!.id,
             "uuid": message.uuid,
             "text": message.text,
             "date": message.date,
@@ -66,6 +68,27 @@ class JZUserDataBase: JZDataBase {
             "uploaded": message.uploaded,
             "readed": message.readed]
         
+        update(sql, params)
+    }
+    
+    func setMessageReaded(id: Int) {
+        let sql = "UPDATE message SET readed=true WHERE id=:id"
+        let params = ["id": id]
+        update(sql, params)
+    }
+    
+    func setMessageUploaded(uuid: String) {
+        if uuid.isEmpty { return }
+        let sql = "UPDATE message SET uploaded=true WHERE uuid=:uuid"
+        let params = ["uuid": uuid]
+        update(sql, params)
+    }
+    
+    func removeMessageByUuid(uuid: String) {
+        if uuid.isEmpty { return }
+        let sql = "DELETE FROM message"
+            + " WHERE uuid=:uuid"
+        let params = ["uuid": uuid]
         update(sql, params)
     }
     
@@ -151,38 +174,56 @@ class JZUserDataBase: JZDataBase {
     }
     
     func findMessageByGroup(group: JZMessageGroup, index: Int, count: Int, callback: ([JZMessage])->Void) {
-        let sql = "SELECT m.id AS mid, m.gid AS mgid, m.uuid AS muuid, m.text AS mtext, m.date AS mdate, m.type AS mtype, m.uploaded AS muploaded, m.readed AS mreaded, " +
-        "u.id AS uid, u.nickname AS unickname, u.description AS udescriptions, u.gender AS ugender, u.user_type AS utype " +
-        "FROM message m JOIN user u ON m.uid=u.id " +
-        "WHERE m.gid=:gid " +
-        "LIMIT :index, :count;"
+        let (messageItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
+        let (fromUserItems, fromUserUnpack) = userQueryItemsAndUnpackage("fu")
+        let (toUserItems, toUserUnpack) = userQueryItemsAndUnpackage("tu")
+        let sql = "SELECT \(messageItems), \(fromUserItems), \(toUserItems)"
+            + " FROM message m"
+            + " LEFT JOIN user fu on m.from_uid=fu.id"
+            + " LEFT JOIN user tu on m.to_uid=tu.id"
+            + " WHERE m.gid=:gid"
+            + " LIMIT :index, :count"
         let params = ["gid": group.id, "index": index, "count": count]
-        
         queryAll(sql, params: params, unpack: { (result:FMResultSet) -> JZMessage? in
-            
-            let userType = JZUserType(rawValue: Int(result.intForColumn("utype"))) ?? JZUserType.unknow
-            let user : JZUserInfo
-            switch userType {
-            case .jobseeker: user = JZJobseekerUserInfo()
-            case .boss: user = JZBossUserInfo()
-            default: user = JZUserInfo()
-            }
-            user.uid = Int(result.intForColumn("uid"))
-            user.nickName = result.stringForColumn("unickname")
-            user.descriptions = result.stringForColumn("udescriptions")
-            user.gender = JZGenderType(rawValue: result.stringForColumn("ugender")) ?? JZGenderType.unknow
-            
-            let mid = Int(result.intForColumn("mid"))
-            let uuid = result.stringForColumn("muuid")
-            let mtext = result.stringForColumn("mtext")
-            let mdate = result.dateForColumn("mdate")
-            let mtype = JZMessageType(rawValue: Int(result.intForColumn("mtype"))) ?? JZMessageType.None
-            
-            let message = JZMessage(id: mid, uuid: uuid, user: user, text: mtext, date: mdate, type: mtype, group: group)
-            message.uploaded = result.boolForColumn("muploaded")
-            message.readed = result.boolForColumn("readed")
+            let message = messageUnpack(result)
+            message?.fromUser = fromUserUnpack(result)
+            message?.toUser = toUserUnpack(result)
             return message
             }, callback: callback)
+//        
+//        let sql = "SELECT m.id AS mid, m.gid AS mgid, m.uuid AS muuid, m.text AS mtext, m.date AS mdate, m.type AS mtype, m.uploaded AS muploaded, m.readed AS mreaded, " +
+//        "u.id AS uid, u.nickname AS unickname, u.description AS udescriptions, u.gender AS ugender, u.user_type AS utype " +
+//        "FROM message m JOIN user u ON m.uid=u.id " +
+//        "WHERE m.gid=:gid " +
+//        "LIMIT :index, :count;"
+//        let params = ["gid": group.id, "index": index, "count": count]
+//        
+//        queryAll(sql, params: params, unpack: { (result:FMResultSet) -> JZMessage? in
+//            
+//        
+//            let userType = JZUserType(rawValue: Int(result.intForColumn("utype"))) ?? JZUserType.unknow
+//            let user : JZUserInfo
+//            switch userType {
+//            case .jobseeker: user = JZJobseekerUserInfo()
+//            case .boss: user = JZBossUserInfo()
+//            default: user = JZUserInfo()
+//            }
+//            user.uid = Int(result.intForColumn("uid"))
+//            user.nickName = result.stringForColumn("unickname")
+//            user.descriptions = result.stringForColumn("udescriptions")
+//            user.gender = JZGenderType(rawValue: result.stringForColumn("ugender")) ?? JZGenderType.unknow
+//            
+//            let mid = Int(result.intForColumn("mid"))
+//            let uuid = result.stringForColumn("muuid")
+//            let mtext = result.stringForColumn("mtext")
+//            let mdate = result.dateForColumn("mdate")
+//            let mtype = JZMessageType(rawValue: Int(result.intForColumn("mtype"))) ?? JZMessageType.None
+//            
+//            let message = JZMessage(id: mid, uuid: uuid, fromUser: fromUser, toUser:toUser, text: mtext, date: mdate, type: mtype, group: group)
+//            message.uploaded = result.boolForColumn("muploaded")
+//            message.readed = result.boolForColumn("readed")
+//            return message
+//            }, callback: callback)
     }
     
     func findGroups(callback:([JZMessageGroup])->Void) {
@@ -201,7 +242,7 @@ class JZUserDataBase: JZDataBase {
     func findGroupByToUser(toUser: JZUserInfo, callback:(JZMessageGroup?)->Void) {
         let filter = "WHERE g.type=:gtype AND u.id=:uid"
         let params = [
-            "gtype": JZMessageGroupType.Person.rawValue,
+            "gtype": JZMessageGroupType.Chat.rawValue,
             "uid": toUser.uid]
         findGroupByFilter(filter, params: params) { (groups:[JZMessageGroup]) -> Void in
             callback(groups.first)
@@ -218,19 +259,47 @@ class JZUserDataBase: JZDataBase {
             }, callback: callback)
     }
     
+    func messageQueryItemsAndUnpackage(alias:String) -> (String, (FMResultSet) -> JZMessage?) {
+        let items = " \(alias).id, \(alias).from_uid, \(alias).to_uid, \(alias).uuid, \(alias).text, \(alias).date, \(alias).type, \(alias).readed, \(alias).uploaded "
+        let unpack = { (result: FMResultSet) -> JZMessage? in
+            let message = JZMessage()
+            message.id = Int(result.intForColumn("\(alias).id"))
+            message.uuid = result.stringForColumn("\(alias).uuid")
+            message.text = result.stringForColumn("\(alias).text")
+            message.date = result.dateForColumn("\(alias).date")
+            message.type = JZMessageType(rawValue: Int(result.intForColumn("\(alias).type"))) ?? JZMessageType.None
+            message.uploaded = result.boolForColumn("\(alias).uploaded")
+            message.readed = result.boolForColumn("\(alias).readed")
+            return message
+        }
+        return (items, unpack)
+    }
+    
     let userQueryItems = " user.id AS uid, user.nickname AS unickname, user.description AS udescriptions, user.gender AS ugender, user.user_type AS utype "
+    func userQueryItemsAndUnpackage(alias:String) -> (String, (FMResultSet) -> JZUserInfo?) {
+        let items = " \(alias).id, \(alias).nickname, \(alias).description, \(alias).gender, \(alias).user_type"
+        let unpack = { (result) -> JZUserInfo? in
+            self.unpackUser(alias, result: result)
+        }
+        return (items, unpack)
+    }
+    
     func unpackUser(result:FMResultSet) -> JZUserInfo? {
+        return unpackUser("user", result: result)
+    }
+    
+    func unpackUser(alias:String, result:FMResultSet) -> JZUserInfo? {
         let user : JZUserInfo
-        let userType = JZUserType(rawValue: Int(result.intForColumn("utype"))) ?? JZUserType.unknow
+        let userType = JZUserType(rawValue: Int(result.intForColumn("\(alias).type"))) ?? JZUserType.unknow
         switch userType {
         case .jobseeker: user = JZJobseekerUserInfo()
         case .boss: user = JZBossUserInfo()
         default: user = JZUserInfo()
         }
-        user.uid = Int(result.intForColumn("uid"))
-        user.nickName = result.stringForColumn("unickname")
-        user.descriptions = result.stringForColumn("udescriptions")
-        user.gender = JZGenderType(rawValue: result.stringForColumn("ugender") ?? "u") ?? JZGenderType.unknow
+        user.uid = Int(result.intForColumn("\(alias).id"))
+        user.nickName = result.stringForColumn("\(alias).nickname")
+        user.descriptions = result.stringForColumn("\(alias).descriptions")
+        user.gender = JZGenderType(rawValue: result.stringForColumn("\(alias).gender") ?? "u") ?? JZGenderType.unknow
         
         return user
     }
@@ -242,5 +311,17 @@ class JZUserDataBase: JZDataBase {
         group.title = result.stringForColumn("gtitle")
         
         return group
+    }
+    
+    func groupQueryItemsAndUnpackage(alias:String) -> (String, (FMResultSet)->JZMessageGroup?) {
+        let groupQueryItems = "\(alias).id, \(alias).title, \(alias).type, \(alias).uid, \(alias).rid, \(alias).create_date"
+        let unpack = { (FMResultSet)->JZMessageGroup? in
+            let group = JZMessageGroup()
+            group.id = Int(result.intForColumn("\(alias).id"))
+            group.title = result.stringForColumn("\(alias).title")
+            
+            return group
+        }
+        return (groupQueryItems, unpack)
     }
 }

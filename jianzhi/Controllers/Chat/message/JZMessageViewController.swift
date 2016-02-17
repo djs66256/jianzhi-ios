@@ -75,7 +75,7 @@ class JZMessageViewController: JSQMessagesViewController {
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.row]
         let bubbleFectory = JSQMessagesBubbleImageFactory()
-        if message.user.uid == JZUserManager.sharedManager.currentUser?.uid {
+        if message.fromUser?.uid == JZUserManager.sharedManager.currentUser?.uid {
             return bubbleFectory.outgoingMessagesBubbleImageWithColor(UIColor.blueColor())
         }
         else {
@@ -89,8 +89,8 @@ class JZMessageViewController: JSQMessagesViewController {
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        if let user = JZUserManager.sharedManager.currentUser {
-            let message = JZMessage(user: user, text: text, date: date, type: .Message, group: group)
+        if let user = JZUserManager.sharedManager.currentUser, let toUser = group.user {
+            let message = JZMessage(fromUser: user, toUser: toUser, text: text, date: date, type: .Message, group: group)
             
             JZMessageService.instance.save(message)
             
@@ -104,18 +104,18 @@ class JZMessageViewController: JSQMessagesViewController {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
-        for i in 0...10 {
-            let user = JZUserInfo()
-            user.uid = i
-            user.nickName = "user\(i)"
-            let message = JZMessage(user: user, text: "earlier text \(i)", date: NSDate(), type: .Message, group: group)
-            messages.insert(message, atIndex: 0)
-        }
-        let offset = collectionView.contentOffset
-        let contentSize = collectionView.contentSize
-        collectionView.reloadData()
-        collectionView.layoutIfNeeded()
-        collectionView.contentOffset.y = collectionView.contentSize.height - (contentSize.height - offset.y)
+//        for i in 0...10 {
+//            let user = JZUserInfo()
+//            user.uid = i
+//            user.nickName = "user\(i)"
+//            let message = JZMessage(fromUser: user, text: "earlier text \(i)", toUser: date: NSDate(), type: .Message, group: group)
+//            messages.insert(message, atIndex: 0)
+//        }
+//        let offset = collectionView.contentOffset
+//        let contentSize = collectionView.contentSize
+//        collectionView.reloadData()
+//        collectionView.layoutIfNeeded()
+//        collectionView.contentOffset.y = collectionView.contentSize.height - (contentSize.height - offset.y)
         
     }
     

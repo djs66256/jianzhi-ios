@@ -9,7 +9,7 @@
 import UIKit
 
 enum JZMessageGroupType : Int {
-    case None = 0, Person = 1, Resume = 2
+    case None = 0, Chat = 1, Post = 2
 }
 
 class JZMessageGroup: NSObject {
@@ -27,8 +27,8 @@ class JZMessageGroup: NSObject {
             guard type == object.type else { return false }
             
             switch type {
-            case .Person: return user != nil && object.user != nil && user!.uid == object.user!.uid
-            case .Resume: return false
+            case .Chat: return user != nil && object.user != nil && user!.uid == object.user!.uid
+            case .Post: return false
             default: return false
             }
         }

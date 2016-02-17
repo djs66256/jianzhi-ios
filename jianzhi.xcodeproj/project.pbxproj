@@ -138,6 +138,7 @@
 		655BA6A11C57D9C800EE152C /* JZServerDateTransforms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655BA6A01C57D9C800EE152C /* JZServerDateTransforms.swift */; };
 		655BA6A41C581AE600EE152C /* JZJobSeekerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655BA6A21C581AE600EE152C /* JZJobSeekerTableViewController.swift */; };
 		655BA6A51C581AE600EE152C /* JZJobSeekerTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 655BA6A31C581AE600EE152C /* JZJobSeekerTableViewController.xib */; };
+		656C9CDE1C741B850098AFBE /* JZSockMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656C9CDD1C741B850098AFBE /* JZSockMessage.swift */; };
 		657E46731C3D9C5100A628D8 /* JZCreateJobViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E46711C3D9C5100A628D8 /* JZCreateJobViewController.swift */; };
 		657E46741C3D9C5100A628D8 /* JZCreateJobViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 657E46721C3D9C5100A628D8 /* JZCreateJobViewController.xib */; };
 		657E46771C3DBBDF00A628D8 /* JZLogoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E46761C3DBBDF00A628D8 /* JZLogoPicker.swift */; };
@@ -156,6 +157,7 @@
 		6590241D1C55377900A9255E /* JZJobDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6590241C1C55377900A9255E /* JZJobDetailInfo.swift */; };
 		659024201C553D3200A9255E /* JZDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6590241F1C553D3200A9255E /* JZDateFormatter.swift */; };
 		65A321B41C5B2E360024968B /* JZMessageGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A321B31C5B2E360024968B /* JZMessageGroup.swift */; };
+		65BBAAB71C7477F400B6412E /* JZUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBAAB61C7477F400B6412E /* JZUserService.swift */; };
 		65BD11411C3681ED00EB79F9 /* JZMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BD113F1C3681ED00EB79F9 /* JZMainViewController.swift */; };
 		65BD114E1C36856000EB79F9 /* JZMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BD114C1C36856000EB79F9 /* JZMapViewController.swift */; };
 		65BD114F1C36856000EB79F9 /* JZMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65BD114D1C36856000EB79F9 /* JZMapViewController.xib */; };
@@ -395,6 +397,7 @@
 		655BA6A01C57D9C800EE152C /* JZServerDateTransforms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZServerDateTransforms.swift; sourceTree = "<group>"; };
 		655BA6A21C581AE600EE152C /* JZJobSeekerTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobSeekerTableViewController.swift; sourceTree = "<group>"; };
 		655BA6A31C581AE600EE152C /* JZJobSeekerTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZJobSeekerTableViewController.xib; sourceTree = "<group>"; };
+		656C9CDD1C741B850098AFBE /* JZSockMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZSockMessage.swift; sourceTree = "<group>"; };
 		657E46711C3D9C5100A628D8 /* JZCreateJobViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZCreateJobViewController.swift; sourceTree = "<group>"; };
 		657E46721C3D9C5100A628D8 /* JZCreateJobViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZCreateJobViewController.xib; sourceTree = "<group>"; };
 		657E46761C3DBBDF00A628D8 /* JZLogoPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZLogoPicker.swift; sourceTree = "<group>"; };
@@ -414,6 +417,7 @@
 		6590241C1C55377900A9255E /* JZJobDetailInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobDetailInfo.swift; sourceTree = "<group>"; };
 		6590241F1C553D3200A9255E /* JZDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZDateFormatter.swift; sourceTree = "<group>"; };
 		65A321B31C5B2E360024968B /* JZMessageGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMessageGroup.swift; sourceTree = "<group>"; };
+		65BBAAB61C7477F400B6412E /* JZUserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZUserService.swift; sourceTree = "<group>"; };
 		65BD113F1C3681ED00EB79F9 /* JZMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMainViewController.swift; sourceTree = "<group>"; };
 		65BD114C1C36856000EB79F9 /* JZMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMapViewController.swift; sourceTree = "<group>"; };
 		65BD114D1C36856000EB79F9 /* JZMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZMapViewController.xib; sourceTree = "<group>"; };
@@ -906,6 +910,7 @@
 		652884E01C59C80B0039BFB6 /* socket */ = {
 			isa = PBXGroup;
 			children = (
+				656C9CDC1C741B750098AFBE /* SockMessage */,
 				652884E11C59C84A0039BFB6 /* JZSocketManager.swift */,
 				652884E31C5AA7AC0039BFB6 /* JZMessageManager.swift */,
 			);
@@ -1117,6 +1122,14 @@
 				655BA6A01C57D9C800EE152C /* JZServerDateTransforms.swift */,
 			);
 			path = Custom;
+			sourceTree = "<group>";
+		};
+		656C9CDC1C741B750098AFBE /* SockMessage */ = {
+			isa = PBXGroup;
+			children = (
+				656C9CDD1C741B850098AFBE /* JZSockMessage.swift */,
+			);
+			path = SockMessage;
 			sourceTree = "<group>";
 		};
 		657E46701C3D9C3100A628D8 /* create */ = {
@@ -1751,6 +1764,7 @@
 				65BE0E3C1C4AC29E00E84442 /* JZLocationDataBase.swift */,
 				65E282BA1C443D2D006EDA4D /* JZUserDataBase.swift */,
 				652884E71C5AB7490039BFB6 /* JZService.swift */,
+				65BBAAB61C7477F400B6412E /* JZUserService.swift */,
 				652884E91C5AB7590039BFB6 /* JZMessageService.swift */,
 				65363AF31C71D10700ACFBC7 /* JZMessageGroupService.swift */,
 			);
@@ -2026,6 +2040,7 @@
 				65DB4ED71C39BA180014DB94 /* JZRegisterDetailInfoTableViewController.swift in Sources */,
 				65E282C61C46991B006EDA4D /* JZIdentifyingCodeCellTableViewCell.swift in Sources */,
 				65419B581C5875E70007C4F1 /* JZAlertViewController.swift in Sources */,
+				65BBAAB71C7477F400B6412E /* JZUserService.swift in Sources */,
 				65363AF41C71D10700ACFBC7 /* JZMessageGroupService.swift in Sources */,
 				65BE0E211C473E5200E84442 /* JZWageTableViewCell.swift in Sources */,
 				65419B6A1C5875E70007C4F1 /* JZSalaryTypePickerViewController.swift in Sources */,
@@ -2123,6 +2138,7 @@
 				65419B651C5875E70007C4F1 /* JZPickerViewController.swift in Sources */,
 				652884CD1C59C5370039BFB6 /* SocketClientSpec.swift in Sources */,
 				6527546C1C57BDD3007672EF /* JZEditEducationViewController.swift in Sources */,
+				656C9CDE1C741B850098AFBE /* JZSockMessage.swift in Sources */,
 				6590241B1C54EE4A00A9255E /* JZSearchViewModel.swift in Sources */,
 				65BD116E1C36C70900EB79F9 /* JZChatBaseTableViewCell.swift in Sources */,
 				650C0AE71C39213900F7E885 /* JZResumeViewModel.swift in Sources */,

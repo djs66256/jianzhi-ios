@@ -30,7 +30,7 @@ class JZChatViewController: UITableViewController {
     func insertGroup() {
         let group = JZMessageGroup()
         group.title = "test group"
-        group.type = .Person
+        group.type = .Chat
         JZUserDataBase.sharedDataBase.insertMessageGroup(group)
         reloadGroups()
     }

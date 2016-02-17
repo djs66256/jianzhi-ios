@@ -8,17 +8,44 @@
 
 import UIKit
 
+protocol JZMessageReceiver : NSObjectProtocol {
+    func didReceiveMessage(message: JZSockMessage)
+}
+
 class JZMessageManager: UIView {
     static let sharedManager = JZMessageManager()
+    
+    private var receivers = [JZMessageReceiver]()
+    
+    func addReceiver(receiver: JZMessageReceiver) {
+        receivers.append(receiver)
+    }
+    
+    func removeReceiver(receiver: JZMessageReceiver) {
+        if let index = receivers.indexOf({ return receiver === $0 }) {
+            receivers.removeAtIndex(index)
+        }
+    }
 
-    func parse(data: String) {
-        if let data = data.dataUsingEncoding(NSUTF8StringEncoding) {
-        if let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) {
-            if let json = json as? [String: AnyObject] {
-//                let type = Int(json["type"])
-            }
+    func send(message: JZSockMessage) {
+        JZSocketManager.sharedManager.sendMessage(message)
+//        JZMessageService.instance.save(message)
+    }
+    
+    func parse(data: [String: AnyObject]) -> JZSockMessage? {
+        if let message = Mapper<JZSockMessage>().map(data) {
+            receivers.forEach({ $0.didReceiveMessage(message) })
+            return message
         }
-        }
+        return nil
+    }
+    
+    func uploaded(uuid: String) {
+        JZMessageService.instance.setUploaded(uuid)
+    }
+    
+    func error(uuid: String) {
+        JZMessageService.instance.removeByUuid(uuid)
     }
 
 }

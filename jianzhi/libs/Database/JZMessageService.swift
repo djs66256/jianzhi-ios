@@ -11,14 +11,18 @@ import UIKit
 class JZMessageService: JZService {
     static let instance = JZMessageService()
     
-    let db = JZUserDataBase()
+    let db = JZUserDataBase.sharedDataBase
     
     func save(message: JZMessage) {
         db.saveMessage(message)
     }
     
-    func markUploaded(message: JZMessage) {
-        message.uploaded = true
+    func removeByUuid(uuid: String) {
+        db.removeMessageByUuid(uuid)
+    }
+    
+    func setUploaded(uuid: String) {
+        db.setMessageUploaded(uuid)
     }
     
     func findAllUnuploaded() -> [JZMessage] {

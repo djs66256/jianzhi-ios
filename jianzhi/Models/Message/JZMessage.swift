@@ -9,31 +9,37 @@
 import UIKit
 
 enum JZMessageType : Int {
-    case None = 0, Message = 1, Job = 2, Person = 3
+    case None = 0, Message = 1, Job = 2, Person = 3, Post = 4
 }
 
 class JZMessage: JZBaseMessage {
     
     var id: Int = 0
-    var uuid: String
-    var user: JZUserInfo
+    var uuid: String = ""
+    var fromUser: JZUserInfo?
+    var toUser: JZUserInfo?
     //var text: String = ""
     //var date: NSDate
     var type : JZMessageType = .None
-    var group: JZMessageGroup
+    var group: JZMessageGroup?
     
     var readed = false
     var uploaded = false
     
-    convenience init(user: JZUserInfo, text: String, date: NSDate, type: JZMessageType, group: JZMessageGroup) {
-        let uuid = NSUUID().UUIDString.stringByReplacingOccurrencesOfString("-", withString: "")
-        self.init(id: 0, uuid: uuid, user: user, text: text, date: date, type: type, group: group)
+    override init() {
+        super.init()
     }
     
-    init(id: Int, uuid: String, user: JZUserInfo, text: String, date: NSDate, type: JZMessageType, group: JZMessageGroup) {
+    convenience init(fromUser: JZUserInfo, toUser: JZUserInfo, text: String, date: NSDate, type: JZMessageType, group: JZMessageGroup) {
+        let uuid = NSUUID().UUIDString.stringByReplacingOccurrencesOfString("-", withString: "")
+        self.init(id: 0, uuid: uuid, fromUser: fromUser, toUser: toUser, text: text, date: date, type: type, group: group)
+    }
+    
+    init(id: Int, uuid: String, fromUser: JZUserInfo, toUser: JZUserInfo, text: String, date: NSDate, type: JZMessageType, group: JZMessageGroup) {
         self.id = id
         self.uuid = uuid
-        self.user = user
+        self.fromUser = fromUser
+        self.toUser = toUser
         self.type = type
         self.group = group
         super.init()
@@ -42,11 +48,11 @@ class JZMessage: JZBaseMessage {
     }
     
     override var senderId: String {
-        return String(user.uid)
+        return String(fromUser!.uid)
     }
     
     override var senderDisplayName: String {
-        return user.nickName ?? ""
+        return fromUser!.nickName ?? ""
     }
     
     override var isMediaMessage: Bool {

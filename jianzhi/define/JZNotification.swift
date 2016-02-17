@@ -11,4 +11,6 @@ import UIKit
 class JZNotification: NSObject {
     static let NeedLogin = "needLogin"
     static let MessageGroupReload = "MessageGroupReload"
+    static let Logout = "logout"
+    static let Login = "login"
 }

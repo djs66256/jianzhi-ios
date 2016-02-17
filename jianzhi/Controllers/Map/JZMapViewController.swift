@@ -122,7 +122,12 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
     }
     
     func selectMap() {
-        JZSocketManager.sharedManager.sendMessage("hehehehehe")
+//        let msg = JZMessage(user: JZUserManager.sharedManager.currentUser!, text: "teststss", date: NSDate(), type: .Text, group: nil)
+        let msg = JZSockMessage()
+        msg.uid = 2
+        msg.text = "hhahhahahaha"
+        msg.type = .Message
+        JZSocketManager.sharedManager.sendMessage(msg)
 //        let viewController = UINavigationController(rootViewController:JZSelectLocationViewController())
 //        viewController.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
 //        self.presentViewController(viewController, animated: true, completion: nil)
