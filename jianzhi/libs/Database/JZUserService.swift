@@ -9,7 +9,7 @@
 import UIKit
 
 class JZUserService: JZService {
-    let instance = JZUserService()
+    static let instance = JZUserService()
     
     private let db = JZUserDataBase.sharedDataBase
     
@@ -28,6 +28,18 @@ class JZUserService: JZService {
     private func createUpdateUser(uid:Int) -> JZUserInfo {
         let user = JZUserInfo()
         user.uid = uid
+        JZUserManager.updateUser(user)
         return user
+    }
+    
+    func save(user: JZUserInfo) {
+        db.findUserById(user.uid) {
+            if $0 != nil {
+                
+            }
+            else {
+                self.db.insertUser(user)
+            }
+        }
     }
 }

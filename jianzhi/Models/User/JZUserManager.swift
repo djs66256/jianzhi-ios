@@ -8,8 +8,15 @@
 
 import UIKit
 
+protocol JZUserUpdateProtocol: NSObjectProtocol {
+    func didUpdateUser(user: JZUserInfo)
+}
+
 class JZUserManager: NSObject {
     static let sharedManager = JZUserManager()
+    
+    private var autoUpdateUsers = [JZAutoUpdateUserInfo]()
+    private var autoUpdateUsersListeners = [JZUserUpdateProtocol]()
     
     let myInfoKey = "myInfoKey"
     
@@ -38,6 +45,8 @@ class JZUserManager: NSObject {
                 let user = Mapper().toJSON(newValue!)
                 NSUserDefaults.standardUserDefaults().setObject(user, forKey: myInfoKey)
                 self.user = newValue
+                
+                JZUserService.instance.save(newValue!)
             }
             else {
                 self.user = nil
@@ -46,4 +55,18 @@ class JZUserManager: NSObject {
         }
     }
     
+    func updateUser(user:JZUserInfo) {
+        JZUserViewModel.userInfo(user.uid, success: { (newUser) -> Void in
+            
+            }, failure: { })
+    }
+    
+    func addUpdateUserListener(listener: JZUserUpdateProtocol) {
+        autoUpdateUsersListeners.append(listener)
+    }
+    func removeUpdateUserListener(listener: JZUserUpdateProtocol) {
+        if let index = autoUpdateUsersListeners.indexOf( == ) {
+            autoUpdateUsersListeners.removeAtIndex(index)
+        }
+    }
 }

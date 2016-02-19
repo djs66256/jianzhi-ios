@@ -246,6 +246,23 @@ class JZUserViewModel: NSObject {
             }
             }, failure: failure)
     }
+    
+    class func userInfo(uid: Int, success:(JZUserInfo)->Void, failure:(String?)->Void) {
+        JZRequestOperationManager.POSTParams("json/user/info", params: ["uid": uid], success: { (json:NSDictionary) -> Void in
+            if (json["retCode"] as? Int == JZRequestResult.Success.rawValue) {
+                let userInfo = Mapper<JZUserInfo>().map(json["content"])
+                if userInfo != nil {
+                    success(userInfo!)
+                }
+                else {
+                    failure("数据错误")
+                }
+            }
+            else {
+                failure(json["content"] as? String)
+            }
+            }, failure: failure)
+    }
 
     class func uploadHeadImage(image:UIImage, success:(String)->Void, failure:(String?)->Void) {
         JZRequestOperationManager.POSTImage("json/user/upload/head", image: image, fileName: "head.jpg", success: { (json:NSDictionary) -> Void in
