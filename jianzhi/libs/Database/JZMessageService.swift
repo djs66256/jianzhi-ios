@@ -13,8 +13,17 @@ class JZMessageService: JZService {
     
     let db = JZUserDataBase.sharedDataBase
     
-    func save(message: JZMessage) {
-        db.saveMessage(message)
+//    func save(message: JZMessage) {
+//        if message.id == 0 {
+//            db.insertMessage(message)
+//        }
+//        else {
+//            db.updateMessage(message)
+//        }
+//    }
+    
+    func insert(message: JZMessage) {
+        db.insertMessage(message)
     }
     
     func removeByUuid(uuid: String) {

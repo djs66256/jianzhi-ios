@@ -35,6 +35,6 @@ class JZSockMessage: NSObject, Mappable {
         uid     <- map["uid"]
         text    <- map["text"]
         type    <- map["type"]
-        time    <- map["time"]
+        time    <- (map["time"], JZServerDateTransforms())
     }
 }

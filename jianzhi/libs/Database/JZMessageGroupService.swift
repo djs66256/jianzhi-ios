@@ -37,35 +37,38 @@ class JZMessageGroupService: JZService {
 //        }
 //
 //    }
+//    
+//    func touchGroup(group: JZMessageGroup) {
+//        for g in groups {
+//            if g.isEqual(group) {
+//               return
+//            }
+//        }
+//        
+//        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
+//    }
     
-    func touchGroup(group: JZMessageGroup) {
-        for g in groups {
-            if g.isEqual(group) {
-               return
-            }
-        }
-        
-        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
-    }
-    
-    func createChatGroup(user: JZUserInfo) -> JZMessageGroup {
+    private func createChatGroup(user: JZUserInfo) -> JZMessageGroup {
         let group = JZMessageGroup()
         group.type = .Chat
         group.user = user
+        
+        groups.insert(group, atIndex: 0)
+        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
+        
         return group
     }
     
-    func findGroupByReceivedMessage(message: JZSockMessage) -> JZMessageGroup {
+    func findGroupByReceivedMessage(message: JZSockMessage, callback:(JZMessageGroup)->Void) {
         let groupType : JZMessageGroupType = (message.type == .Post) ? .Post : .Chat
         if let index = groups.indexOf({ ($0.type == .Chat && $0.user?.uid == message.uid) }) {
-            return groups[index]
+            callback(groups[index])
         }
         else {
-            let group = JZMessageGroup()
-            group.type = groupType;
-//            return createChatGroup(message.uid)
+            JZUserService.instance.findUserById(message.uid, callback: { (user) -> Void in
+                callback(self.createChatGroup(user))
+            })
+            
         }
-        
-        return JZMessageGroup()
     }
 }

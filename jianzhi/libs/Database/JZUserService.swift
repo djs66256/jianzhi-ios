@@ -28,14 +28,19 @@ class JZUserService: JZService {
     private func createUpdateUser(uid:Int) -> JZUserInfo {
         let user = JZUserInfo()
         user.uid = uid
-        JZUserManager.updateUser(user)
+        db.insertUser(user)
+        JZUserManager.sharedManager.updateUser(user) {
+            if let user = $0 {
+                self.db.updateUser(user)
+            }
+        }
         return user
     }
     
     func save(user: JZUserInfo) {
         db.findUserById(user.uid) {
             if $0 != nil {
-                
+                self.db.updateUser(user)
             }
             else {
                 self.db.insertUser(user)

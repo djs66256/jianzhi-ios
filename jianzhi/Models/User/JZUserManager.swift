@@ -55,17 +55,27 @@ class JZUserManager: NSObject {
         }
     }
     
-    func updateUser(user:JZUserInfo) {
+    func updateUser(user:JZUserInfo, callback:(JZUserInfo?)->Void) {
         JZUserViewModel.userInfo(user.uid, success: { (newUser) -> Void in
+            user.nickName = newUser.nickName
+            user.gender = newUser.gender
+            user.headImage = newUser.headImage
+            user.descriptions = newUser.descriptions
+            user.userType = newUser.userType
+            user.userName = newUser.userName
+            callback(user)
             
-            }, failure: { })
+            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.UserUpdated, object: user.uid, userInfo: ["user" : user])
+            }, failure: { _ in
+                callback(nil)
+        })
     }
     
     func addUpdateUserListener(listener: JZUserUpdateProtocol) {
         autoUpdateUsersListeners.append(listener)
     }
     func removeUpdateUserListener(listener: JZUserUpdateProtocol) {
-        if let index = autoUpdateUsersListeners.indexOf( == ) {
+        if let index = autoUpdateUsersListeners.indexOf({ $0 === listener }) {
             autoUpdateUsersListeners.removeAtIndex(index)
         }
     }

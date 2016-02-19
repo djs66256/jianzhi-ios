@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZMessageViewController: JSQMessagesViewController {
+class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
     
     var messages = [JZMessage]()
     var group = JZMessageGroup()
@@ -16,10 +16,16 @@ class JZMessageViewController: JSQMessagesViewController {
     init(group: JZMessageGroup) {
         super.init(nibName: nil, bundle: nil)
         self.group = group
+        
+        JZMessageManager.sharedManager.addReceiver(self)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        JZMessageManager.sharedManager.removeReceiver(self)
     }
 
     override func viewDidLoad() {
@@ -118,6 +124,13 @@ class JZMessageViewController: JSQMessagesViewController {
 //        collectionView.layoutIfNeeded()
 //        collectionView.contentOffset.y = collectionView.contentSize.height - (contentSize.height - offset.y)
         
+    }
+    
+    func didReceiveMessage(message: JZMessage) {
+        if message.fromUser?.uid == group.user?.uid {
+            messages.append(message)
+            finishReceivingMessageAnimated(true)
+        }
     }
     
 }

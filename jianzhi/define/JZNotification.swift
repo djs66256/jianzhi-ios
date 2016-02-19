@@ -13,4 +13,5 @@ class JZNotification: NSObject {
     static let MessageGroupReload = "MessageGroupReload"
     static let Logout = "logout"
     static let Login = "login"
+    static let UserUpdated = "userUpdated"
 }
