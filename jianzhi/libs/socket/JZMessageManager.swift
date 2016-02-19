@@ -27,9 +27,11 @@ class JZMessageManager: UIView {
         }
     }
 
-    func send(message: JZSockMessage) {
-        JZSocketManager.sharedManager.sendMessage(message)
-//        JZMessageService.instance.save(message)
+    func send(message: JZMessage) {
+        if let msg = message.toSendMessage() {
+            JZSocketManager.sharedManager.sendMessage(msg)
+            JZMessageService.instance.save(message)
+        }
     }
     
     func parse(data: [String: AnyObject]) -> JZSockMessage? {

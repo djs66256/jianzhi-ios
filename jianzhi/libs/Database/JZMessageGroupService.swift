@@ -63,7 +63,7 @@ class JZMessageGroupService: JZService {
         else {
             let group = JZMessageGroup()
             group.type = groupType;
-            return createChatGroup(message.uid)
+//            return createChatGroup(message.uid)
         }
         
         return JZMessageGroup()

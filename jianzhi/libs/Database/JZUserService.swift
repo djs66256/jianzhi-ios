@@ -19,7 +19,7 @@ class JZUserService: JZService {
                 callback(user)
             }
             else {
-                let user = createUpdateUser(uid)
+                let user = self.createUpdateUser(uid)
                 callback(user)
             }
         }

@@ -58,4 +58,16 @@ class JZMessage: JZBaseMessage {
     override var isMediaMessage: Bool {
         return false
     }
+    
+    func toSendMessage() -> JZSockMessage? {
+        guard toUser != nil else { return nil }
+        
+        let msg = JZSockMessage()
+        msg.uid = toUser!.uid
+        msg.uuid = uuid
+        msg.text = self.text
+        msg.type = type
+        
+        return msg
+    }
 }

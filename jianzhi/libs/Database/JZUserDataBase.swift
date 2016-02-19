@@ -315,7 +315,7 @@ class JZUserDataBase: JZDataBase {
     
     func groupQueryItemsAndUnpackage(alias:String) -> (String, (FMResultSet)->JZMessageGroup?) {
         let groupQueryItems = "\(alias).id, \(alias).title, \(alias).type, \(alias).uid, \(alias).rid, \(alias).create_date"
-        let unpack = { (FMResultSet)->JZMessageGroup? in
+        let unpack = { (result:FMResultSet)->JZMessageGroup? in
             let group = JZMessageGroup()
             group.id = Int(result.intForColumn("\(alias).id"))
             group.title = result.stringForColumn("\(alias).title")

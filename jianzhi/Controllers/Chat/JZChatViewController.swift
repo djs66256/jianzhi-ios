@@ -31,12 +31,14 @@ class JZChatViewController: UITableViewController {
         let group = JZMessageGroup()
         group.title = "test group"
         group.type = .Chat
-        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
-        reloadGroups()
+        group.user = JZUserManager.sharedManager.currentUser
+//        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
+        self.groups = [group]
+        self.tableView.reloadData()
     }
     
     func reloadGroups() {
-    
+        
         JZUserDataBase.sharedDataBase.findUserById(JZUserManager.sharedManager.currentUser?.uid ?? 0) { (user:JZUserInfo?) -> Void in
             if user == nil {
                 JZUserDataBase.sharedDataBase.insertUser(JZUserManager.sharedManager.currentUser!)

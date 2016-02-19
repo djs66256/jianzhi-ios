@@ -92,7 +92,8 @@ class JZMessageViewController: JSQMessagesViewController {
         if let user = JZUserManager.sharedManager.currentUser, let toUser = group.user {
             let message = JZMessage(fromUser: user, toUser: toUser, text: text, date: date, type: .Message, group: group)
             
-            JZMessageService.instance.save(message)
+//            JZMessageService.instance.save(message)
+            JZMessageManager.sharedManager.send(message)
             
             messages.append(message)
             finishSendingMessageAnimated(true)

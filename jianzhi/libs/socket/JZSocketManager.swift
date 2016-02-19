@@ -64,6 +64,11 @@ class JZSocketManager: NSObject {
 //                    socket.emitWithAck("messageAck", uuids)
                 }
             }
+            else if let json = data[0] as? [String:AnyObject] {
+                if let message = JZMessageManager.sharedManager.parse(json) {
+                    
+                }
+            }
         }
         
         socket.on("messageAck") { (data, ack) -> Void in
