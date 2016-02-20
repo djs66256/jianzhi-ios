@@ -36,22 +36,25 @@ class JZMessageManager: UIView {
     
     func parse(data: [String: AnyObject]) -> JZSockMessage? {
         if let message = Mapper<JZSockMessage>().map(data) {
-            
-            JZUserService.instance.findUserById(message.uid) { (user) -> Void in
-                JZMessageGroupService.instance.findGroupByReceivedMessage(message, callback: { (group) -> Void in
-                    let msg = JZMessage()
-                    msg.text = message.text
-                    msg.type = message.type
-                    msg.date = message.time
-                    msg.uuid = message.uuid
-                    msg.toUser = JZUserManager.sharedManager.currentUser
-                    msg.fromUser = user
-                    msg.group = group
-                    
-                    JZMessageService.instance.insert(msg)
-                    self.receivers.forEach { $0.didReceiveMessage(msg) }
-                })
-            }
+            JZMessageService.instance.findByUuid(message.uuid, callback: { (localMessage) -> Void in
+                if localMessage == nil {
+                    JZUserService.instance.findUserById(message.uid) { (user) -> Void in
+                        JZMessageGroupService.instance.findGroupByReceivedMessage(message, callback: { (group) -> Void in
+                            let msg = JZMessage()
+                            msg.text = message.text
+                            msg.type = message.type
+                            msg.date = message.time
+                            msg.uuid = message.uuid
+                            msg.toUser = JZUserManager.sharedManager.currentUser
+                            msg.fromUser = user
+                            msg.group = group
+                            
+                            JZMessageService.instance.insert(msg)
+                            self.receivers.forEach { $0.didReceiveMessage(msg) }
+                        })
+                    }
+                }
+            })
             
             return message
         }

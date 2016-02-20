@@ -173,20 +173,11 @@ class JZUserDataBase: JZDataBase {
         JZLogInfo("[ERROR] no message need update")
     }
     
-//    func saveMessage(message:JZMessage) {
-//        if message.id == 0 {
-//            insertMessage(message)
-//        }
-//        else {
-//            updateMessage(message)
-//        }
-//    }
-    
-    func findMessageById(id: Int, callback: (JZMessage)->Void) {
-        let sql = "select * from message"
-    }
-    
-    func findMessageByUUID(uuid: String, callback: (JZMessage)->Void) {
+    func findMessageByUUID(uuid: String, callback: (JZMessage?)->Void) {
+        let (messageItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
+        let sql = "SELECT \(messageItems) FROM message m WHERE m.uuid=:uuid LIMIT 1"
+        let params = ["uuid": uuid]
+        queryOne(sql, params: params, unpack: messageUnpack, callback: callback)
     }
     
     func findMessageByGroup(group: JZMessageGroup, index: Int, count: Int, callback: ([JZMessage])->Void) {
@@ -207,40 +198,6 @@ class JZUserDataBase: JZDataBase {
             message?.group = group
             return message
             }, callback: callback)
-//        
-//        let sql = "SELECT m.id AS mid, m.gid AS mgid, m.uuid AS muuid, m.text AS mtext, m.date AS mdate, m.type AS mtype, m.uploaded AS muploaded, m.readed AS mreaded, " +
-//        "u.id AS uid, u.nickname AS unickname, u.description AS udescriptions, u.gender AS ugender, u.user_type AS utype " +
-//        "FROM message m JOIN user u ON m.uid=u.id " +
-//        "WHERE m.gid=:gid " +
-//        "LIMIT :index, :count;"
-//        let params = ["gid": group.id, "index": index, "count": count]
-//        
-//        queryAll(sql, params: params, unpack: { (result:FMResultSet) -> JZMessage? in
-//            
-//        
-//            let userType = JZUserType(rawValue: Int(result.intForColumn("utype"))) ?? JZUserType.unknow
-//            let user : JZUserInfo
-//            switch userType {
-//            case .jobseeker: user = JZJobseekerUserInfo()
-//            case .boss: user = JZBossUserInfo()
-//            default: user = JZUserInfo()
-//            }
-//            user.uid = Int(result.intForColumn("uid"))
-//            user.nickName = result.stringForColumn("unickname")
-//            user.descriptions = result.stringForColumn("udescriptions")
-//            user.gender = JZGenderType(rawValue: result.stringForColumn("ugender")) ?? JZGenderType.unknow
-//            
-//            let mid = Int(result.intForColumn("mid"))
-//            let uuid = result.stringForColumn("muuid")
-//            let mtext = result.stringForColumn("mtext")
-//            let mdate = result.dateForColumn("mdate")
-//            let mtype = JZMessageType(rawValue: Int(result.intForColumn("mtype"))) ?? JZMessageType.None
-//            
-//            let message = JZMessage(id: mid, uuid: uuid, fromUser: fromUser, toUser:toUser, text: mtext, date: mdate, type: mtype, group: group)
-//            message.uploaded = result.boolForColumn("muploaded")
-//            message.readed = result.boolForColumn("readed")
-//            return message
-//            }, callback: callback)
     }
     
     func findGroups(callback:([JZMessageGroup])->Void) {
@@ -257,15 +214,15 @@ class JZUserDataBase: JZDataBase {
             }, callback: callback)
     }
     
-    func findGroupByToUser(toUser: JZUserInfo, callback:(JZMessageGroup?)->Void) {
-        let filter = "WHERE g.type=:gtype AND u.id=:uid"
-        let params = [
-            "gtype": JZMessageGroupType.Chat.rawValue,
-            "uid": toUser.uid]
-        findGroupByFilter(filter, params: params) { (groups:[JZMessageGroup]) -> Void in
-            callback(groups.first)
-        }
-    }
+//    func findGroupByToUser(toUser: JZUserInfo, callback:(JZMessageGroup?)->Void) {
+//        let filter = "WHERE g.type=:gtype AND u.id=:uid"
+//        let params = [
+//            "gtype": JZMessageGroupType.Chat.rawValue,
+//            "uid": toUser.uid]
+//        findGroupByFilter(filter, params: params) { (groups:[JZMessageGroup]) -> Void in
+//            callback(groups.first)
+//        }
+//    }
     
     func findGroupByFilter(filter:String, params:[String:AnyObject], callback:([JZMessageGroup])->Void) {
         let sql = "SELECT id, title, type, uid, rid, create_date FROM message_group g LEFT JOIN user u ON u.id=g.uid " + filter

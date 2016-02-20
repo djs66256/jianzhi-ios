@@ -47,4 +47,13 @@ class JZMessageService: JZService {
             callback([])
         }
     }
+    
+    func findByUuid(uuid: String, callback: (JZMessage?)->Void) {
+        if let db = db {
+            db.findMessageByUUID(uuid, callback: callback)
+        }
+        else {
+            callback(nil)
+        }
+    }
 }
