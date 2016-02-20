@@ -339,6 +339,7 @@ class JZUserDataBase: JZDataBase {
         let group = JZMessageGroup()
         group.id = Int(result.intForColumn("gid"))
         group.title = result.stringForColumn("gtitle")
+        group.type = JZMessageGroupType(rawValue: Int(result.intForColumn("gtype"))) ?? .None
         
         return group
     }
