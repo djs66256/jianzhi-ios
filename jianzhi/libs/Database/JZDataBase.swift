@@ -14,20 +14,17 @@ class JZDataBase: NSObject {
     
     let queue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
     
-    override init() {
+    init(path: String) {
         super.init()
-        let path = dbPath()
-        if path != nil {
-            db = FMDatabase(path: path)
-            db.open()
-            prepareDatabase()
-        }
+        db = FMDatabase(path: path)
+        db.open()
+        prepareDatabase()
     }
     
-    func dbPath() -> String? {
-        JZLogError("Must override!")
-        return nil
-    }
+//    func dbPath() -> String? {
+//        JZLogError("Must override!")
+//        return nil
+//    }
     
     func prepareDatabaseStatement() -> String? {
         return nil

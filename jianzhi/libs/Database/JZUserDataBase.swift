@@ -9,12 +9,12 @@
 import UIKit
 
 class JZUserDataBase: JZDataBase {
-    static let sharedDataBase = JZUserDataBase()
+//    static let sharedDataBase = JZUserDataBase()
     
-    override func dbPath() -> String? {
-        let path = JZPath.userPath("db", file: "user.db")
-        return path
-    }
+//    override func dbPath() -> String? {
+//        let path = JZPath.userPath("db", file: "user.db")
+//        return path
+//    }
     
     override func prepareDatabase() {
         let sqls = [
@@ -204,6 +204,7 @@ class JZUserDataBase: JZDataBase {
             let message = messageUnpack(result)
             message?.fromUser = fromUserUnpack(result)
             message?.toUser = toUserUnpack(result)
+            message?.group = group
             return message
             }, callback: callback)
 //        

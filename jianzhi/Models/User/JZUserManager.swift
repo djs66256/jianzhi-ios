@@ -22,7 +22,7 @@ class JZUserManager: NSObject {
     
     var isLogin: Bool {
         get {
-            return self.currentUser != nil
+            return self.currentUser != nil && cookieForUser()?.count > 0
         }
     }
     
@@ -44,13 +44,59 @@ class JZUserManager: NSObject {
             if newValue != nil {
                 let user = Mapper().toJSON(newValue!)
                 NSUserDefaults.standardUserDefaults().setObject(user, forKey: myInfoKey)
+                
+                let oldValue = self.user
                 self.user = newValue
                 
                 JZUserService.instance.save(newValue!)
+                if oldValue?.uid != newValue!.uid {
+                    setupUserService()
+                }
             }
             else {
+                clearUserService()
                 self.user = nil
                 NSUserDefaults.standardUserDefaults().removeObjectForKey(myInfoKey)
+            }
+        }
+    }
+    
+    override init() {
+        super.init()
+        
+        if isLogin {
+            setupUserService()
+        }
+        else {
+            clearUserService()
+        }
+    }
+    
+    private func cookieForUser() -> [NSHTTPCookie]? {
+        return NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(HTTP.baseUrl)
+    }
+    
+    private func setupUserService() {
+        let db = JZUserDataBase(path: JZPath.userPath(user!.uid, path: "db", file: "user.db")!)
+        JZUserService.instance.db = db
+        JZMessageService.instance.db = db
+        JZMessageGroupService.instance.db = db
+        JZSocketManager.sharedManager.disconnect()
+        JZMessageGroupService.instance.initGroups({
+            JZSocketManager.sharedManager.connect()
+        })
+    }
+    
+    private func clearUserService() {
+        JZSocketManager.sharedManager.disconnect()
+        JZUserService.instance.db = nil
+        JZMessageService.instance.db = nil
+        JZMessageGroupService.instance.db = nil
+        JZMessageGroupService.instance.initGroups({})
+        
+        if let cookies = cookieForUser() {
+            cookies.forEach {
+                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie($0)
             }
         }
     }

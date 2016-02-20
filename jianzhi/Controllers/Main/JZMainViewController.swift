@@ -28,14 +28,18 @@ class JZMainViewController: UITabBarController {
         self.viewControllers = [mapViewController, searchViewController, chatViewControlelr, meViewController];
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("needLoginNotification:"), name: JZNotification.NeedLogin, object: nil)
+        
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            if !JZUserManager.sharedManager.isLogin {
+                self.presentLoginViewController()
+            }
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if !JZUserManager.sharedManager.isLogin {
-            presentLoginViewController()
-        }
+        
     }
 
     override func didReceiveMemoryWarning() {

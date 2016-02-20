@@ -11,8 +11,14 @@ import UIKit
 class JZLocationDataBase: JZDataBase {
     static let sharedDataBase = JZLocationDataBase()
 
-    override func dbPath() -> String? {
-        return NSBundle.mainBundle().pathForResource("location", ofType: "sqlite");
+    init() {
+        if let path = NSBundle.mainBundle().pathForResource("location", ofType: "sqlite") {
+            super.init(path: path)
+        }
+        else {
+            JZLogError("DB File does not exist")
+            super.init(path: "")
+        }
     }
     
     func findAllProvice(block:([JZProvince])->Void) {

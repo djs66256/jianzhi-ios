@@ -40,7 +40,7 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
         }
         self.senderDisplayName = JZUserManager.sharedManager.currentUser?.nickName ?? ""
 
-        JZUserDataBase.sharedDataBase.findMessageByGroup(group, index: 0, count: kJZMessageQueryCount) { messages in
+        JZMessageService.instance.findByGroup(group, index: 0, count: kJZMessageQueryCount) { messages in
             self.messages.insertContentsOf(messages, at: 0)
             self.collectionView?.reloadData()
             self.scrollToBottomAnimated(true)

@@ -66,7 +66,12 @@ class JZChatViewController: UITableViewController {
 
         let group = JZMessageGroupService.instance.groups[indexPath.row]
         cell.textLabel?.text = group.title
-        
+        if let avatarUrl = group.avatarUrl {
+            cell.imageView?.setImageWithURL(avatarUrl, placeholderImage: group.placeholderImage)
+        }
+        else {
+            cell.imageView?.image = group.placeholderImage
+        }
 
         return cell
     }

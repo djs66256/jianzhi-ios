@@ -33,6 +33,8 @@
             }
             return nil
         }
+        
+        static let baseUrl = NSURL(string:"http://\(location)")!
     }
     
     struct WEB {

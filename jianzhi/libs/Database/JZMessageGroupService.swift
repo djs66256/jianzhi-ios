@@ -11,11 +11,14 @@ import UIKit
 class JZMessageGroupService: JZService {
     static let instance = JZMessageGroupService()
     
+    var db: JZUserDataBase?
+    
     var groups = [JZMessageGroup]()
     var isReady = false
     
     func initGroups(compeletion: ()->Void) {
-        JZUserDataBase.sharedDataBase.findGroups { (groups) -> Void in
+        groups = []
+        db?.findGroups { (groups) -> Void in
             self.groups = self.sortGroups(groups)
             NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
             compeletion()
@@ -54,7 +57,7 @@ class JZMessageGroupService: JZService {
         group.user = user
         
         groups.insert(group, atIndex: 0)
-        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
+        db?.insertMessageGroup(group)
         NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
         
         return group

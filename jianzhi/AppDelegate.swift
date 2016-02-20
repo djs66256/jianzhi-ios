@@ -20,10 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.rootViewController = JZMainViewController()
         window!.makeKeyAndVisible();
         
-//        JZDataBaseManager.sharedManager
-        JZMessageGroupService.instance.initGroups { () -> Void in
-            JZSocketManager.sharedManager.connect()
-        }
+        JZUserManager.sharedManager
         
         return true
     }
