@@ -55,7 +55,7 @@ class JZBossInfoTableViewController: JZStaticTableViewController {
     }
 
     func reloadData() {
-        if let url = userInfo?.headImageUrl {
+        if let url = userInfo?.avatarUrl {
             headImageView.setImageWithURL(url, placeholderImage: nil)
         }
         nameLabel.text = userInfo?.nickName

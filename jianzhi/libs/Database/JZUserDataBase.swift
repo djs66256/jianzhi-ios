@@ -34,7 +34,7 @@ class JZUserDataBase: JZDataBase {
                 "id INTEGER PRIMARY KEY," +
                 //            "username TEXT," +
                 "nickname TEXT," +
-                "headimage TEXT," +
+                "avatar TEXT," +
                 "description TEXT," +
                 "gender CHAR(1)," +
                 "user_type INTEGER," +
@@ -94,12 +94,12 @@ class JZUserDataBase: JZDataBase {
     
     func insertUser(user: JZUserInfo) {
         let sql = "INSERT INTO user" +
-        " (id, nickname, headimage, description, gender, user_type)" +
-        " VALUES (:id, :nickname, :headimage, :description, :gender, :userType)"
+        " (id, nickname, avatar, description, gender, user_type)" +
+        " VALUES (:id, :nickname, :avatar, :description, :gender, :userType)"
         let params : [String:NSObject] = [
             "id": user.uid,
             "nickname": user.nickName ?? "",
-            "headimage": user.headImage ?? "",
+            "avatar": user.avatar ?? "",
             "description": user.descriptions ?? "",
             "gender": user.gender.rawValue,
             "userType": user.userType.rawValue
@@ -110,12 +110,12 @@ class JZUserDataBase: JZDataBase {
     
     func updateUser(user: JZUserInfo) {
         let sql = "UPDATE user" +
-            " SET nickname=:nickname, headimage=:headimage, description=:description, gender=:gender, user_type=:user_type" +
+            " SET nickname=:nickname, avatar=:avatar, description=:description, gender=:gender, user_type=:user_type" +
         " WHERE id=:id"
         let params : [String:NSObject] = [
             "id": user.uid,
             "nickname": user.nickName ?? "",
-            "headimage": user.headImage ?? "",
+            "avatar": user.avatar ?? "",
             "description": user.descriptions ?? "",
             "gender": user.gender.rawValue,
             "userType": user.userType.rawValue
@@ -125,7 +125,7 @@ class JZUserDataBase: JZDataBase {
     }
     
     func findUserById(uid: Int, callback: (JZUserInfo?)->Void){
-        let sql = "SELECT id, nickname, headimage, description, gender, user_type"
+        let sql = "SELECT id, nickname, avatar, description, gender, user_type"
             + " FROM user"
             + " WHERE id=:id"
         let params = ["id": uid]
@@ -133,7 +133,7 @@ class JZUserDataBase: JZDataBase {
             let uid = Int(result.intForColumn("id"))
             let user = JZUserInfo(uid: uid, userName: "")
             user.nickName = result.stringForColumn("nickname")
-            user.headImage = result.stringForColumn("headimage")
+            user.avatar = result.stringForColumn("avatar")
             user.descriptions = result.stringForColumn("description")
             user.gender = JZGenderType(rawValue: result.stringForColumn("gender")) ?? .unknow
             user.userType = JZUserType(rawValue: Int(result.intForColumn("user_type"))) ?? .unknow

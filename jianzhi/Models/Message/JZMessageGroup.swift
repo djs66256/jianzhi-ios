@@ -22,6 +22,19 @@ class JZMessageGroup: NSObject {
     var unread: Int = 0
     var createDate = NSDate()
     
+    var placeholderImage : UIImage? {
+            return UIImage(named: "anno")
+    }
+    
+    var avatarUrl : NSURL? {
+        if type == .Chat {
+            return user?.avatarUrl
+        }
+        else {
+            return nil
+        }
+    }
+    
     override func isEqual(object: AnyObject?) -> Bool {
         if let object = object as? JZMessageGroup {
             guard type == object.type else { return false }

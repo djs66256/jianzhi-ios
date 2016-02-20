@@ -55,6 +55,7 @@ class JZMessageGroupService: JZService {
         
         groups.insert(group, atIndex: 0)
         JZUserDataBase.sharedDataBase.insertMessageGroup(group)
+        NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
         
         return group
     }

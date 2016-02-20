@@ -93,7 +93,7 @@ class JZEditUserBaseInfoTableViewController: JZStaticTableViewController, JZText
         let compressImage = image.compress(CGSize(width: kJZHeadImageSize, height: kJZHeadImageSize))
         
         JZUserViewModel.uploadHeadImage(compressImage, success: { (id:String) -> Void in
-            self.userInfo?.headImage = id
+            self.userInfo?.avatar = id
             self.reloadData()
             }, failure: {
                 JZAlertView.show($0)
@@ -101,7 +101,7 @@ class JZEditUserBaseInfoTableViewController: JZStaticTableViewController, JZText
     }
     
     func reloadData() {
-        if let url = userInfo?.headImageUrl {
+        if let url = userInfo?.avatarUrl {
             headImageCell.headImageView.setImageWithURL(url, placeholderImage: nil)
         }
         nameCell.detailTextLabel?.text = userInfo?.nickName

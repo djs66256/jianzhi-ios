@@ -59,7 +59,7 @@ class JZUserManager: NSObject {
         JZUserViewModel.userInfo(user.uid, success: { (newUser) -> Void in
             user.nickName = newUser.nickName
             user.gender = newUser.gender
-            user.headImage = newUser.headImage
+            user.avatar = newUser.avatar
             user.descriptions = newUser.descriptions
             user.userType = newUser.userType
             user.userName = newUser.userName

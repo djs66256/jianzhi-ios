@@ -13,8 +13,10 @@ class JZChatViewController: UITableViewController {
     static let myChatCellIdentifier = "myChat"
     let otherChatCellIdentifier = "otherChat"
     
-    var groups = [JZMessageGroup]()
-        
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,7 +26,7 @@ class JZChatViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "insert", style: .Bordered, target: self, action: Selector("insertGroup"))
         
         
-        reloadGroups()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("reloadGroups"), name: JZNotification.MessageGroupReload, object: nil)
     }
     
     func insertGroup() {
@@ -33,22 +35,12 @@ class JZChatViewController: UITableViewController {
         group.type = .Chat
         group.user = JZUserManager.sharedManager.currentUser
 //        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
-        self.groups = [group]
+//        self.groups = [group]
         self.tableView.reloadData()
     }
     
     func reloadGroups() {
-        
-        JZUserDataBase.sharedDataBase.findUserById(JZUserManager.sharedManager.currentUser?.uid ?? 0) { (user:JZUserInfo?) -> Void in
-            if user == nil {
-                JZUserDataBase.sharedDataBase.insertUser(JZUserManager.sharedManager.currentUser!)
-            }
-        }
-        
-        JZUserDataBase.sharedDataBase.findGroups {
-            self.groups = $0
-            self.tableView.reloadData()
-        }
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,14 +57,14 @@ class JZChatViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return groups.count
+        return JZMessageGroupService.instance.groups.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(JZChatViewController.myChatCellIdentifier, forIndexPath: indexPath)
 
-        let group = groups[indexPath.row]
+        let group = JZMessageGroupService.instance.groups[indexPath.row]
         cell.textLabel?.text = group.title
         
 
@@ -82,7 +74,7 @@ class JZChatViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        let messageController = JZMessageViewController(group: groups[indexPath.row])
+        let messageController = JZMessageViewController(group: JZMessageGroupService.instance.groups[indexPath.row])
         messageController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(messageController, animated: true)
     }

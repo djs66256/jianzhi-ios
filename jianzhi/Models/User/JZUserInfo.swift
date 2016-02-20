@@ -33,7 +33,7 @@ class JZUserInfo: NSObject, Mappable, MappableCluster {
     
     var nickName: String?
     
-    var headImage: String?
+    var avatar: String?
     
     var gender: JZGenderType = .unknow
     
@@ -43,9 +43,9 @@ class JZUserInfo: NSObject, Mappable, MappableCluster {
     
     var updateTime: NSDate?
     
-    var headImageUrl: NSURL? {
-        if headImage != nil && !headImage!.isEmpty {
-            if let urlStr = HTTP.filePath("image/head/\(headImage!)") {
+    var avatarUrl: NSURL? {
+        if avatar != nil && !avatar!.isEmpty {
+            if let urlStr = HTTP.filePath("image/head/\(avatar!)") {
                 return NSURL(string: urlStr)
             }
         }
@@ -72,7 +72,7 @@ class JZUserInfo: NSObject, Mappable, MappableCluster {
         userName    <- map["name"]
         nickName    <- map["nickName"]
         gender      <- map["gender"]
-        headImage   <- map["headImage"]
+        avatar   <- map["headImage"]
         userType    <- map["groupType"]
         descriptions <- map["description"]
     }
