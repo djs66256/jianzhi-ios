@@ -101,28 +101,28 @@ class JZUserManager: NSObject {
         }
     }
     
-    func updateUser(user:JZUserInfo, callback:(JZUserInfo?)->Void) {
-        JZUserViewModel.userInfo(user.uid, success: { (newUser) -> Void in
-            user.nickName = newUser.nickName
-            user.gender = newUser.gender
-            user.avatar = newUser.avatar
-            user.descriptions = newUser.descriptions
-            user.userType = newUser.userType
-            user.userName = newUser.userName
-            callback(user)
-            
-            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.UserUpdated, object: user.uid, userInfo: ["user" : user])
-            }, failure: { _ in
-                callback(nil)
-        })
-    }
-    
-    func addUpdateUserListener(listener: JZUserUpdateProtocol) {
-        autoUpdateUsersListeners.append(listener)
-    }
-    func removeUpdateUserListener(listener: JZUserUpdateProtocol) {
-        if let index = autoUpdateUsersListeners.indexOf({ $0 === listener }) {
-            autoUpdateUsersListeners.removeAtIndex(index)
-        }
-    }
+//    func updateUser(user:JZUserInfo, callback:(JZUserInfo?)->Void) {
+//        JZUserViewModel.userInfo(user.uid, success: { (newUser) -> Void in
+//            user.nickName = newUser.nickName
+//            user.gender = newUser.gender
+//            user.avatar = newUser.avatar
+//            user.descriptions = newUser.descriptions
+//            user.userType = newUser.userType
+//            user.userName = newUser.userName
+//            callback(user)
+//            
+//            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.UserUpdated, object: user.uid, userInfo: ["user" : user])
+//            }, failure: { _ in
+//                callback(nil)
+//        })
+//    }
+//    
+//    func addUpdateUserListener(listener: JZUserUpdateProtocol) {
+//        autoUpdateUsersListeners.append(listener)
+//    }
+//    func removeUpdateUserListener(listener: JZUserUpdateProtocol) {
+//        if let index = autoUpdateUsersListeners.indexOf({ $0 === listener }) {
+//            autoUpdateUsersListeners.removeAtIndex(index)
+//        }
+//    }
 }

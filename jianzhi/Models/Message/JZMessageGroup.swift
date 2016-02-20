@@ -49,6 +49,15 @@ class JZMessageGroup: NSObject {
     }
 }
 
+func ==(lhs: JZMessageGroup, rhs: JZMessageGroup) -> Bool {
+    if lhs.type == rhs.type {
+        switch lhs.type {
+        case .Chat: return lhs.user != nil && lhs.user?.uid == rhs.user?.uid
+        default: return false
+        }
+    }
+    return false
+}
 
 class JZMessageGroupManager: NSObject {
     var groups = [JZMessageGroup]()

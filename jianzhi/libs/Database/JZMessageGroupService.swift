@@ -51,14 +51,21 @@ class JZMessageGroupService: JZService {
 //        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
 //    }
     
-    private func createChatGroup(user: JZUserInfo) -> JZMessageGroup {
+    private func createChatGroup(uid: Int) -> JZMessageGroup {
+        let user = JZUserInfo()
+        user.uid = uid
         let group = JZMessageGroup()
+        group.id = groups.count + 1
         group.type = .Chat
         group.user = user
         
-        groups.insert(group, atIndex: 0)
-        db?.insertMessageGroup(group)
-        NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
+        JZUserService.instance.findUserById(uid) { (user) -> Void in
+            group.user = user
+            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
+        }
+        db?.insertMessageGroup(group, ignoreIfExists: false)
+        
+        self.groups.insert(group, atIndex: 0)
         
         return group
     }
@@ -69,10 +76,9 @@ class JZMessageGroupService: JZService {
             callback(groups[index])
         }
         else {
-            JZUserService.instance.findUserById(message.uid, callback: { (user) -> Void in
-                callback(self.createChatGroup(user))
-            })
+            let group = createChatGroup(message.uid)
             
+            callback(group)
         }
     }
 }

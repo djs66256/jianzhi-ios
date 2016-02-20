@@ -28,23 +28,32 @@ class JZUserService: JZService {
     private func createUpdateUser(uid:Int) -> JZUserInfo {
         let user = JZUserInfo()
         user.uid = uid
-        db?.insertUser(user)
-        JZUserManager.sharedManager.updateUser(user) {
+        db?.insertUser(user, ignoreIfExists: true)
+        updateUser(user) {
             if let user = $0 {
-                self.db?.updateUser(user)
+                self.db?.insertUser(user, ignoreIfExists: false)
             }
         }
         return user
     }
     
+    private func updateUser(user:JZUserInfo, callback:(JZUserInfo?)->Void) {
+        JZUserViewModel.userInfo(user.uid, success: { (newUser) -> Void in
+            user.nickName = newUser.nickName
+            user.gender = newUser.gender
+            user.avatar = newUser.avatar
+            user.descriptions = newUser.descriptions
+            user.userType = newUser.userType
+            user.userName = newUser.userName
+            callback(user)
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.UserUpdated, object: user.uid, userInfo: ["user" : user])
+            }, failure: { _ in
+                callback(nil)
+        })
+    }
+    
     func save(user: JZUserInfo) {
-        db?.findUserById(user.uid) {
-            if $0 != nil {
-                self.db?.updateUser(user)
-            }
-            else {
-                self.db?.insertUser(user)
-            }
-        }
+        self.db?.insertUser(user, ignoreIfExists: false)
     }
 }

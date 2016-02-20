@@ -92,8 +92,8 @@ class JZUserDataBase: JZDataBase {
         update(sql, params)
     }
     
-    func insertUser(user: JZUserInfo) {
-        let sql = "INSERT INTO user" +
+    func insertUser(user: JZUserInfo, ignoreIfExists: Bool) {
+        let sql = "INSERT OR \(ignoreIfExists ? "IGNORE" : "REPLACE") INTO user" +
         " (id, nickname, avatar, description, gender, user_type)" +
         " VALUES (:id, :nickname, :avatar, :description, :gender, :userType)"
         let params : [String:NSObject] = [
@@ -108,21 +108,21 @@ class JZUserDataBase: JZDataBase {
         update(sql, params)
     }
     
-    func updateUser(user: JZUserInfo) {
-        let sql = "UPDATE user" +
-            " SET nickname=:nickname, avatar=:avatar, description=:description, gender=:gender, user_type=:user_type" +
-        " WHERE id=:id"
-        let params : [String:NSObject] = [
-            "id": user.uid,
-            "nickname": user.nickName ?? "",
-            "avatar": user.avatar ?? "",
-            "description": user.descriptions ?? "",
-            "gender": user.gender.rawValue,
-            "userType": user.userType.rawValue
-        ]
-        
-        update(sql, params)
-    }
+//    func updateUser(user: JZUserInfo) {
+//        let sql = "UPDATE user" +
+//            " SET nickname=:nickname, avatar=:avatar, description=:description, gender=:gender, user_type=:user_type" +
+//        " WHERE id=:id"
+//        let params : [String:NSObject] = [
+//            "id": user.uid,
+//            "nickname": user.nickName ?? "",
+//            "avatar": user.avatar ?? "",
+//            "description": user.descriptions ?? "",
+//            "gender": user.gender.rawValue,
+//            "userType": user.userType.rawValue
+//        ]
+//        
+//        update(sql, params)
+//    }
     
     func findUserById(uid: Int, callback: (JZUserInfo?)->Void){
         let sql = "SELECT id, nickname, avatar, description, gender, user_type"
@@ -142,11 +142,12 @@ class JZUserDataBase: JZDataBase {
         
     }
     
-    func insertMessageGroup(group: JZMessageGroup) {
-        let sql = "INSERT INTO message_group"
-            + " (title, type, uid, rid, create_date)"
-            + " VALUES (:title, :type, :uid, :rid, :create_date)"
+    func insertMessageGroup(group: JZMessageGroup, ignoreIfExists: Bool) {
+        let sql = "INSERT OR \(ignoreIfExists ? "IGNORE" : "REPLACE") INTO message_group"
+            + " (id, title, type, uid, rid, create_date)"
+            + " VALUES (:id, :title, :type, :uid, :rid, :create_date)"
         let params = [
+            "id": group.id,
             "title": group.title,
             "type": group.type.rawValue,
             "uid": group.user?.uid ?? 0,
@@ -155,23 +156,28 @@ class JZUserDataBase: JZDataBase {
         ]
         
         update(sql, params)
+//        insert(sql, params) { (rowId) -> Void in
+//            if let rowId = rowId {
+//                group.id = rowId
+//                callback(group)
+//            }
+//            else {
+//                callback(nil)
+//            }
+//        }
     }
     
-    func updateMessageGroup(group: JZMessageGroup) {
-        let sql = "UPDATE message_group"
-            + " SET title=:title, date=:date"
-            + " WHERE id = :gid"
-        let params : [String:NSObject] = [
-            "title": group.title,
-            //            "date": group.date,
-            "gid": group.id
-        ]
-        update(sql, params)
-    }
-    
-    func updateMessage(message: JZMessage) {
-        JZLogInfo("[ERROR] no message need update")
-    }
+//    func updateMessageGroup(group: JZMessageGroup) {
+//        let sql = "UPDATE message_group"
+//            + " SET title=:title, date=:date"
+//            + " WHERE id = :gid"
+//        let params : [String:NSObject] = [
+//            "title": group.title,
+//            //            "date": group.date,
+//            "gid": group.id
+//        ]
+//        update(sql, params)
+//    }
     
     func findMessageByUUID(uuid: String, callback: (JZMessage?)->Void) {
         let (messageItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
@@ -198,6 +204,8 @@ class JZUserDataBase: JZDataBase {
             message?.group = group
             return message
             }, callback: callback)
+        
+        
     }
     
     func findGroups(callback:([JZMessageGroup])->Void) {

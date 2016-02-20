@@ -15,6 +15,7 @@ class JZDataBase: NSObject {
     let queue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
     
     init(path: String) {
+        JZLogInfo("DB Path: \(path)")
         super.init()
         db = FMDatabase(path: path)
         db.open()
@@ -59,6 +60,18 @@ class JZDataBase: NSObject {
     func update(sql:String, _ params:[NSObject: AnyObject]?) {
         execuse {
             self.db.executeUpdate(sql, withParameterDictionary: params)
+        }
+    }
+    
+    func insert(sql:String, _ params:[NSObject: AnyObject]?, callback:(Int?)->Void) {
+        execuse {
+            if self.db.executeUpdate(sql, withParameterDictionary: params) {
+                let rowId: Int = Int(self.db.lastInsertRowId())
+                callback(rowId)
+            }
+            else {
+                callback(nil)
+            }
         }
     }
     
