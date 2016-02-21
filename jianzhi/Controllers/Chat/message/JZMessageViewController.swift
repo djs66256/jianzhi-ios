@@ -126,6 +126,26 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
         
     }
     
+//    - (void)collectionView:(JSQMessagesCollectionView *)collectionView didTapAvatarImageView:(UIImageView *)avatarImageView atIndexPath:(NSIndexPath *)indexPath;
+//    func collectionView
+    override func collectionView(collectionView: JSQMessagesCollectionView!, didTapAvatarImageView avatarImageView: UIImageView!, atIndexPath indexPath: NSIndexPath!) {
+        let msg = messages[indexPath.row]
+        
+        if let user = msg.fromUser {
+            switch user.userType {
+            case .boss:
+                let controller = JZBossInfoTableViewController()
+                controller.userId = user.uid
+                navigationController?.pushViewController(controller, animated: true)
+            case .jobseeker:
+                let controller = JZJobSeekerTableViewController()
+                controller.userId = user.uid
+                navigationController?.pushViewController(controller, animated: true)
+            default: return
+            }
+        }
+    }
+    
     func didReceiveMessage(message: JZMessage) {
         if message.fromUser?.uid == group.user?.uid {
             messages.append(message)

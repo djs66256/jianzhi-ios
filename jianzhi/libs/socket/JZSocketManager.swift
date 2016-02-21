@@ -72,10 +72,13 @@ class JZSocketManager: NSObject {
         }
         
         socket.on("messageAck") { (data, ack) -> Void in
-            if let uuids = data as? [String] {
+            if let uuids = data[0] as? [String] {
                 uuids.forEach {
                     JZMessageManager.sharedManager.uploaded($0)
                 }
+            }
+            else if let uuid = data[0] as? String {
+                JZMessageManager.sharedManager.uploaded(uuid)
             }
         }
         

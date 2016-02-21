@@ -14,7 +14,6 @@ class JZMessageGroupService: JZService {
     var db: JZUserDataBase?
     
     var groups = [JZMessageGroup]()
-    var isReady = false
     
     func initGroups(compeletion: ()->Void) {
         groups = []
@@ -51,11 +50,21 @@ class JZMessageGroupService: JZService {
 //        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
 //    }
     
+    private func maxGroupId() -> Int {
+        var id = 0
+        groups.forEach { (group) -> () in
+            if id < group.id {
+                id = group.id
+            }
+        }
+        return id
+    }
+    
     private func createChatGroup(uid: Int) -> JZMessageGroup {
         let user = JZUserInfo()
         user.uid = uid
         let group = JZMessageGroup()
-        group.id = groups.count + 1
+        group.id = maxGroupId() + 1
         group.type = .Chat
         group.user = user
         
@@ -79,6 +88,13 @@ class JZMessageGroupService: JZService {
             let group = createChatGroup(message.uid)
             
             callback(group)
+        }
+    }
+    
+    func remove(group: JZMessageGroup) {
+        if let index = groups.indexOf({ $0 == group }) {
+            db?.removeGroupById(group.id)
+            db?.removeMessagesByGroup(group.id)
         }
     }
 }

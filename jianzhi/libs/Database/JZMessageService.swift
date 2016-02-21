@@ -56,4 +56,10 @@ class JZMessageService: JZService {
             callback(nil)
         }
     }
+    
+    func setReadedByGroup(group: JZMessageGroup) {
+        if group.id > 0 {
+            db?.setMessageReadedByGroup(group.id)
+        }
+    }
 }

@@ -19,5 +19,7 @@ class JZJobSearchTableCell: UITableViewCell {
         if data.time != nil {
             timeLabel.text = JZDateFormatter.defaultFormatter.toString(data.time!, "发布于yyyy年mm月dd日")
         }
+        
+//        headImageView.setImageWithURL(, placeholderImage: <#T##UIImage?#>)
     }
 }
