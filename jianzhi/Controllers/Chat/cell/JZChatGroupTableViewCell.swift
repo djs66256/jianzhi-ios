@@ -31,6 +31,7 @@ class JZChatGroupTableViewCell: JZChatBaseTableViewCell {
         avatarImageView.sd_setImageWithURL(data.avatarUrl, placeholderImage: data.placeholderImage)
         nameLabel.text = data.title
         unreadLabel.text = "\(data.unread)"
+        lastMessageLabel.text = data.lastMessage?.text
     }
     
 }

@@ -192,16 +192,16 @@ class JZUserDataBase: JZDataBase {
 //    }
     
     func findMessageByUUID(uuid: String, callback: (JZMessage?)->Void) {
-        let (messageItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
+        let (_, messageItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
         let sql = "SELECT \(messageItems) FROM message m WHERE m.uuid=:uuid LIMIT 1"
         let params = ["uuid": uuid]
         queryOne(sql, params: params, unpack: messageUnpack, callback: callback)
     }
     
     func findMessageByGroup(group: JZMessageGroup, index: Int, count: Int, callback: ([JZMessage])->Void) {
-        let (messageItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
-        let (fromUserItems, fromUserUnpack) = userQueryItemsAndUnpackage("fu")
-        let (toUserItems, toUserUnpack) = userQueryItemsAndUnpackage("tu")
+        let (_, messageItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
+        let (_, fromUserItems, fromUserUnpack) = userQueryItemsAndUnpackage("fu")
+        let (_, toUserItems, toUserUnpack) = userQueryItemsAndUnpackage("tu")
         let sql = "SELECT \(messageItems), \(fromUserItems), \(toUserItems)"
             + " FROM message m"
             + " LEFT JOIN user fu on m.from_uid=fu.id"
@@ -228,35 +228,63 @@ class JZUserDataBase: JZDataBase {
     }
     
     func findGroups(callback:([JZMessageGroup])->Void) {
-        let (userQueryItems, userUnpack) = userQueryItemsAndUnpackage("u")
-        let sql = "SELECT \(groupQueryItems), \(userQueryItems)"
-        + " FROM message_group"
-        + " LEFT JOIN user u ON u.id=message_group.uid"
+        let (_, userQueryItems, userUnpack) = userQueryItemsAndUnpackage("u")
+        let (messageQueryItems, messageAliasItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
+        let (fromUserQueryItems, fromUserAliasItems, fromUserUnpack) = userQueryItemsAndUnpackage("fu")
+        let (toUserQueryItems, toUserAliasItems, toUserUnpack) = userQueryItemsAndUnpackage("tu")
         
-        execuse {
-            var ret = [JZMessageGroup]()
-            if let result = self.db.executeQuery(sql, withParameterDictionary: nil) {
-                while result.next() {
-                    if let group = self.unpackGroup(result) {
-                        group.user = userUnpack(result)
-                        ret.append(group)
-                    }
+        let sql = "SELECT \(groupQueryItems), \(userQueryItems), unread, \(messageQueryItems), \(toUserQueryItems), \(fromUserQueryItems)"
+            + " FROM message_group"
+            + " LEFT JOIN user u ON u.id=message_group.uid"
+            + " LEFT JOIN (SELECT COUNT(*) AS unread, gid AS gid from message WHERE unread=:unread GROUP BY gid) ON gid=message_group.id"
+            + " LEFT JOIN ("
+            + "SELECT \(messageAliasItems), \(toUserAliasItems), \(fromUserAliasItems)"
+            + " FROM message m"
+            + " LEFT JOIN user fu on m.from_uid=fu.id"
+            + " LEFT JOIN user tu on m.to_uid=tu.id"
+            + " GROUP BY mgid"
+            + " )"
+            + " ON mgid=message_group.id"
+        
+        queryAll(sql, params: ["unread": true], unpack: { result -> JZMessageGroup? in
+            if let group = self.unpackGroup(result) {
+                group.user = userUnpack(result)
+                if let lastMessage = messageUnpack(result) {
+                    lastMessage.fromUser = fromUserUnpack(result)
+                    lastMessage.toUser = toUserUnpack(result)
+                    group.lastMessage = lastMessage
                 }
-                result.close()
+                let unread = result.intForColumn("unread")
+                group.unread = Int(unread)
+                return group
             }
-            for group in ret {
-                let sql = "SELECT COUNT(*) AS count FROM message WHERE gid=:gid AND unread=:unread"
-                let params: [String: AnyObject] = ["gid": group.id, "unread":true]
-                if let result = self.db.executeQuery(sql, withParameterDictionary: params) {
-                    while result.next() {
-                        group.unread = Int(result.intForColumn("count"))
-                    }
-                }
-            }
-            dispatch_async(dispatch_get_main_queue()) {
-                callback(ret)
-            }
-        }
+            return nil
+            }, callback: callback)
+        
+//        execuse {
+//            var ret = [JZMessageGroup]()
+//            if let result = self.db.executeQuery(sql, withParameterDictionary: nil) {
+//                while result.next() {
+//                    if let group = self.unpackGroup(result) {
+//                        group.user = userUnpack(result)
+//                        ret.append(group)
+//                    }
+//                }
+//                result.close()
+//            }
+//            for group in ret {
+//                let sql = "SELECT COUNT(*) AS count FROM message WHERE gid=:gid AND unread=:unread"
+//                let params: [String: AnyObject] = ["gid": group.id, "unread":true]
+//                if let result = self.db.executeQuery(sql, withParameterDictionary: params) {
+//                    while result.next() {
+//                        group.unread = Int(result.intForColumn("count"))
+//                    }
+//                }
+//            }
+//            dispatch_async(dispatch_get_main_queue()) {
+//                callback(ret)
+//            }
+//        }
     }
     
     func removeGroupById(id:Int) {
@@ -285,8 +313,9 @@ class JZUserDataBase: JZDataBase {
             }, callback: callback)
     }
     
-    func messageQueryItemsAndUnpackage(alias:String) -> (String, (FMResultSet) -> JZMessage?) {
-        let items = "\(alias).id AS \(alias)id, \(alias).from_uid AS \(alias)from_uid, \(alias).to_uid AS \(alias)to_uid, \(alias).uuid AS \(alias)uuid, \(alias).text AS \(alias)text, \(alias).date AS \(alias)date, \(alias).type AS \(alias)type, \(alias).unread AS \(alias)unread, \(alias).uploaded AS \(alias)uploaded"
+    func messageQueryItemsAndUnpackage(alias:String) -> (String, String, (FMResultSet) -> JZMessage?) {
+        let qureyItems = "\(alias)id, \(alias)gid, \(alias)from_uid, \(alias)to_uid, \(alias)uuid, \(alias)text, \(alias)date, \(alias)type, \(alias)unread, \(alias)uploaded"
+        let aliasItems = "\(alias).id AS \(alias)id, \(alias).gid AS \(alias)gid, \(alias).from_uid AS \(alias)from_uid, \(alias).to_uid AS \(alias)to_uid, \(alias).uuid AS \(alias)uuid, \(alias).text AS \(alias)text, \(alias).date AS \(alias)date, \(alias).type AS \(alias)type, \(alias).unread AS \(alias)unread, \(alias).uploaded AS \(alias)uploaded"
         let unpack = { (result: FMResultSet) -> JZMessage? in
             let message = JZMessage()
             message.id = Int(result.intForColumn("\(alias)id"))
@@ -298,12 +327,13 @@ class JZUserDataBase: JZDataBase {
             message.unread = result.boolForColumn("\(alias)unread")
             return message
         }
-        return (items, unpack)
+        return (qureyItems, aliasItems, unpack)
     }
     
 //    let userQueryItems = " user.id AS uid, user.nickname AS unickname, user.description AS udescription, user.gender AS ugender, user.user_type AS utype "
-    func userQueryItemsAndUnpackage(alias:String) -> (String, (FMResultSet) -> JZUserInfo?) {
-        let items = "\(alias).id AS \(alias)id, \(alias).nickname AS \(alias)nickname, \(alias).description AS \(alias)description, \(alias).gender AS \(alias)gender, \(alias).user_type AS \(alias)user_type, \(alias).avatar AS \(alias)avatar"
+    func userQueryItemsAndUnpackage(alias:String) -> (String, String, (FMResultSet) -> JZUserInfo?) {
+        let queryItems = "\(alias)id, \(alias)nickname, \(alias)description, \(alias)gender, \(alias)user_type, \(alias)avatar"
+        let aliasItems = "\(alias).id AS \(alias)id, \(alias).nickname AS \(alias)nickname, \(alias).description AS \(alias)description, \(alias).gender AS \(alias)gender, \(alias).user_type AS \(alias)user_type, \(alias).avatar AS \(alias)avatar"
         let unpack = { (result:FMResultSet) -> JZUserInfo? in
             let user : JZUserInfo
             let userType = JZUserType(rawValue: Int(result.intForColumn("\(alias)user_type"))) ?? JZUserType.unknow
@@ -321,7 +351,7 @@ class JZUserDataBase: JZDataBase {
             
             return user
         }
-        return (items, unpack)
+        return (queryItems, aliasItems, unpack)
     }
     
     let groupQueryItems = " message_group.id AS gid, message_group.title AS gtitle, message_group.type AS gtype, message_group.uid AS guid, message_group.rid AS grid, message_group.create_date AS gcreate_date "
