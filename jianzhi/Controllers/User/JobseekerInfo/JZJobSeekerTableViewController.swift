@@ -31,23 +31,41 @@ class JZJobSeekerTableViewController: JZStaticTableViewController {
         self.addChildViewController(educationController)
         self.addChildViewController(workExperienceController)
         
+        if let user = userInfo {
+            reloadWithUser(user)
+        }
+        else {
         if userId == nil || userId == JZUserManager.sharedManager.currentUser?.uid {
             JZUserViewModel.myAllInfo({ (user:JZUserInfo) -> Void in
                 if let jobseeker = user as? JZJobseekerUserInfo {
-                    self.userInfo = jobseeker
-                    self.educationController.educations = jobseeker.resume?.educations ?? [JZEducation]()
-                    self.workExperienceController.workExperiences = jobseeker.resume?.workExperiences ?? [JZWorkExperience]()
-                    self.educationController.editable = true
-                    self.workExperienceController.editable = true
-                    self.editable = true
+                    self.reloadWithUser(jobseeker)
                 }
-                self.reloadData()
                 }, failure: { (error:String?) -> Void in
                     JZAlertView.show(error)
             })
         }
+        else {
+            JZUserViewModel.userAllInfo(userId!, success: { (userInfo) -> Void in
+                if let user = userInfo as? JZJobseekerUserInfo {
+                    self.reloadWithUser(user)
+                }
+                }, failure: { JZAlertView.show($0) })
+            }
+        }
         
         self.reloadData()
+    }
+    
+    private func reloadWithUser(user: JZJobseekerUserInfo) {
+        if user.uid == JZUserManager.sharedManager.currentUser?.uid {
+            educationController.editable = true
+            workExperienceController.editable = true
+            editable = true
+        }
+        userInfo = user
+        educationController.educations = user.resume?.educations ?? [JZEducation]()
+        workExperienceController.workExperiences = user.resume?.workExperiences ?? [JZWorkExperience]()
+        reloadData()
     }
     
     override func viewWillAppear(animated: Bool) {

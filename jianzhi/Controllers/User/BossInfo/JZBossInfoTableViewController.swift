@@ -27,21 +27,39 @@ class JZBossInfoTableViewController: JZStaticTableViewController {
         addChildViewController(companyCellController)
         addChildViewController(jobListCellController)
         
-        if userId == nil || userId == JZUserManager.sharedManager.currentUser?.uid {
-            JZUserViewModel.myAllInfo({ (userInfo:JZUserInfo) -> Void in
-                if let user = userInfo as? JZBossUserInfo {
-                    self.editable = true
-                    self.companyCellController.editable = true
-                    self.jobListCellController.editable = true
-                    
-                    self.companyCellController.company = user.company
-                    self.jobListCellController.jobList = user.jobList ?? [JZJob]()
-                    
-                    self.userInfo = user
-                    self.reloadData()
-                }
-                }, failure: { JZAlertView.show($0) })
+        if let user = userInfo {
+            reloadWithUser(user)
         }
+        else {
+            if userId == nil || userId == JZUserManager.sharedManager.currentUser?.uid {
+                JZUserViewModel.myAllInfo({ (userInfo:JZUserInfo) -> Void in
+                    if let user = userInfo as? JZBossUserInfo {
+                        self.reloadWithUser(user)
+                    }
+                    }, failure: { JZAlertView.show($0) })
+            }
+            else {
+                JZUserViewModel.userAllInfo(userId!, success: { (userInfo) -> Void in
+                    if let user = userInfo as? JZBossUserInfo {
+                        self.reloadWithUser(user)
+                    }
+                    }, failure: { JZAlertView.show($0) })
+            }
+        }
+    }
+    
+    private func reloadWithUser(user: JZBossUserInfo) {
+        if user.uid == JZUserManager.sharedManager.currentUser?.uid {
+            self.editable = true
+            self.companyCellController.editable = true
+            self.jobListCellController.editable = true
+        }
+        
+        self.companyCellController.company = user.company
+        self.jobListCellController.jobList = user.jobList ?? [JZJob]()
+        
+        self.userInfo = user
+        self.reloadData()
     }
     
     override func viewWillAppear(animated: Bool) {
