@@ -90,8 +90,17 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
     }
 
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
-        let avatar = JSQMessagesAvatarImage(placeholder: UIImage(named: "anno"))
-        return avatar
+        return nil
+    }
+    
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
+        if let cell = cell as? JSQMessagesCollectionViewCell {
+            if let placeholder = UIImage(named: "anno") {
+                cell.avatarImageView?.sd_setImageWithURL(messages[indexPath.row].fromUser?.avatarUrl, placeholderImage: placeholder)
+            }
+        }
+        return cell
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {

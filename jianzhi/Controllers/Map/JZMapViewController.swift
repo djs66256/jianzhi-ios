@@ -123,14 +123,20 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
     
     func selectMap() {
 //        let msg = JZMessage(user: JZUserManager.sharedManager.currentUser!, text: "teststss", date: NSDate(), type: .Text, group: nil)
-        let msg = JZSockMessage()
-        msg.uid = 2
-        msg.text = "hhahhahahaha"
-        msg.type = .Message
-        JZSocketManager.sharedManager.sendMessage(msg)
+//        let msg = JZSockMessage()
+//        msg.uid = 2
+//        msg.text = "hhahhahahaha"
+//        msg.type = .Message
+//        JZSocketManager.sharedManager.sendMessage(msg)
 //        let viewController = UINavigationController(rootViewController:JZSelectLocationViewController())
 //        viewController.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
 //        self.presentViewController(viewController, animated: true, completion: nil)
-    }
+//    }
 
+        for i in 0...1 {
+            let view = UIImageView()
+            view.sd_setImageWithURL(JZUserManager.sharedManager.currentUser!.avatarUrl)
+            self.view.addSubview(view)
+        }
+    }
 }

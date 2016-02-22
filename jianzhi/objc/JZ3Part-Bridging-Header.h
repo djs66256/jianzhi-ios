@@ -22,6 +22,9 @@
 #import <RSKImageCropper/RSKImageCropper.h>
 #import <JSQMessagesViewController/JSQMessages.h>
 
+#import <UIImageView+WebCache.h>
+#import <SDWebImageManager.h>
+
 #import "JZBaseMessage.h"
 
 #endif /* JZ3Part_Bridging_Header_h */

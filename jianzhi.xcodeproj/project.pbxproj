@@ -406,7 +406,7 @@
 		657E46951C3EBD7600A628D8 /* JZTimerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZTimerButton.swift; sourceTree = "<group>"; };
 		658B2DCB1C36F99D00869757 /* JZUserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZUserInfo.swift; sourceTree = "<group>"; };
 		658B2DCF1C36FA3900869757 /* JZMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMessage.swift; sourceTree = "<group>"; };
-		658B2DD11C36FB7600869757 /* JZ3Part-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JZ3Part-Bridging-Header.h"; sourceTree = "<group>"; };
+		658B2DD11C36FB7600869757 /* JZ3Part-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = "JZ3Part-Bridging-Header.h"; sourceTree = "<group>"; };
 		658B2DD21C37F80400869757 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		6590240B1C54D76300A9255E /* JZSearchBaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZSearchBaseTableViewController.swift; sourceTree = "<group>"; };
 		6590240D1C54D77F00A9255E /* JZSearchJobTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZSearchJobTableViewController.swift; sourceTree = "<group>"; };
@@ -557,13 +557,6 @@
 				650C0AD61C3822FF00F7E885 /* JZRegisterTableViewCell.swift */,
 			);
 			path = cell;
-			sourceTree = "<group>";
-		};
-		650C0ADA1C383DCB00F7E885 /* ImageCache */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ImageCache;
 			sourceTree = "<group>";
 		};
 		650C0ADD1C391A0400F7E885 /* Job */ = {
@@ -1278,7 +1271,6 @@
 				657E46941C3EBC3B00A628D8 /* TimerButton */,
 				657E46751C3DBBCA00A628D8 /* LogoPicker */,
 				6514C2B41C3D638800B144E7 /* cell */,
-				650C0ADA1C383DCB00F7E885 /* ImageCache */,
 				6590241E1C553CE200A9255E /* util */,
 			);
 			name = libs;
