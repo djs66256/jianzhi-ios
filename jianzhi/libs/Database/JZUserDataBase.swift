@@ -207,6 +207,7 @@ class JZUserDataBase: JZDataBase {
             + " LEFT JOIN user fu on m.from_uid=fu.id"
             + " LEFT JOIN user tu on m.to_uid=tu.id"
             + " WHERE m.gid=:gid"
+            + " ORDER BY m.date DESC"
             + " LIMIT :index, :count"
         let params = ["gid": group.id, "index": index, "count": count]
         queryAll(sql, params: params, unpack: { (result:FMResultSet) -> JZMessage? in
@@ -215,11 +216,13 @@ class JZUserDataBase: JZDataBase {
             message?.toUser = toUserUnpack(result)
             message?.group = group
             return message
-            }, callback: callback)
+            }, callback: {
+                callback($0.reverse())
+        })
     }
     
     func removeMessagesByGroup(gid: Int) {
-        let sql = "DELETE message WHERE gid=:gid"
+        let sql = "DELETE FROM message WHERE gid=:gid"
         let params = ["gid": gid]
         update(sql, params)
     }
@@ -257,7 +260,7 @@ class JZUserDataBase: JZDataBase {
     }
     
     func removeGroupById(id:Int) {
-        let sql = "DELETE message_group WHERE id=:id"
+        let sql = "DELETE FROM message_group WHERE id=:id"
         let params = ["id": id]
         update(sql, params)
     }

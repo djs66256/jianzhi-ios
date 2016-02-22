@@ -65,21 +65,3 @@ func ==(lhs: JZMessageGroup, rhs: JZMessageGroup) -> Bool {
     }
     return false
 }
-
-class JZMessageGroupManager: NSObject {
-    var groups = [JZMessageGroup]()
-    
-    override init() {
-        super.init()
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("save"), name: UIApplicationDidEnterBackgroundNotification, object: nil)
-    }
-    
-    func load() {
-        
-    }
-    
-    func save() {
-        
-    }
-}
