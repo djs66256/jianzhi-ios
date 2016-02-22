@@ -13,13 +13,24 @@ class JZUserService: JZService {
     
     var db: JZUserDataBase? // = JZUserDataBase.sharedDataBase
     
+    private let cache: NSCache = {
+        let cache = NSCache()
+        cache.countLimit = 50
+        return cache
+    }()
+    
     func findUserById(uid: Int, callback:(JZUserInfo)->Void) {
+        if let user = cache.objectForKey(uid) as? JZUserInfo {
+            callback(user)
+        }
         db?.findUserById(uid) { (user) -> Void in
             if let user = user {
+                self.cache.setObject(user, forKey: uid)
                 callback(user)
             }
             else {
                 let user = self.createUpdateUser(uid)
+                self.cache.setObject(user, forKey: uid)
                 callback(user)
             }
         }
@@ -31,7 +42,7 @@ class JZUserService: JZService {
         db?.insertUser(user, ignoreIfExists: true)
         updateUser(user) {
             if let user = $0 {
-                self.db?.insertUser(user, ignoreIfExists: false)
+                self.save(user)
             }
         }
         return user
@@ -54,6 +65,7 @@ class JZUserService: JZService {
     }
     
     func save(user: JZUserInfo) {
+        cache.setObject(user, forKey: user.uid)
         self.db?.insertUser(user, ignoreIfExists: false)
     }
 }

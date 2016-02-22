@@ -51,6 +51,14 @@ class JZMessageManager: UIView {
                             
                             JZMessageService.instance.insert(msg)
                             self.receivers.forEach { $0.didReceiveMessage(msg) }
+                            
+                            if !msg.unread {
+                                JZMessageService.instance.clearUnread(msg)
+                            }
+                            else {
+                                group.unread++
+                                NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
+                            }
                         })
                     }
                 }

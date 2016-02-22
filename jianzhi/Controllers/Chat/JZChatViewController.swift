@@ -9,8 +9,8 @@
 import UIKit
 
 class JZChatViewController: UITableViewController {
-    
-    static let myChatCellIdentifier = "myChat"
+    let chatCellIdentifier = "chat"
+    let myChatCellIdentifier = "myChat"
     let otherChatCellIdentifier = "otherChat"
     
     deinit {
@@ -20,23 +20,19 @@ class JZChatViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView.registerClass(JZChatBaseTableViewCell.self, forCellReuseIdentifier: JZChatViewController.myChatCellIdentifier)
+//        self.tableView.registerClass(JZChatBaseTableViewCell.self, forCellReuseIdentifier: JZChatViewController.myChatCellIdentifier)
+        tableView.registerNib(UINib(nibName: "JZChatGroupTableViewCell", bundle: nil), forCellReuseIdentifier: chatCellIdentifier)
+        tableView.tableFooterView = UIView()
         
         self.navigationItem.title = "消息"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "insert", style: .Bordered, target: self, action: Selector("insertGroup"))
         
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("reloadGroups"), name: JZNotification.MessageGroupReload, object: nil)
     }
     
-    func insertGroup() {
-        let group = JZMessageGroup()
-        group.title = "test group"
-        group.type = .Chat
-        group.user = JZUserManager.sharedManager.currentUser
-//        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
-//        self.groups = [group]
-        self.tableView.reloadData()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
     
     func reloadGroups() {
@@ -62,71 +58,29 @@ class JZChatViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(JZChatViewController.myChatCellIdentifier, forIndexPath: indexPath)
-
-        let group = JZMessageGroupService.instance.groups[indexPath.row]
-        cell.textLabel?.text = group.title
-        if let avatarUrl = group.avatarUrl {
-            cell.imageView?.setImageWithURL(avatarUrl, placeholderImage: group.placeholderImage)
+        if let cell = tableView.dequeueReusableCellWithIdentifier(chatCellIdentifier, forIndexPath: indexPath) as? JZChatGroupTableViewCell {
+            
+            let group = JZMessageGroupService.instance.groups[indexPath.row]
+            cell.updateData(group)
+            
+            return cell
         }
-        else {
-            cell.imageView?.image = group.placeholderImage
-        }
-
-        return cell
+        return UITableViewCell()
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        let messageController = JZMessageViewController(group: JZMessageGroupService.instance.groups[indexPath.row])
+        let group = JZMessageGroupService.instance.groups[indexPath.row]
+        let messageController = JZMessageViewController(group: group)
         messageController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(messageController, animated: true)
+        
+        group.unread = 0
+        JZMessageService.instance.clearUnreadByGroup(group)
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 56
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
 }

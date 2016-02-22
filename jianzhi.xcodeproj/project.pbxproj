@@ -248,6 +248,8 @@
 		65E282C61C46991B006EDA4D /* JZIdentifyingCodeCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E282C51C46991B006EDA4D /* JZIdentifyingCodeCellTableViewCell.swift */; };
 		65E282CD1C46CA2D006EDA4D /* JZWorkExperienceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E282CC1C46CA2D006EDA4D /* JZWorkExperienceViewModel.swift */; };
 		65E282CF1C46CA44006EDA4D /* JZEducationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E282CE1C46CA44006EDA4D /* JZEducationViewModel.swift */; };
+		65E5F7F71C7B004D00578648 /* JZChatGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E5F7F51C7B004D00578648 /* JZChatGroupTableViewCell.swift */; };
+		65E5F7F81C7B004D00578648 /* JZChatGroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65E5F7F61C7B004D00578648 /* JZChatGroupTableViewCell.xib */; };
 		95C1483C73FDE6580499C012 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7AEAC2A50214FEB9F99D08 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -512,6 +514,8 @@
 		65E282C51C46991B006EDA4D /* JZIdentifyingCodeCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZIdentifyingCodeCellTableViewCell.swift; sourceTree = "<group>"; };
 		65E282CC1C46CA2D006EDA4D /* JZWorkExperienceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZWorkExperienceViewModel.swift; sourceTree = "<group>"; };
 		65E282CE1C46CA44006EDA4D /* JZEducationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZEducationViewModel.swift; sourceTree = "<group>"; };
+		65E5F7F51C7B004D00578648 /* JZChatGroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZChatGroupTableViewCell.swift; sourceTree = "<group>"; };
+		65E5F7F61C7B004D00578648 /* JZChatGroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZChatGroupTableViewCell.xib; sourceTree = "<group>"; };
 		6AC23298B865EEA240B13B90 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1414,6 +1418,8 @@
 			isa = PBXGroup;
 			children = (
 				65BD116D1C36C70900EB79F9 /* JZChatBaseTableViewCell.swift */,
+				65E5F7F51C7B004D00578648 /* JZChatGroupTableViewCell.swift */,
+				65E5F7F61C7B004D00578648 /* JZChatGroupTableViewCell.xib */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -1943,6 +1949,7 @@
 				652AEBC41C334DF5005D08B8 /* Assets.xcassets in Resources */,
 				65BD115B1C3685F900EB79F9 /* JZMeViewController.xib in Resources */,
 				65132BA71C56C528001815AD /* JZBossInfoTableViewController.xib in Resources */,
+				65E5F7F81C7B004D00578648 /* JZChatGroupTableViewCell.xib in Resources */,
 				65BD117C1C36C8E000EB79F9 /* JZLoginTableViewController.xib in Resources */,
 				65C843821C3AB87F00D8FAD5 /* JZAboutUsViewController.xib in Resources */,
 				65C8438B1C3AB8F300D8FAD5 /* JZFeedbackViewController.xib in Resources */,
@@ -2019,6 +2026,7 @@
 				65BE0E6E1C4EA67500E84442 /* ISO8601DateTransform.swift in Sources */,
 				658B2DCD1C36F99D00869757 /* JZUserInfo.swift in Sources */,
 				65BE0E391C4ABD7900E84442 /* JZCity.swift in Sources */,
+				65E5F7F71C7B004D00578648 /* JZChatGroupTableViewCell.swift in Sources */,
 				65132B7E1C56B21D001815AD /* JZMyJobSeekerTableViewController.swift in Sources */,
 				65E282CD1C46CA2D006EDA4D /* JZWorkExperienceViewModel.swift in Sources */,
 				650C0AD01C380F0000F7E885 /* JZRequestFilter.swift in Sources */,

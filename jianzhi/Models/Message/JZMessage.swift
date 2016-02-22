@@ -23,7 +23,7 @@ class JZMessage: JZBaseMessage {
     var type : JZMessageType = .None
     var group: JZMessageGroup?
     
-    var readed = false
+    var unread = true
     var uploaded = false
     
     override init() {

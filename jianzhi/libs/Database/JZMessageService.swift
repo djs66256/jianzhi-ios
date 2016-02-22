@@ -34,6 +34,17 @@ class JZMessageService: JZService {
         db?.setMessageUploaded(uuid)
     }
     
+    func clearUnreadByGroup(group: JZMessageGroup) {
+        if group.unread > 0 {
+            db?.setMessageUnreadByGroup(group.id)
+        }
+    }
+    
+    func clearUnread(message: JZMessage) {
+        message.unread = false
+        db?.setMessageUnreadByUuid(message.uuid)
+    }
+    
     func findAllUnuploaded() -> [JZMessage] {
         return []
     }
@@ -54,12 +65,6 @@ class JZMessageService: JZService {
         }
         else {
             callback(nil)
-        }
-    }
-    
-    func setReadedByGroup(group: JZMessageGroup) {
-        if group.id > 0 {
-            db?.setMessageReadedByGroup(group.id)
         }
     }
 }

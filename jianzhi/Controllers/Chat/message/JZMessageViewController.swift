@@ -12,6 +12,7 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
     
     var messages = [JZMessage]()
     var group = JZMessageGroup()
+    var page = 0
     
     init(group: JZMessageGroup) {
         super.init(nibName: nil, bundle: nil)
@@ -40,20 +41,9 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
         }
         self.senderDisplayName = JZUserManager.sharedManager.currentUser?.nickName ?? ""
 
-        JZMessageService.instance.findByGroup(group, index: 0, count: kJZMessageQueryCount) { messages in
-            self.messages.insertContentsOf(messages, at: 0)
-            self.collectionView?.reloadData()
-            self.scrollToBottomAnimated(true)
-            
-            if messages.count < kJZMessageQueryCount {
-                self.showLoadEarlierMessagesHeader = false
-            }
-            else {
-                self.showLoadEarlierMessagesHeader = true
-            }
-        }
+        loadMessages()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -106,7 +96,7 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         if let user = JZUserManager.sharedManager.currentUser, let toUser = group.user {
             let message = JZMessage(fromUser: user, toUser: toUser, text: text, date: date, type: .Message, group: group)
-            
+            message.unread = false
 //            JZMessageService.instance.save(message)
             JZMessageManager.sharedManager.send(message)
             
@@ -120,6 +110,8 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
+        page++
+        loadMessages()
 //        for i in 0...10 {
 //            let user = JZUserInfo()
 //            user.uid = i
@@ -127,11 +119,6 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
 //            let message = JZMessage(fromUser: user, text: "earlier text \(i)", toUser: date: NSDate(), type: .Message, group: group)
 //            messages.insert(message, atIndex: 0)
 //        }
-//        let offset = collectionView.contentOffset
-//        let contentSize = collectionView.contentSize
-//        collectionView.reloadData()
-//        collectionView.layoutIfNeeded()
-//        collectionView.contentOffset.y = collectionView.contentSize.height - (contentSize.height - offset.y)
         
     }
     
@@ -155,10 +142,38 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
         }
     }
     
+    private func loadMessages() {
+        JZMessageService.instance.findByGroup(group, index: page*kJZMessageQueryCount, count: kJZMessageQueryCount) { messages in
+            
+            if self.messages.count == 0 {
+                self.messages.insertContentsOf(messages, at: 0)
+                self.collectionView?.reloadData()
+            }
+            else {
+                self.messages.insertContentsOf(messages, at: 0)
+                let offset = self.collectionView!.contentOffset
+                let contentSize = self.collectionView!.contentSize
+                self.collectionView?.reloadData()
+                self.collectionView?.layoutIfNeeded()
+                self.collectionView?.contentOffset.y = self.collectionView!.contentSize.height - (contentSize.height - offset.y)
+            }
+            
+            self.scrollToBottomAnimated(true)
+            
+            if messages.count < kJZMessageQueryCount {
+                self.showLoadEarlierMessagesHeader = false
+            }
+            else {
+                self.showLoadEarlierMessagesHeader = true
+            }
+        }
+    }
+    
     func didReceiveMessage(message: JZMessage) {
         if message.fromUser?.uid == group.user?.uid {
             messages.append(message)
             finishReceivingMessageAnimated(true)
+            JZMessageService.instance.clearUnread(message)
         }
     }
     

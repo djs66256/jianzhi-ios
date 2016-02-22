@@ -15,6 +15,15 @@ class JZMessageGroupService: JZService {
     
     var groups = [JZMessageGroup]()
     
+    override init() {
+        super.init()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("userUpdated:"), name: JZNotification.UserUpdated, object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     func initGroups(compeletion: ()->Void) {
         groups = []
         db?.findGroups { (groups) -> Void in
@@ -24,31 +33,24 @@ class JZMessageGroupService: JZService {
         }
     }
     
+    func userUpdated(noti: NSNotification) {
+        if let user = noti.userInfo?["user"] as? JZUserInfo {
+            var needReload = false
+            for group in groups {
+                if group.user?.uid == user.uid {
+                    group.user = user
+                    needReload = true
+                }
+            }
+            if needReload {
+                NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
+            }
+        }
+    }
+    
     private func sortGroups(groups: [JZMessageGroup]) -> [JZMessageGroup] {
         return groups
     }
-    
-//    func findByType(type: JZMessageGroupType, uid: Int, rid: Int) -> Bool {
-//        guard object != nil else { return false }
-//        guard type == object.type else { return false }
-//        
-//        switch type {
-//        case .Person: return user != nil && object.user != nil && user!.uid == object.user.uid
-//        case .Resume: return false
-//        default: return false
-//        }
-//
-//    }
-//    
-//    func touchGroup(group: JZMessageGroup) {
-//        for g in groups {
-//            if g.isEqual(group) {
-//               return
-//            }
-//        }
-//        
-//        JZUserDataBase.sharedDataBase.insertMessageGroup(group)
-//    }
     
     private func maxGroupId() -> Int {
         var id = 0
@@ -95,6 +97,11 @@ class JZMessageGroupService: JZService {
         if let index = groups.indexOf({ $0 == group }) {
             db?.removeGroupById(group.id)
             db?.removeMessagesByGroup(group.id)
+            groups.removeAtIndex(index)
         }
+    }
+    
+    func clearUnread(group: JZMessageGroup) {
+        
     }
 }

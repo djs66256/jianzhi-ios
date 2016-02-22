@@ -14,7 +14,14 @@ enum JZMessageGroupType : Int {
 
 class JZMessageGroup: NSObject {
     var id: Int = 0
-    var title: String = ""
+    var title: String {
+        get {
+            return user?.nickName ?? ""
+        }
+        set {
+            
+        }
+    }
     var type = JZMessageGroupType.None
     var resume: JZResume?
     var user: JZUserInfo?
