@@ -76,7 +76,6 @@ class JZChatViewController: UITableViewController {
         messageController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(messageController, animated: true)
         
-        group.unread = 0
         JZMessageService.instance.clearUnreadByGroup(group)
     }
 

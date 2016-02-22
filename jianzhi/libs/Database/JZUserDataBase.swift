@@ -89,10 +89,6 @@ class JZUserDataBase: JZDataBase {
         update(sql, params)
     }
     
-    func unreadMessageCountByGroup(group: JZMessageGroup, callback:(Int)->Void) {
-        
-    }
-    
     func setMessageUploaded(uuid: String) {
         if uuid.isEmpty { return }
         let sql = "UPDATE message SET uploaded=:uploaded WHERE uuid=:uuid"

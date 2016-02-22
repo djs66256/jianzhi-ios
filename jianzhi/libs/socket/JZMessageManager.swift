@@ -48,6 +48,7 @@ class JZMessageManager: UIView {
                             msg.toUser = JZUserManager.sharedManager.currentUser
                             msg.fromUser = user
                             msg.group = group
+                            msg.uploaded = true
                             
                             JZMessageService.instance.insert(msg)
                             self.receivers.forEach { $0.didReceiveMessage(msg) }

@@ -37,6 +37,7 @@ class JZMessageService: JZService {
     func clearUnreadByGroup(group: JZMessageGroup) {
         if group.unread > 0 {
             db?.setMessageUnreadByGroup(group.id)
+            group.unread = 0
         }
     }
     
