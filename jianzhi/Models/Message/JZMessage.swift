@@ -63,7 +63,21 @@ class JZMessage: JZBaseMessage {
     }
     
     override var isMediaMessage: Bool {
-        return false
+        return type != .Message
+    }
+    
+    private var mediaData: JSQMessageMediaData?
+    override var media: JSQMessageMediaData? {
+        if let mediaData = mediaData {
+            return mediaData
+        }
+        if type == .Job, let job = job {
+            let media = JZJobMediaItem()
+            media.job = job
+            self.mediaData = media
+            return media
+        }
+        return nil
     }
     
     func toSendMessage() -> JZSockMessage? {

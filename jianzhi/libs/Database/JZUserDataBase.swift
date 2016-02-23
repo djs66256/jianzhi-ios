@@ -251,10 +251,12 @@ class JZUserDataBase: JZDataBase {
         let (_, messageItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
         let (_, fromUserItems, fromUserUnpack) = userQueryItemsAndUnpackage("fu")
         let (_, toUserItems, toUserUnpack) = userQueryItemsAndUnpackage("tu")
-        let sql = "SELECT \(messageItems), \(fromUserItems), \(toUserItems)"
+        let (_, jobItems, jobUnpack) = jobQueryItemsAndUnpackage("j")
+        let sql = "SELECT \(messageItems), \(fromUserItems), \(toUserItems), \(jobItems)"
             + " FROM message m"
-            + " LEFT JOIN user fu on m.from_uid=fu.id"
-            + " LEFT JOIN user tu on m.to_uid=tu.id"
+            + " LEFT JOIN user fu ON m.from_uid=fu.id"
+            + " LEFT JOIN user tu ON m.to_uid=tu.id"
+            + " LEFT JOIN job j ON j.id=m.jid"
             + " WHERE m.gid=:gid"
             + " ORDER BY m.date DESC"
             + " LIMIT :index, :count"
@@ -264,6 +266,9 @@ class JZUserDataBase: JZDataBase {
             message?.fromUser = fromUserUnpack(result)
             message?.toUser = toUserUnpack(result)
             message?.group = group
+            if message?.type == .Job {
+                message?.job = jobUnpack(result)
+            }
             return message
             }, callback: {
                 callback($0.reverse())

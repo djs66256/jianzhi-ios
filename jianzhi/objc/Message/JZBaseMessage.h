@@ -16,6 +16,6 @@
 @property (copy, nonatomic) NSDate *date;
 @property (assign, nonatomic, readonly) BOOL isMediaMessage;
 @property (copy, nonatomic) NSString *text;
-@property (copy, nonatomic) id<JSQMessageMediaData> media;
+@property (copy, nonatomic, readonly) id<JSQMessageMediaData> media;
 
 @end

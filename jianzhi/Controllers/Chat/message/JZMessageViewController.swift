@@ -10,6 +10,8 @@ import UIKit
 
 class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver, JZSelectJobListTableViewControllerDelegate {
     
+    let jobCellIdentifier = "job"
+    
     var messages = [JZMessage]()
     var group = JZMessageGroup()
     var page = 0
@@ -40,7 +42,8 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver, JZS
             self.senderId = "0"
         }
         self.senderDisplayName = JZUserManager.sharedManager.currentUser?.nickName ?? ""
-
+        collectionView?.registerNib(UINib(nibName: "JZJobMessageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier:jobCellIdentifier)
+        
         loadMessages()
     }
     
@@ -84,13 +87,26 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver, JZS
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
-        if let cell = cell as? JSQMessagesCollectionViewCell {
-            if let placeholder = UIImage(named: "anno") {
-                cell.avatarImageView?.sd_setImageWithURL(messages[indexPath.row].fromUser?.avatarUrl, placeholderImage: placeholder)
-            }
+        let message = messages[indexPath.row]
+        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+        if let placeholder = UIImage(named: "anno") {
+            cell.avatarImageView?.sd_setImageWithURL(messages[indexPath.row].fromUser?.avatarUrl, placeholderImage: placeholder)
         }
         return cell
+        
+//        switch message.type {
+//        case .Job:
+//            //            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(jobCellIdentifier, forIndexPath: indexPath) as! JZJobMessageCollectionViewCell
+//            if let job = message.job {
+//                let text = "\(job.title ?? "")\n\(job.detail ?? "")\n\(job.salary)\(job.salaryType.nameValue())"
+//                cell.textView?.text = text
+//            }
+//            return cell
+//        default:
+//            
+//            return cell
+//        }
+        
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
@@ -148,6 +164,17 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver, JZS
         }
     }
     
+//    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+//        let message = messages[indexPath.row]
+//        switch message.type {
+//        case .Job:
+//            return CGSizeMake(collectionView.frame.width - 40, 100)
+//        default:
+//            return super.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: indexPath)
+//        }
+//
+//    }
+//    
     private func loadMessages() {
         JZMessageService.instance.findByGroup(group, index: page*kJZMessageQueryCount, count: kJZMessageQueryCount) { messages in
             

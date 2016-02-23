@@ -157,6 +157,9 @@
 		6590241B1C54EE4A00A9255E /* JZSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6590241A1C54EE4A00A9255E /* JZSearchViewModel.swift */; };
 		6590241D1C55377900A9255E /* JZJobDetailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6590241C1C55377900A9255E /* JZJobDetailInfo.swift */; };
 		659024201C553D3200A9255E /* JZDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6590241F1C553D3200A9255E /* JZDateFormatter.swift */; };
+		659CF4A91C7CBF2D008D651A /* JZJobMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659CF4A61C7CBF2D008D651A /* JZJobMediaItem.swift */; };
+		659CF4AA1C7CBF2D008D651A /* JZJobMediaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659CF4A71C7CBF2D008D651A /* JZJobMediaItemView.swift */; };
+		659CF4AB1C7CBF2D008D651A /* JZJobMediaItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 659CF4A81C7CBF2D008D651A /* JZJobMediaItemView.xib */; };
 		65A321B41C5B2E360024968B /* JZMessageGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A321B31C5B2E360024968B /* JZMessageGroup.swift */; };
 		65BBAAB71C7477F400B6412E /* JZUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBAAB61C7477F400B6412E /* JZUserService.swift */; };
 		65BBAAB91C76E61900B6412E /* JZAutoUpdateUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBAAB81C76E61900B6412E /* JZAutoUpdateUserInfo.swift */; };
@@ -423,6 +426,9 @@
 		6590241A1C54EE4A00A9255E /* JZSearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZSearchViewModel.swift; sourceTree = "<group>"; };
 		6590241C1C55377900A9255E /* JZJobDetailInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobDetailInfo.swift; sourceTree = "<group>"; };
 		6590241F1C553D3200A9255E /* JZDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZDateFormatter.swift; sourceTree = "<group>"; };
+		659CF4A61C7CBF2D008D651A /* JZJobMediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobMediaItem.swift; sourceTree = "<group>"; };
+		659CF4A71C7CBF2D008D651A /* JZJobMediaItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobMediaItemView.swift; sourceTree = "<group>"; };
+		659CF4A81C7CBF2D008D651A /* JZJobMediaItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZJobMediaItemView.xib; sourceTree = "<group>"; };
 		65A321B31C5B2E360024968B /* JZMessageGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMessageGroup.swift; sourceTree = "<group>"; };
 		65BBAAB61C7477F400B6412E /* JZUserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZUserService.swift; sourceTree = "<group>"; };
 		65BBAAB81C76E61900B6412E /* JZAutoUpdateUserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZAutoUpdateUserInfo.swift; sourceTree = "<group>"; };
@@ -1174,6 +1180,7 @@
 		658B2DCE1C36FA2000869757 /* Message */ = {
 			isa = PBXGroup;
 			children = (
+				659CF49E1C7CB885008D651A /* MediaItem */,
 				658B2DCF1C36FA3900869757 /* JZMessage.swift */,
 				65A321B31C5B2E360024968B /* JZMessageGroup.swift */,
 			);
@@ -1236,6 +1243,24 @@
 				65132B7D1C56B21D001815AD /* JZMyJobSeekerTableViewController.xib */,
 			);
 			path = MyInfo;
+			sourceTree = "<group>";
+		};
+		659CF49E1C7CB885008D651A /* MediaItem */ = {
+			isa = PBXGroup;
+			children = (
+				659CF4A51C7CBF2D008D651A /* JobMediaItem */,
+			);
+			path = MediaItem;
+			sourceTree = "<group>";
+		};
+		659CF4A51C7CBF2D008D651A /* JobMediaItem */ = {
+			isa = PBXGroup;
+			children = (
+				659CF4A61C7CBF2D008D651A /* JZJobMediaItem.swift */,
+				659CF4A71C7CBF2D008D651A /* JZJobMediaItemView.swift */,
+				659CF4A81C7CBF2D008D651A /* JZJobMediaItemView.xib */,
+			);
+			path = JobMediaItem;
 			sourceTree = "<group>";
 		};
 		65BD112F1C367FF100EB79F9 /* 3part */ = {
@@ -1924,6 +1949,7 @@
 				655BA69E1C57D70800EE152C /* JZCreateEducationTableViewController.xib in Resources */,
 				65BE0E1E1C46EA6B00E84442 /* JZRegisterJobTableViewCell.xib in Resources */,
 				650C0AED1C392B7200F7E885 /* JZCreateResumeTableViewController.xib in Resources */,
+				659CF4AB1C7CBF2D008D651A /* JZJobMediaItemView.xib in Resources */,
 				650C0AD41C38217700F7E885 /* JZRegisterViewController.xib in Resources */,
 				652AEBC71C334DF5005D08B8 /* LaunchScreen.storyboard in Resources */,
 				652754631C57BCFD007672EF /* JZEducationEditableTableViewController.xib in Resources */,
@@ -2178,6 +2204,7 @@
 				652884AF1C5976180039BFB6 /* JZDatePickerComponentView.swift in Sources */,
 				652754481C56DB01007672EF /* JZJobListHeaderView.swift in Sources */,
 				65132BA61C56C528001815AD /* JZBossInfoTableViewController.swift in Sources */,
+				659CF4A91C7CBF2D008D651A /* JZJobMediaItem.swift in Sources */,
 				652884D91C59C5370039BFB6 /* SocketLogger.swift in Sources */,
 				652754561C56F8C3007672EF /* JZJobEditableTableViewController.swift in Sources */,
 				65C843661C3A5F4D00D8FAD5 /* JZForgetPasswordTableViewController.swift in Sources */,
@@ -2199,6 +2226,7 @@
 				652884A81C59720F0039BFB6 /* JZEditUserGenderTableViewController.swift in Sources */,
 				652884D51C59C5370039BFB6 /* SocketFixUTF8.swift in Sources */,
 				652884CA1C59C5370039BFB6 /* SocketAckEmitter.swift in Sources */,
+				659CF4AA1C7CBF2D008D651A /* JZJobMediaItemView.swift in Sources */,
 				65BD116A1C36ABAF00EB79F9 /* JZDetailUserInfoViewController.swift in Sources */,
 				652884EA1C5AB7590039BFB6 /* JZMessageService.swift in Sources */,
 				652884D31C59C5370039BFB6 /* SocketEngineWebsocket.swift in Sources */,
