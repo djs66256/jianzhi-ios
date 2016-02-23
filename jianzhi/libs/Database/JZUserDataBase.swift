@@ -23,6 +23,8 @@ class JZUserDataBase: JZDataBase {
                 "from_uid INTEGER," +
                 "to_uid INTEGER," +
                 "gid INTEGER," +
+                "jid INTEGER," +
+                "cid INTEGER," +
                 "uuid CHAR(32)," +
                 "text TEXT," +
                 "date DATE," +
@@ -47,28 +49,56 @@ class JZUserDataBase: JZDataBase {
                 "uid INTEGER," +
                 "rid INTEGER," +
                 "create_date DATE" +
-            ");"
+            ");",
+            "CREATE TABLE IF NOT EXISTS job (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "title text," +
+                "detail text," +
+                "salary INTEGER," +
+                "salary_type INTEGER" +
+            ")"
         ]
         
         sqls.forEach { update($0) }
     }
     
     func insertMessage(message: JZMessage) {
-        let sql = "INSERT INTO message" +
-            " (from_uid, to_uid, gid, uuid, text, date, type, uploaded, unread)" +
-        " VALUES (:from_uid, :to_uid, :gid, :uuid, :text, :date, :type, :uploaded, :unread);"
-        let params : [String: AnyObject] = [
-            "from_uid": message.fromUser!.uid,
-            "to_uid": message.toUser!.uid,
-            "gid": message.group!.id,
-            "uuid": message.uuid,
-            "text": message.text,
-            "date": message.date ?? "NULL",
-            "type": message.type.rawValue,
-            "uploaded": message.uploaded,
-            "unread": message.unread]
         
-        update(sql, params)
+        execuse {
+            let sql = "INSERT INTO message" +
+                " (from_uid, to_uid, gid, cid, jid, uuid, text, date, type, uploaded, unread)" +
+            " VALUES (:from_uid, :to_uid, :gid, :cid, :jid, :uuid, :text, :date, :type, :uploaded, :unread);"
+            var params : [String: AnyObject] = [
+                "from_uid": message.fromUser!.uid,
+                "to_uid": message.toUser!.uid,
+                "gid": message.group!.id,
+                "uuid": message.uuid,
+                "text": message.text,
+                "date": message.date ?? "",
+                "type": message.type.rawValue,
+                "uploaded": message.uploaded,
+                "unread": message.unread,
+                "jid": "",
+                "cid": ""
+            ]
+            
+            if message.type == .Job, let job = message.job {
+                self.insertJobSync(job, ignoreIfExist: false, callback: {})
+                params["jid"] = job.id
+            }
+            else if message.type == .Person, let user = message.nameCard {
+                self.insertUserSync(user, ignoreIfExists: false)
+                params["cid"] = user.uid
+            }
+            
+            self.insertSync(sql, params, callback: { (rowId) -> Void in
+                if let rowId = rowId {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        message.id = rowId
+                    })
+                }
+            })
+        }
     }
     
     func setMessageUnreadByGroup(gid: Int) {
@@ -83,7 +113,7 @@ class JZUserDataBase: JZDataBase {
     func setMessageUnreadByUuid(uuid: String) {
         let sql = "UPDATE message SET unread=:unread WHERE uuid=:uuid"
         let params: [String: AnyObject] = [
-            "id": uuid,
+            "uuid": uuid,
             "unread": false
         ]
         update(sql, params)
@@ -105,8 +135,27 @@ class JZUserDataBase: JZDataBase {
     }
     
     func insertUser(user: JZUserInfo, ignoreIfExists: Bool) {
+//        let sql = "INSERT OR \(ignoreIfExists ? "IGNORE" : "REPLACE") INTO user" +
+//        " (id, nickname, avatar, description, gender, user_type)" +
+//        " VALUES (:id, :nickname, :avatar, :description, :gender, :userType)"
+//        let params : [String:NSObject] = [
+//            "id": user.uid,
+//            "nickname": user.nickName ?? "",
+//            "avatar": user.avatar ?? "",
+//            "description": user.descriptions ?? "",
+//            "gender": user.gender.rawValue,
+//            "userType": user.userType.rawValue
+//        ]
+//        
+//        update(sql, params)
+        execuse {
+            self.insertUserSync(user, ignoreIfExists: ignoreIfExists)
+        }
+    }
+    
+    private func insertUserSync(user: JZUserInfo, ignoreIfExists: Bool) {
         let sql = "INSERT OR \(ignoreIfExists ? "IGNORE" : "REPLACE") INTO user" +
-        " (id, nickname, avatar, description, gender, user_type)" +
+            " (id, nickname, avatar, description, gender, user_type)" +
         " VALUES (:id, :nickname, :avatar, :description, :gender, :userType)"
         let params : [String:NSObject] = [
             "id": user.uid,
@@ -117,7 +166,7 @@ class JZUserDataBase: JZDataBase {
             "userType": user.userType.rawValue
         ]
         
-        update(sql, params)
+        insertSync(sql, params) {_ in }
     }
     
 //    func updateUser(user: JZUserInfo) {
@@ -313,6 +362,27 @@ class JZUserDataBase: JZDataBase {
             }, callback: callback)
     }
     
+    private func insertJobSync(job: JZJob, ignoreIfExist: Bool, callback:()->Void) {
+        guard let _ = job.id else {
+            JZLogError("SQL: Job id can not be 0")
+            return
+        }
+        let sql = "INSERT OR \(ignoreIfExist ? "IGNORE" : "REPLACE") INTO job"
+            + " (id, title, detail, salary, salary_type)"
+            + " VALUES (:id, :title, :detail, :salary, :salary_type)"
+        let params: [String: AnyObject] = [
+            "id": job.id!,
+            "title": job.title ?? "",
+            "detail": job.detail ?? "",
+            "salary": job.salary ?? 0,
+            "salary_type": job.salaryType.rawValue
+        ]
+        insertSync(sql, params) { (rowId) -> Void in
+            job.id = rowId
+            callback()
+        }
+    }
+    
     func messageQueryItemsAndUnpackage(alias:String) -> (String, String, (FMResultSet) -> JZMessage?) {
         let qureyItems = "\(alias)id, \(alias)gid, \(alias)from_uid, \(alias)to_uid, \(alias)uuid, \(alias)text, \(alias)date, \(alias)type, \(alias)unread, \(alias)uploaded"
         let aliasItems = "\(alias).id AS \(alias)id, \(alias).gid AS \(alias)gid, \(alias).from_uid AS \(alias)from_uid, \(alias).to_uid AS \(alias)to_uid, \(alias).uuid AS \(alias)uuid, \(alias).text AS \(alias)text, \(alias).date AS \(alias)date, \(alias).type AS \(alias)type, \(alias).unread AS \(alias)unread, \(alias).uploaded AS \(alias)uploaded"
@@ -374,5 +444,20 @@ class JZUserDataBase: JZDataBase {
             return group
         }
         return (groupQueryItems, unpack)
+    }
+    
+    func jobQueryItemsAndUnpackage(alias: String) -> (String, String, (FMResultSet)->JZJob?) {
+        let queryItems = "\(alias)id, \(alias)title, \(alias)detail, \(alias)salary, \(alias)salary_type"
+        let aliasItems = "\(alias).id AS \(alias)id, \(alias).title AS \(alias)title, \(alias).detail AS \(alias)detail, \(alias).salary AS \(alias)salary, \(alias).salary_type AS \(alias)salary_type"
+        let unpack = { (result:FMResultSet) -> JZJob? in
+            let job = JZJob()
+            job.id = Int(result.intForColumn("\(alias)id"))
+            job.title = result.stringForColumn("\(alias)title")
+            job.detail = result.stringForColumn("\(alias)detail")
+            job.salary = Int(result.intForColumn("\(alias)salary"))
+            job.salaryType = JZSalaryTypeBy(rawValue: Int(result.intForColumn("\(alias)salary"))) ?? .none
+            return job
+        }
+        return (queryItems, aliasItems, unpack)
     }
 }

@@ -17,6 +17,12 @@ class JZSockMessage: NSObject, Mappable {
 //    var date = NSDate()
     var type : JZMessageType = .None
     var time: NSDate?
+    
+    var cid: Int?
+    var jid: Int?
+    
+    var job: JZJob?
+    var nameCard: JZUserInfo?
 //    var group: JZMessageGroup
     
 //    var readed = false
@@ -33,6 +39,10 @@ class JZSockMessage: NSObject, Mappable {
     func mapping(map: Map) {
         uuid    <- map["uuid"]
         uid     <- map["uid"]
+        cid     <- map["cid"]
+        jid     <- map["jid"]
+        job     <- map["job"]
+        nameCard <- map["nameCard"]
         text    <- map["text"]
         type    <- map["type"]
         time    <- (map["time"], JZServerDateTransforms())

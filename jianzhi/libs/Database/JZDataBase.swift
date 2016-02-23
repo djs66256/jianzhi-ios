@@ -63,15 +63,13 @@ class JZDataBase: NSObject {
         }
     }
     
-    func insert(sql:String, _ params:[NSObject: AnyObject]?, callback:(Int?)->Void) {
-        execuse {
-            if self.db.executeUpdate(sql, withParameterDictionary: params) {
-                let rowId: Int = Int(self.db.lastInsertRowId())
-                callback(rowId)
-            }
-            else {
-                callback(nil)
-            }
+    func insertSync(sql:String, _ params:[NSObject: AnyObject]?, callback:(Int?)->Void) {
+        if self.db.executeUpdate(sql, withParameterDictionary: params) {
+            let rowId: Int = Int(self.db.lastInsertRowId())
+            callback(rowId)
+        }
+        else {
+            callback(nil)
         }
     }
     

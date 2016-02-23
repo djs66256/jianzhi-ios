@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
+class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver, JZSelectJobListTableViewControllerDelegate {
     
     var messages = [JZMessage]()
     var group = JZMessageGroup()
@@ -106,7 +106,13 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
     }
     
     override func didPressAccessoryButton(sender: UIButton!) {
+        inputToolbar?.contentView?.textView?.resignFirstResponder()
         
+        if JZUserManager.sharedManager.currentUser?.userType == .boss {
+            let controller = JZSelectJobListTableViewController()
+            controller.delegate = self
+            navigationController?.pushViewController(controller, animated:true)
+        }
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
@@ -174,6 +180,17 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver {
             messages.append(message)
             finishReceivingMessageAnimated(true)
             JZMessageService.instance.clearUnread(message)
+        }
+    }
+    
+    func didSelectJob(controller: JZSelectJobListTableViewController, job: JZJob) {
+        controller.navigationController?.popViewControllerAnimated(true)
+        if let user = JZUserManager.sharedManager.currentUser, let toUser = group.user {
+            let message = JZMessage(fromUser: user, toUser: toUser, type: .Job, group: group)
+            message.job = job
+            message.unread = false
+            
+            JZMessageManager.sharedManager.send(message)
         }
     }
     

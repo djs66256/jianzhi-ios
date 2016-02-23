@@ -23,11 +23,18 @@ class JZMessage: JZBaseMessage {
     var type : JZMessageType = .None
     var group: JZMessageGroup?
     
+    var nameCard: JZUserInfo?
+    var job: JZJob?
+    
     var unread = true
     var uploaded = false
     
     override init() {
         super.init()
+    }
+    
+    convenience init(fromUser: JZUserInfo, toUser: JZUserInfo, type: JZMessageType, group: JZMessageGroup) {
+        self.init(fromUser: fromUser, toUser: toUser, text: "", date: NSDate(), type: type, group: group)
     }
     
     convenience init(fromUser: JZUserInfo, toUser: JZUserInfo, text: String, date: NSDate, type: JZMessageType, group: JZMessageGroup) {
@@ -65,8 +72,10 @@ class JZMessage: JZBaseMessage {
         let msg = JZSockMessage()
         msg.uid = toUser!.uid
         msg.uuid = uuid
-        msg.text = self.text
+        msg.text = self.text ?? ""
         msg.type = type
+        msg.jid = job?.id
+        msg.cid = nameCard?.uid
         
         return msg
     }

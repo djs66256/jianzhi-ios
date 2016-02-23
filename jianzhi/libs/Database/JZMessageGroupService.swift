@@ -83,7 +83,7 @@ class JZMessageGroupService: JZService {
     
     func findGroupByReceivedMessage(message: JZSockMessage, callback:(JZMessageGroup)->Void) {
         let groupType : JZMessageGroupType = (message.type == .Post) ? .Post : .Chat
-        if let index = groups.indexOf({ ($0.type == .Chat && $0.user?.uid == message.uid) }) {
+        if let index = groups.indexOf({ ($0.user?.uid == message.uid) }) {
             callback(groups[index])
         }
         else {

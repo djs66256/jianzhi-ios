@@ -61,12 +61,12 @@ class JZSocketManager: NSObject {
                 }
                 
                 if !uuids.isEmpty {
-                    self.socket.emitWithAck("messageAck", uuids)(timeoutAfter: UInt64(Socket.timeout)) { _ in }
+                    self.socket.emit("messageAck", uuids)
                 }
             }
             else if let json = data[0] as? [String:AnyObject] {
                 if let message = JZMessageManager.sharedManager.parse(json) {
-                    self.socket.emitWithAck("messageAck", message.uuid)(timeoutAfter: UInt64(Socket.timeout)) { _ in }
+                    self.socket.emit("messageAck", message.uuid)
                 }
             }
         }
@@ -117,9 +117,6 @@ class JZSocketManager: NSObject {
     
     func sendMessage(message:JZSockMessage) {
         let json = message.toJSON()
-        socket.emitWithAck("message", json)(timeoutAfter: UInt64(Socket.timeout)) { data in
-            
-        }
-        
+        socket.emit("message", json)
     }
 }

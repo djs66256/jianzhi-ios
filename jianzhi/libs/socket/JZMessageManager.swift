@@ -49,6 +49,8 @@ class JZMessageManager: UIView {
                             msg.fromUser = user
                             msg.group = group
                             msg.uploaded = true
+                            msg.job = message.job
+                            msg.nameCard = message.nameCard
                             
                             JZMessageService.instance.insert(msg)
                             self.receivers.forEach { $0.didReceiveMessage(msg) }
