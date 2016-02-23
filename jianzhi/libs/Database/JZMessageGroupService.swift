@@ -49,7 +49,20 @@ class JZMessageGroupService: JZService {
     }
     
     private func sortGroups(groups: [JZMessageGroup]) -> [JZMessageGroup] {
-        return groups
+        return groups.sort { (g1, g2) -> Bool in
+            if let m1 = g1.lastMessage, let m2 = g2.lastMessage {
+                return m1.id > m2.id
+            }
+            if let _ = g1.lastMessage {
+                return true
+            }
+            else if let _ = g2.lastMessage {
+                return false
+            }
+            else {
+                return g1.id > g2.id
+            }
+        }
     }
     
     private func maxGroupId() -> Int {

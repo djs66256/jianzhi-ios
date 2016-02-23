@@ -258,7 +258,7 @@ class JZUserDataBase: JZDataBase {
             + " LEFT JOIN user tu ON m.to_uid=tu.id"
             + " LEFT JOIN job j ON j.id=m.jid"
             + " WHERE m.gid=:gid"
-            + " ORDER BY m.date DESC"
+            + " ORDER BY m.id DESC"
             + " LIMIT :index, :count"
         let params = ["gid": group.id, "index": index, "count": count]
         queryAll(sql, params: params, unpack: { (result:FMResultSet) -> JZMessage? in

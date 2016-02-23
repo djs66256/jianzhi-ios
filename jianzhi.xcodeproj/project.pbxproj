@@ -1248,6 +1248,7 @@
 		659CF49E1C7CB885008D651A /* MediaItem */ = {
 			isa = PBXGroup;
 			children = (
+				659CF4AC1C7CBF7F008D651A /* NameCardMediaItem */,
 				659CF4A51C7CBF2D008D651A /* JobMediaItem */,
 			);
 			path = MediaItem;
@@ -1261,6 +1262,13 @@
 				659CF4A81C7CBF2D008D651A /* JZJobMediaItemView.xib */,
 			);
 			path = JobMediaItem;
+			sourceTree = "<group>";
+		};
+		659CF4AC1C7CBF7F008D651A /* NameCardMediaItem */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NameCardMediaItem;
 			sourceTree = "<group>";
 		};
 		65BD112F1C367FF100EB79F9 /* 3part */ = {
