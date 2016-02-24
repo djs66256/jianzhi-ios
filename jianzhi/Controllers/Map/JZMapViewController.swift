@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDelegate {
+class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDelegate, BMKLocationServiceDelegate {
 
     let personAnnotationIdentifier = "person"
     let companyAnnotationIdentifier = "company"
@@ -16,6 +16,7 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
     @IBOutlet weak var mapView: BMKMapView!
     private let mapManager = BMKMapManager()
     
+    let locationService = BMKLocationService()
     
     convenience init() {
         self.init(nibName: "JZMapViewController", bundle: nil)
@@ -34,9 +35,13 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         self.edgesForExtendedLayout = UIRectEdge.None
+        
+        locationService.delegate = self
+        locationService.startUserLocationService()
+        mapView.showsUserLocation = true
         // Do any additional setup after loading the view.
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "select", style: UIBarButtonItemStyle.Bordered, target: self, action: Selector("selectMap"))
+//        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "select", style: UIBarButtonItemStyle.Bordered, target: self, action: Selector("selectMap"))
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -46,12 +51,7 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-//        let annotation = JZMapAnnotation()
-//        annotation.coordinate = CLLocationCoordinate2DMake(39.915, 116.404)
-//        annotation.title = "title"
-//        annotation.subtitle = "subtitle"
-//        mapView.addAnnotation(annotation)
-//        
+
         let coor = CLLocationCoordinate2DMake(40, 116)
         JZSearchViewModel.mapSearch("all", coor:coor, range: 1, success:{ (annotations) -> Void in
             self.mapView.addAnnotations(annotations)
@@ -122,22 +122,16 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
         
     }
     
-    func selectMap() {
-//        let msg = JZMessage(user: JZUserManager.sharedManager.currentUser!, text: "teststss", date: NSDate(), type: .Text, group: nil)
-//        let msg = JZSockMessage()
-//        msg.uid = 2
-//        msg.text = "hhahhahahaha"
-//        msg.type = .Message
-//        JZSocketManager.sharedManager.sendMessage(msg)
-//        let viewController = UINavigationController(rootViewController:JZSelectLocationViewController())
-//        viewController.modalTransitionStyle = UIModalTransitionStyle.FlipHorizontal
-//        self.presentViewController(viewController, animated: true, completion: nil)
-//    }
-
-        for i in 0...1 {
-            let view = UIImageView()
-            view.sd_setImageWithURL(JZUserManager.sharedManager.currentUser!.avatarUrl)
-            self.view.addSubview(view)
-        }
+    // MARK: map delegate
+    func didUpdateUserHeading(userLocation: BMKUserLocation)
+    {
+    //NSLog(@"heading is %@",userLocation.heading);
     }
+    //处理位置坐标更新
+    func didUpdateBMKUserLocation(userLocation: BMKUserLocation)
+    {
+        NSLog("didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
+        mapView.updateLocationData(userLocation)
+    }
+    
 }
