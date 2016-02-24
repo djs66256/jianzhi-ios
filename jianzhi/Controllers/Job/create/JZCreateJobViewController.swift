@@ -38,6 +38,7 @@ class JZCreateJobViewController: UIViewController {
     @IBAction func saveButtonClicked(sender: AnyObject) {
         JZJobViewModel.create(job, success: { (job:JZJob) -> Void in
             self.delegate?.createJob(self, job)
+            self.navigationController?.popViewControllerAnimated(true)
             }, failure: { (error:String?) -> Void in
                 JZAlertView.show(error)
         })

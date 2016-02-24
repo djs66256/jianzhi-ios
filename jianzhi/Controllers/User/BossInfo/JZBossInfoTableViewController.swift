@@ -85,8 +85,10 @@ class JZBossInfoTableViewController: JZStaticTableViewController {
     }
     
     @IBAction func userBaseInfoClicked(sender: AnyObject) {
-        let viewController = JZEditUserBaseInfoTableViewController()
-        viewController.userInfo = userInfo
-        navigationController?.pushViewController(viewController, animated: true)
+        if editable {
+            let viewController = JZEditUserBaseInfoTableViewController()
+            viewController.userInfo = userInfo
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 }
