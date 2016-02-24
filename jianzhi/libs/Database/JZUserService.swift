@@ -21,7 +21,7 @@ class JZUserService: JZService {
     
     func findUserById(uid: Int, callback:(JZUserInfo)->Void) {
         if let user = cache.objectForKey(uid) as? JZUserInfo {
-            callback(user)
+            return callback(user)
         }
         db?.findUserById(uid) { (user) -> Void in
             if let user = user {

@@ -71,9 +71,15 @@ class JZMessage: JZBaseMessage {
         if let mediaData = mediaData {
             return mediaData
         }
-        if type == .Job, let job = job {
+        if type == .Job{
             let media = JZJobMediaItem()
             media.job = job
+            self.mediaData = media
+            return media
+        }
+        else if type == .Person{
+            let media = JZNameCardMediaItem()
+            media.message = self
             self.mediaData = media
             return media
         }

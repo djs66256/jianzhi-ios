@@ -160,6 +160,9 @@
 		659CF4A91C7CBF2D008D651A /* JZJobMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659CF4A61C7CBF2D008D651A /* JZJobMediaItem.swift */; };
 		659CF4AA1C7CBF2D008D651A /* JZJobMediaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659CF4A71C7CBF2D008D651A /* JZJobMediaItemView.swift */; };
 		659CF4AB1C7CBF2D008D651A /* JZJobMediaItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 659CF4A81C7CBF2D008D651A /* JZJobMediaItemView.xib */; };
+		659CF4AE1C7D997F008D651A /* JZNameCardMediaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659CF4AD1C7D997F008D651A /* JZNameCardMediaItemView.swift */; };
+		659CF4B01C7D99D7008D651A /* JZNameCardMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659CF4AF1C7D99D7008D651A /* JZNameCardMediaItem.swift */; };
+		659CF4B21C7D99F1008D651A /* JZNameCardMediaItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 659CF4B11C7D99F1008D651A /* JZNameCardMediaItemView.xib */; };
 		65A321B41C5B2E360024968B /* JZMessageGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A321B31C5B2E360024968B /* JZMessageGroup.swift */; };
 		65BBAAB71C7477F400B6412E /* JZUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBAAB61C7477F400B6412E /* JZUserService.swift */; };
 		65BBAAB91C76E61900B6412E /* JZAutoUpdateUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BBAAB81C76E61900B6412E /* JZAutoUpdateUserInfo.swift */; };
@@ -429,6 +432,9 @@
 		659CF4A61C7CBF2D008D651A /* JZJobMediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobMediaItem.swift; sourceTree = "<group>"; };
 		659CF4A71C7CBF2D008D651A /* JZJobMediaItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobMediaItemView.swift; sourceTree = "<group>"; };
 		659CF4A81C7CBF2D008D651A /* JZJobMediaItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZJobMediaItemView.xib; sourceTree = "<group>"; };
+		659CF4AD1C7D997F008D651A /* JZNameCardMediaItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZNameCardMediaItemView.swift; sourceTree = "<group>"; };
+		659CF4AF1C7D99D7008D651A /* JZNameCardMediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZNameCardMediaItem.swift; sourceTree = "<group>"; };
+		659CF4B11C7D99F1008D651A /* JZNameCardMediaItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZNameCardMediaItemView.xib; sourceTree = "<group>"; };
 		65A321B31C5B2E360024968B /* JZMessageGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZMessageGroup.swift; sourceTree = "<group>"; };
 		65BBAAB61C7477F400B6412E /* JZUserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZUserService.swift; sourceTree = "<group>"; };
 		65BBAAB81C76E61900B6412E /* JZAutoUpdateUserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZAutoUpdateUserInfo.swift; sourceTree = "<group>"; };
@@ -1267,6 +1273,9 @@
 		659CF4AC1C7CBF7F008D651A /* NameCardMediaItem */ = {
 			isa = PBXGroup;
 			children = (
+				659CF4AF1C7D99D7008D651A /* JZNameCardMediaItem.swift */,
+				659CF4AD1C7D997F008D651A /* JZNameCardMediaItemView.swift */,
+				659CF4B11C7D99F1008D651A /* JZNameCardMediaItemView.xib */,
 			);
 			path = NameCardMediaItem;
 			sourceTree = "<group>";
@@ -1980,6 +1989,7 @@
 				65132B9C1C56BED0001815AD /* JZWorkExperiencesCellTableViewCell.xib in Resources */,
 				6514C2D31C3D71C900B144E7 /* JZWorkExperienceTableViewCell.xib in Resources */,
 				65132B7F1C56B21D001815AD /* JZMyJobSeekerTableViewController.xib in Resources */,
+				659CF4B21C7D99F1008D651A /* JZNameCardMediaItemView.xib in Resources */,
 				65CC0C271C7C5212001B30BD /* JZSelectJobListTableViewCell.xib in Resources */,
 				652754521C56EF3C007672EF /* JZEditCompanyViewController.xib in Resources */,
 				6526A49A1C73114B0052CEDF /* JZPostJobTableViewController.xib in Resources */,
@@ -2173,6 +2183,7 @@
 				65C8437B1C3A6E5B00D8FAD5 /* JZDetialJobInfoViewController.swift in Sources */,
 				652884DC1C59C5370039BFB6 /* SocketStringReader.swift in Sources */,
 				6514C2B31C3D51E400B144E7 /* JZJobseekerUserInfo.swift in Sources */,
+				659CF4AE1C7D997F008D651A /* JZNameCardMediaItemView.swift in Sources */,
 				65BE0E6A1C4EA67500E84442 /* CustomDateFormatTransform.swift in Sources */,
 				6528849B1C5948C10039BFB6 /* UIImage.swift in Sources */,
 				65E282C11C4452B4006EDA4D /* JZPath.swift in Sources */,
@@ -2223,6 +2234,7 @@
 				65BE0E6C1C4EA67500E84442 /* DateTransform.swift in Sources */,
 				650C0AD71C3822FF00F7E885 /* JZRegisterTableViewCell.swift in Sources */,
 				65DB4ED21C39B9E60014DB94 /* JZRegisterResumeTableViewController.swift in Sources */,
+				659CF4B01C7D99D7008D651A /* JZNameCardMediaItem.swift in Sources */,
 				657E46921C3EB61300A628D8 /* JZGenderTableViewCell.swift in Sources */,
 				65BD11561C3685E800EB79F9 /* JZChatViewController.swift in Sources */,
 				65132BAB1C56C671001815AD /* JZJobListCellTableViewCell.swift in Sources */,
