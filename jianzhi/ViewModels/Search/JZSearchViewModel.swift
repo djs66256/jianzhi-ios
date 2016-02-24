@@ -46,28 +46,24 @@ class JZSearchViewModel: NSObject {
             }, failure: failure)
     }
     
-    class func mapSearch(success:([JZMapAnnotation])->Void, failure:(String?)->Void) {
-        
-        var annotations = [JZMapAnnotation]()
-        for i in 0...3 {
-            let annotation = JZPersonMapAnnotation()
-            annotation.coordinate = CLLocationCoordinate2DMake(39.915 + 0.04 * Double(i), 116.404 + 0.04 * Double(i))
-            annotation.title = "person"
-            annotation.subtitle = "person description"
-            
-            annotations.append(annotation)
-        }
-        
-        for i in 0...3 {
-            let annotation = JZCompanyMapAnnotation()
-            annotation.coordinate = CLLocationCoordinate2DMake(39.905 - 0.04 * Double(i), 116.404 + 0.04 * Double(i))
-            annotation.title = "company"
-            annotation.subtitle = "company detail"
-            
-            annotations.append(annotation)
-        }
-        
-        success(annotations)
-        
+    class func mapSearch(type: String, coor: CLLocationCoordinate2D, range: Double, success:([JZMapAnnotation])->Void, failure:(String?)->Void) {
+        let params = [
+            "type": type,
+            "lat": coor.latitude,
+            "lon": coor.longitude,
+            "range": range]
+        JZRequestOperationManager.POSTParams("json/user/search/map", params: params, success: { (json) -> Void in
+            if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
+                if let items = Mapper<JZMapAnnotation>().mapArray(json["content"]) {
+                    success(items)
+                }
+                else {
+                    failure("数据错误")
+                }
+            }
+            else {
+                failure(json["content"] as? String)
+            }
+            }, failure: failure)
     }
 }

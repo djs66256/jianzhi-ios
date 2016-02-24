@@ -52,7 +52,8 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
 //        annotation.subtitle = "subtitle"
 //        mapView.addAnnotation(annotation)
 //        
-        JZSearchViewModel.mapSearch({ (annotations) -> Void in
+        let coor = CLLocationCoordinate2DMake(40, 116)
+        JZSearchViewModel.mapSearch("all", coor:coor, range: 1, success:{ (annotations) -> Void in
             self.mapView.addAnnotations(annotations)
             }, failure: {
                 JZAlertView.show($0)
