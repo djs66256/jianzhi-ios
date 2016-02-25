@@ -48,14 +48,6 @@ class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDeleg
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        if JZUserManager.sharedManager.isLogin {
-            let coor = CLLocationCoordinate2DMake(40, 116)
-            JZSearchViewModel.mapSearch("all", coor:coor, range: 1, success:{ (annotations) -> Void in
-                self.mapView.addAnnotations(annotations)
-                }, failure: {
-                    JZAlertView.show($0)
-            })
-        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -130,6 +122,26 @@ class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDeleg
     {
         NSLog("didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
         mapView.updateLocationData(userLocation)
+        
+        let coor = userLocation.location.coordinate
+        if JZLocationManager.sharedManager.coor == nil{
+            mapView.setCenterCoordinate(coor, animated:true)
+            let point = BMKMapPointForCoordinate(coor)
+            let range = 10000.0
+            let rect = BMKMapRect(origin: BMKMapPointMake(point.x - range/2, point.y - range/2), size: BMKMapSize(width: range, height: range))
+            mapView.setVisibleMapRect(rect, animated:true)
+        }
+        
+        if JZLocationManager.sharedManager.updateCoordinate(coor) {
+            if JZUserManager.sharedManager.isLogin {
+                JZSearchViewModel.mapSearch("all", coor:coor, range: 1, success:{ (annotations) -> Void in
+                    self.mapView.addAnnotations(annotations)
+                    }, failure: {
+                        JZAlertView.show($0)
+                })
+            }
+        }
+        
     }
     
 }

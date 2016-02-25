@@ -296,4 +296,17 @@ class JZUserViewModel: NSObject {
             }
             }, failure: failure)
     }
+    
+    class func uploadCoordinate(coor: CLLocationCoordinate2D, success:()->Void, failure:(String?)->Void) {
+        let params = ["lat": coor.latitude, "lon": coor.longitude]
+        JZRequestOperationManager.POSTParams("json/user/upload/location", params: params, success: { (json) -> Void in
+            if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
+                success()
+            }
+            else {
+                failure("更新失败")
+            }
+
+            }, failure: failure)
+    }
 }

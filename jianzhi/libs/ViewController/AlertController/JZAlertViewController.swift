@@ -16,7 +16,6 @@ class JZAlertViewController: JZViewController {
         if #available(iOS 8.0, *) {
             self.modalPresentationStyle = .Custom
             self.modalTransitionStyle = .CrossDissolve
-            UIPopoverController
         } else {
             self.modalPresentationStyle = .CurrentContext
         }
