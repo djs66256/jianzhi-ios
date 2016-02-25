@@ -13,7 +13,7 @@ protocol JZEditJobViewControllerDelegate : NSObjectProtocol {
     func editJobDeleted(viewController:JZEditJobViewController, job:JZJob)
 }
 
-class JZEditJobViewController: UIViewController {
+class JZEditJobViewController: JZViewController {
     
     let jobViewController = JZJobEditableTableViewController()
 

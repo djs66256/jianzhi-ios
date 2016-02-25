@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZRegisterJobTableViewController: UITableViewController, JZCreateJobViewControllerDelegate {
+class JZRegisterJobTableViewController: JZTableViewController, JZCreateJobViewControllerDelegate {
     
     let jobCellIdentifier = "job"
     

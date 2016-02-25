@@ -13,7 +13,7 @@ protocol JZEditEducationViewControllerDelegate {
     func editEducationDeleted(viewController:JZEditEducationViewController, education:JZEducation)
 }
 
-class JZEditEducationViewController: UIViewController {
+class JZEditEducationViewController: JZViewController {
     
     let educationViewController = JZEducationEditableTableViewController()
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZMyBossTableViewController: UITableViewController {
+class JZMyBossTableViewController: JZTableViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()

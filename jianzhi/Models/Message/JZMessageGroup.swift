@@ -23,7 +23,8 @@ class JZMessageGroup: NSObject {
         }
     }
     var type = JZMessageGroupType.None
-    var resume: JZResume?
+//    var resume: JZResume?
+    var job: JZJob?
     var user: JZUserInfo?
     var lastMessage: JZMessage?
     var unread: Int = 0

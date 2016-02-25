@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZSearchViewController: UIViewController, JZBaseFilterViewControllerDelegate {
+class JZSearchViewController: JZViewController, JZBaseFilterViewControllerDelegate {
 //    let jobCellIdentifier = "job"
     
     var filterViewController: JZBaseFilterViewController?

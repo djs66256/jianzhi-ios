@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZRegisterResumeTableViewController: UITableViewController, JZCreateEducationTableViewControllerDelegate, JZCreateWorkExperienceTableViewControllerDelegate, JZEducationLevelPickerViewControllerDelegate{
+class JZRegisterResumeTableViewController: JZStaticTableViewController, JZCreateEducationTableViewControllerDelegate, JZCreateWorkExperienceTableViewControllerDelegate, JZEducationLevelPickerViewControllerDelegate{
     static let educationIdentifier = "education"
     static let workExperienceIdentifier = "work"
     
@@ -21,7 +21,6 @@ class JZRegisterResumeTableViewController: UITableViewController, JZCreateEducat
     @IBOutlet var addWorkExperienceCell: UITableViewCell!
     
     
-    var cellArray = [UITableViewCell]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +42,6 @@ class JZRegisterResumeTableViewController: UITableViewController, JZCreateEducat
         self.tableView.registerNib(UINib(nibName: "JZEducationTableViewCell", bundle: nil), forCellReuseIdentifier: self.classForCoder.educationIdentifier)
         self.tableView.registerNib(UINib(nibName: "JZWorkExperienceTableViewCell", bundle: nil), forCellReuseIdentifier: self.classForCoder.workExperienceIdentifier)
         
-        cellArray = [academicCell, expectJobCell, descriptionCell]
     }
 
     override func didReceiveMemoryWarning() {

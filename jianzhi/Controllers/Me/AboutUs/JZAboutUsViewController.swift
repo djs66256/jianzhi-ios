@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZAboutUsViewController: UIViewController {
+class JZAboutUsViewController: JZViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

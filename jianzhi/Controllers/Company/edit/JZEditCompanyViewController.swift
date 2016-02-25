@@ -12,7 +12,7 @@ protocol JZEditCompanyViewControllerDelegate : NSObjectProtocol {
     func editCompanyViewDidFinished(viewController:JZEditCompanyViewController, company:JZCompany)
 }
 
-class JZEditCompanyViewController: UIViewController {
+class JZEditCompanyViewController: JZViewController {
 
     weak var delegate: JZEditCompanyViewControllerDelegate?
     

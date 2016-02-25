@@ -12,7 +12,7 @@ class JZLoginTableViewController: JZStaticTableViewController {
     
     @IBOutlet var passwordCell: JZLoginTableViewCell!
     @IBOutlet var userNameCell: JZLoginTableViewCell!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

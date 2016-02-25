@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZMeViewController: UITableViewController {
+class JZMeViewController: JZTableViewController {
     
     let dataArray = [
         ["title":"个人信息"],

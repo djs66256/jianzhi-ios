@@ -12,7 +12,7 @@ protocol JZSelectMyJobTableViewControllerDelegate : NSObjectProtocol {
     func didSelectJob(controller:JZSelectMyJobTableViewController, job:JZJob)
 }
 
-class JZSelectMyJobTableViewController: UITableViewController, JZCreateJobViewControllerDelegate {
+class JZSelectMyJobTableViewController: JZTableViewController, JZCreateJobViewControllerDelegate {
     private let cellIdentifier = "job"
     
     weak var delegate: JZSelectMyJobTableViewControllerDelegate?

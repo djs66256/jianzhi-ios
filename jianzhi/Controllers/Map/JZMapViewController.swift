@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDelegate, BMKLocationServiceDelegate {
+class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDelegate, BMKLocationServiceDelegate {
 
     let personAnnotationIdentifier = "person"
     let companyAnnotationIdentifier = "company"
@@ -17,10 +17,6 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
     private let mapManager = BMKMapManager()
     
     let locationService = BMKLocationService()
-    
-    convenience init() {
-        self.init(nibName: "JZMapViewController", bundle: nil)
-    }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -52,12 +48,14 @@ class JZMapViewController: UIViewController, BMKGeneralDelegate, BMKMapViewDeleg
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        let coor = CLLocationCoordinate2DMake(40, 116)
-        JZSearchViewModel.mapSearch("all", coor:coor, range: 1, success:{ (annotations) -> Void in
-            self.mapView.addAnnotations(annotations)
-            }, failure: {
-                JZAlertView.show($0)
-        })
+        if JZUserManager.sharedManager.isLogin {
+            let coor = CLLocationCoordinate2DMake(40, 116)
+            JZSearchViewModel.mapSearch("all", coor:coor, range: 1, success:{ (annotations) -> Void in
+                self.mapView.addAnnotations(annotations)
+                }, failure: {
+                    JZAlertView.show($0)
+            })
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {

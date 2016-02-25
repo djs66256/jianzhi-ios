@@ -12,7 +12,7 @@ protocol JZEditUserGenderTableViewControllerDelegate : NSObjectProtocol {
     func editUserGenderFinished(viewController:JZEditUserGenderTableViewController, gender:JZGenderType)
 }
 
-class JZEditUserGenderTableViewController: UITableViewController {
+class JZEditUserGenderTableViewController: JZTableViewController {
     
     weak var delegate: JZEditUserGenderTableViewControllerDelegate?
     

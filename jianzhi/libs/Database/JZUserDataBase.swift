@@ -47,7 +47,7 @@ class JZUserDataBase: JZDataBase {
                 "title TEXT," +
                 "type INTEGER," +
                 "uid INTEGER," +
-                "rid INTEGER," +
+                "jid INTEGER," +
                 "create_date DATE" +
             ");",
             "CREATE TABLE IF NOT EXISTS job (" +

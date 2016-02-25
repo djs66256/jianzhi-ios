@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZSelectDistrictTableViewController: UITableViewController {
+class JZSelectDistrictTableViewController: JZTableViewController {
     let cellIdentifier = "cell"
     
     weak var delegate: JZSelectAreaViewControllerDelegate?

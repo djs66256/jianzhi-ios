@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZSelectCityTableViewController: UITableViewController {
+class JZSelectCityTableViewController: JZTableViewController {
     
     let cellIdentifier = "cell"
     

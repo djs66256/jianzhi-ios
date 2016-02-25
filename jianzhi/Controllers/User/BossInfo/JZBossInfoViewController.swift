@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZBossInfoViewController: UIViewController {
+class JZBossInfoViewController: JZViewController {
 
     let tableViewController = JZBossInfoTableViewController()
     

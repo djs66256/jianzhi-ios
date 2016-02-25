@@ -12,7 +12,7 @@ protocol JZCreateJobViewControllerDelegate : NSObjectProtocol {
     func createJob(viewController: JZCreateJobViewController, _ job: JZJob)
 }
 
-class JZCreateJobViewController: UIViewController {
+class JZCreateJobViewController: JZViewController {
 
     weak var delegate : JZCreateJobViewControllerDelegate?
     

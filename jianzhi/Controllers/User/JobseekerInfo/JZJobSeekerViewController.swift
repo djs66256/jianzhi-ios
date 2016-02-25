@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZJobSeekerViewController: UIViewController {
+class JZJobSeekerViewController: JZViewController {
     let tableViewController = JZJobSeekerTableViewController()
     
     @IBOutlet weak var bottomView: UIView!

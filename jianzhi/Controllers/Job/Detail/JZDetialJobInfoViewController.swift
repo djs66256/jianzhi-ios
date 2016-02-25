@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZDetialJobInfoViewController: UIViewController {
+class JZDetialJobInfoViewController: JZViewController {
     
     var jobId: Int?
     var job: JZJobDetailInfo?

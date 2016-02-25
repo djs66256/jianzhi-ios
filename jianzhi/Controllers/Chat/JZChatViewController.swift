@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZChatViewController: UITableViewController {
+class JZChatViewController: JZTableViewController {
     let chatCellIdentifier = "chat"
     let myChatCellIdentifier = "myChat"
     let otherChatCellIdentifier = "otherChat"

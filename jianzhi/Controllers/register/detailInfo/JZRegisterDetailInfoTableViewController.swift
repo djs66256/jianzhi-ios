@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZRegisterDetailInfoTableViewController: UITableViewController {
+class JZRegisterDetailInfoTableViewController: JZTableViewController {
     
     static let cellIdentifier = "cell"
     

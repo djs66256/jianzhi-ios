@@ -12,7 +12,7 @@ protocol JZCreateEducationTableViewControllerDelegate : NSObjectProtocol {
     func createEducation(viewController:JZCreateEducationTableViewController, _ education:JZEducation)
 }
 
-class JZCreateEducationTableViewController: UIViewController {
+class JZCreateEducationTableViewController: JZViewController {
     
     weak var delegate : JZCreateEducationTableViewControllerDelegate?
     

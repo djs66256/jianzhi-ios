@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZFeedbackViewController: UIViewController {
+class JZFeedbackViewController: JZViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

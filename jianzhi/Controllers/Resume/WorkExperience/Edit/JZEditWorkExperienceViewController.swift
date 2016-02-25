@@ -13,7 +13,7 @@ protocol JZEditWorkExperienceViewControllerDelegate : NSObjectProtocol {
     func editWorkExperienceDeleted(viewController:JZEditWorkExperienceViewController, work:JZWorkExperience)
 }
 
-class JZEditWorkExperienceViewController: UIViewController {
+class JZEditWorkExperienceViewController: JZViewController {
 
     let workExpViewController = JZWorkExperienceEditableTableViewController()
     

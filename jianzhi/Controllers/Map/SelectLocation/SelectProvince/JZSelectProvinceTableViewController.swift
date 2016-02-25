@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZSelectProvinceTableViewController: UITableViewController {
+class JZSelectProvinceTableViewController: JZTableViewController {
 
     weak var delegate: JZSelectAreaViewControllerDelegate?
     

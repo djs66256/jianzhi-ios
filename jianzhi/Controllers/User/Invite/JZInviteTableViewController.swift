@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZInviteTableViewController: UITableViewController {
+class JZInviteTableViewController: JZTableViewController {
     
     @IBOutlet var inviteCell: UITableViewCell!
     @IBOutlet var messageCell: UITableViewCell!

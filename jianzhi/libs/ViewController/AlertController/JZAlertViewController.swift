@@ -8,13 +8,18 @@
 
 import UIKit
 
-class JZAlertViewController: UIViewController {
+class JZAlertViewController: JZViewController {
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
-        self.modalPresentationStyle = .Custom
-        self.modalTransitionStyle = .CrossDissolve
+        if #available(iOS 8.0, *) {
+            self.modalPresentationStyle = .Custom
+            self.modalTransitionStyle = .CrossDissolve
+            UIPopoverController
+        } else {
+            self.modalPresentationStyle = .CurrentContext
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,6 +48,8 @@ class JZAlertViewController: UIViewController {
     
     func showInController(controller: UIViewController) {
         controller.definesPresentationContext = true
+        controller.providesPresentationContextTransitionStyle = true
+        
         controller.presentViewController(self, animated: true, completion: nil)
     }
     

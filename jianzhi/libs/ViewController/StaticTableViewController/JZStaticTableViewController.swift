@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZStaticTableViewController: UITableViewController {
+class JZStaticTableViewController: JZTableViewController {
     
     @IBOutlet var cellArray: [UITableViewCell]!
     @IBOutlet var tableHeaderView: UIView?

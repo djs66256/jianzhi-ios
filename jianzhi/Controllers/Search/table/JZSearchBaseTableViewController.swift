@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZSearchBaseTableViewController: UITableViewController {
+class JZSearchBaseTableViewController: JZTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

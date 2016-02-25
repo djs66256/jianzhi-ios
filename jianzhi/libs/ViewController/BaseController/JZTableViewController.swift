@@ -1,56 +1,50 @@
 //
-//  JZCreateResumeTableViewController.swift
+//  JZTableViewController.swift
 //  jianzhi
 //
-//  Created by daniel on 16/1/3.
+//  Created by daniel on 16/2/25.
 //  Copyright © 2016年 jianzhi. All rights reserved.
 //
 
 import UIKit
 
-class JZCreateResumeTableViewController: JZTableViewController {
-        
+class JZTableViewController: UITableViewController {
+    
+    override init(style: UITableViewStyle) {
+        super.init(style: style)
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    convenience init() {
+        let nibName = "\(self.dynamicType)"
+        if let _ = NSBundle.mainBundle().pathForResource(nibName, ofType: "nib") {
+            self.init(nibName: nibName, bundle:nil)
+        }
+        else {
+            self.init(nibName: nil, bundle: nil)
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "create", style: UIBarButtonItemStyle.Bordered, target: self, action: Selector("createResume"))
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func createResume() {
-        let resume = JZResume()
-        resume.salaryType = JZSalaryTypeBy.month
-        resume.descriptions = "哈哈哈哈"
-        resume.expectSalary = 8000
-        
-        let education2 = JZEducation()
-        education2.school = "浙江大学"
-        education2.major = "电子"
-        education2.level = JZEducationLevel.bachelor
-        
-        
-        let education3 = JZEducation()
-//        education.school = "浙江大学"
-        education3.major = "电子"
-        education3.level = JZEducationLevel.bachelor
-        
-        
-        let education = JZEducation()
-        education.school = "浙江大学"
-//        education.major = "电子"
-        education.level = JZEducationLevel.bachelor
-        
-        resume.educations = [education, education2, education3]
-        
-        JZResumeViewModel.create(resume, { () -> Void in
-            
-            }) { (error: String?) -> Void in
-                UIAlertView(title: error, message: nil, delegate: nil, cancelButtonTitle: "确定").show()
-        }
     }
 
     // MARK: - Table view data source
@@ -119,5 +113,5 @@ class JZCreateResumeTableViewController: JZTableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    
+
 }

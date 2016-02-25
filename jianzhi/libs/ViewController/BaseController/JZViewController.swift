@@ -1,21 +1,38 @@
 //
-//  JZDetailUserInfoViewController.swift
+//  JZViewController.swift
 //  jianzhi
 //
-//  Created by daniel on 16/1/1.
+//  Created by daniel on 16/2/25.
 //  Copyright © 2016年 jianzhi. All rights reserved.
 //
 
 import UIKit
 
-class JZDetailUserInfoViewController: JZViewController {
+class JZViewController: UIViewController {
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    convenience init() {
+        let nibName = "\(self.dynamicType)"
+        if let _ = NSBundle.mainBundle().pathForResource(nibName, ofType: "nib") {
+            self.init(nibName: nibName, bundle:nil)
+        }
+        else {
+            self.init(nibName: nil, bundle: nil)
+        }
+    }
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
-        
-        self.edgesForExtendedLayout = UIRectEdge.None
-        self.navigationItem.title = "个人信息"
     }
 
     override func didReceiveMemoryWarning() {
@@ -23,10 +40,6 @@ class JZDetailUserInfoViewController: JZViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func inviteClicked(sender: AnyObject) {
-        let viewController = JZInviteTableViewController()
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
 
     /*
     // MARK: - Navigation

@@ -9,7 +9,7 @@
 #if DEBUG
     
     struct BaiduMap{
-        static let accessKey = "MVZVRMg3H5dFSG416avM53Xw"
+        static let accessKey = "i22D28mPLr79A8DSC27GaFs3" //"MVZVRMg3H5dFSG416avM53Xw"
     }
     
     struct Socket {
@@ -23,7 +23,7 @@
     }
     
     struct HTTP {
-        static let ip = "localhost" //"192.168.1.104"
+        static let ip = "192.168.1.103" // "localhost" //"192.168.1.104"
         static let port = 8080
         static let location = "\(HTTP.ip):\(HTTP.port)"
         

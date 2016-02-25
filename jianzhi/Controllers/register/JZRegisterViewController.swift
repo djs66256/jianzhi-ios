@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZRegisterViewController: UITableViewController {
+class JZRegisterViewController: JZStaticTableViewController {
     
 //    var userInfo: JZUserInfo?
     var identifyingCode : String?
@@ -21,12 +21,12 @@ class JZRegisterViewController: UITableViewController {
     @IBOutlet weak var jobseekerButton: UIButton!
     @IBOutlet weak var bossButton: UIButton!
     
-    var cellArray : [UITableViewCell]!
+//    var cellArray : [UITableViewCell]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        cellArray = [userNameCell, identifyCell, passwordCell, buttonsCell]
+//        cellArray = [userNameCell, identifyCell, passwordCell, buttonsCell]
         
         self.navigationItem.title = "注册"
     }

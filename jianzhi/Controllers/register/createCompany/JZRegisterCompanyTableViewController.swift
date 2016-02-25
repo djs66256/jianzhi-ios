@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZRegisterCompanyTableViewController: UIViewController {
+class JZRegisterCompanyTableViewController: JZViewController {
     
     var userInfo : JZBossUserInfo?
     var company : JZCompany {

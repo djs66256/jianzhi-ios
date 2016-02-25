@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZForgetPasswordTableViewController: UITableViewController {
+class JZForgetPasswordTableViewController: JZStaticTableViewController {
     
     var identifyingCode: String?
         
@@ -18,39 +18,18 @@ class JZForgetPasswordTableViewController: UITableViewController {
     @IBOutlet var passwordCell: JZTextFieldTableViewCell!
     @IBOutlet var buttonCell: UITableViewCell!
     
-    var cellArray = [UITableViewCell]()
+//    var cellArray = [UITableViewCell]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        cellArray = [accountCell, identifyCell, passwordCell, buttonCell]
+//        cellArray = [accountCell, identifyCell, passwordCell, buttonCell]
         self.navigationItem.title = "忘记密码"
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return cellArray.count
-    }
-
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return cellArray[indexPath.row]
-    }
-    
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return CGRectGetHeight(cellArray[indexPath.row].frame)
     }
     
     @IBAction func identifyingCodeClicked(sender: AnyObject) {
