@@ -89,6 +89,9 @@ class JZSearchViewController: JZViewController, JZBaseFilterViewControllerDelega
         }
         else if let filter = viewController.filter as? JZPersonFilter {
             // TODO: xxx
+            JZSearchViewModel.personFilter(filter, success: { (userList) -> Void in
+                self.tableViewController?.reloadData(userList)
+                }, failure: { JZAlertView.show($0) })
         }
     }
 }

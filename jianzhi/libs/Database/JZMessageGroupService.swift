@@ -87,11 +87,46 @@ class JZMessageGroupService: JZService {
             group.user = user
             NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
         }
-        db?.insertMessageGroup(group, ignoreIfExists: false)
+        db?.insertMessageGroup(group, ignoreIfExists: false) {_ in}
         
         self.groups.insert(group, atIndex: 0)
         
         return group
+    }
+    
+    func findJobGroupByJob(job: JZJob, callback:(JZMessageGroup)->Void) {
+        let group = JZMessageGroup()
+        group.type = .Post
+        group.job = job;
+        if let localGroup = findMemoryCacheGroupByGroup(group) {
+            callback(localGroup)
+        }
+        else {
+            groups.insert(group, atIndex: 0)
+            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
+            
+            db?.insertMessageGroup(group, ignoreIfExists: true) { _ in }
+        }
+    }
+    
+    func findGroupByGroup(group: JZMessageGroup, callback:(JZMessageGroup)->Void) {
+        if let localGroup = findMemoryCacheGroupByGroup(group) {
+            callback(localGroup)
+        }
+        else {
+            groups.insert(group, atIndex: 0)
+            db?.insertMessageGroup(group, ignoreIfExists: true, callback: { _ in
+                callback(group)
+                NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
+            })
+        }
+    }
+    
+    private func findMemoryCacheGroupByGroup(group: JZMessageGroup) -> JZMessageGroup? {
+        if let index = groups.indexOf( { $0 == group} ) {
+            return groups[index]
+        }
+        return nil
     }
     
     func findGroupByReceivedMessage(message: JZSockMessage, callback:(JZMessageGroup)->Void) {

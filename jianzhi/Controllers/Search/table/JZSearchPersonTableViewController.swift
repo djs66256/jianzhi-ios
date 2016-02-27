@@ -10,6 +10,8 @@ import UIKit
 
 class JZSearchPersonTableViewController: JZSearchBaseTableViewController {
 
+    var userList: [JZUserInfo]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,6 +22,11 @@ class JZSearchPersonTableViewController: JZSearchBaseTableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
+    override func reloadData(items: [AnyObject]) {
+        userList = items as? [JZUserInfo]
+        tableView.reloadData()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -29,23 +36,36 @@ class JZSearchPersonTableViewController: JZSearchBaseTableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return userList?.count ?? 0
     }
 
-    /*
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+//        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+        var cell = tableView.dequeueReusableCellWithIdentifier("cell")
+        if cell == nil {
+            cell = UITableViewCell(style: .Default, reuseIdentifier: "cell")
+        }
+        cell!.textLabel?.text = userList?[indexPath.row].nickName
 
-        // Configure the cell...
-
-        return cell
+        return cell!
     }
-    */
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        if let user = userList?[indexPath.row] {
+            let controller = JZJobSeekerViewController()
+            controller.userId = user.uid
+            controller.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(controller, animated: true)
+        }
+    }
 
     /*
     // Override to support conditional editing of the table view.

@@ -55,7 +55,7 @@ class JZSearchJobTableViewController: JZSearchBaseTableViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    override func reloadData(items: [JZSearchBaseItem]) {
+    override func reloadData(items: [AnyObject]) {
         if let data = items as? [JZSearchJobItem] {
             self.dataSource = data
             self.tableView.reloadData()

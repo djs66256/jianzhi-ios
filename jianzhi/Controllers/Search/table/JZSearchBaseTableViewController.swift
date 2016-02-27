@@ -25,7 +25,7 @@ class JZSearchBaseTableViewController: JZTableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func reloadData(items: [JZSearchBaseItem]) {
+    func reloadData(items: [AnyObject]) {
         
     }
     

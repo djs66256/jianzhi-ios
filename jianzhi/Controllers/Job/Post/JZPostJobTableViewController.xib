@@ -51,7 +51,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="190" y="383"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="95" id="CL2-T9-VkR">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="95" id="CL2-T9-VkR" customClass="JZTextViewTableViewCell" customModule="jianzhi" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="95"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CL2-T9-VkR" id="GAI-y6-L1S">
@@ -66,6 +66,9 @@
                     </textView>
                 </subviews>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="textView" destination="olH-8B-3Nl" id="fur-Wq-HJH"/>
+            </connections>
             <point key="canvasLocation" x="190" y="484.5"/>
         </tableViewCell>
         <view contentMode="scaleToFill" id="3h1-hI-3xX">

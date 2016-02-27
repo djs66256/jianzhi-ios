@@ -61,6 +61,7 @@ func ==(lhs: JZMessageGroup, rhs: JZMessageGroup) -> Bool {
     if lhs.type == rhs.type {
         switch lhs.type {
         case .Chat: return lhs.user != nil && lhs.user?.uid == rhs.user?.uid
+        case .Post: return lhs.job != nil && lhs.job!.id == rhs.job?.id
         default: return false
         }
     }

@@ -42,9 +42,9 @@ class JZJobSeekerViewController: JZViewController {
     }
 
     @IBAction func postJob(sender: AnyObject) {
-        if let userId = userId {
+        if let user = tableViewController.userInfo {
             let controller = JZPostJobTableViewController()
-            controller.userId = userId
+            controller.userInfo = user
             navigationController?.pushViewController(controller, animated: true)
         }
     }

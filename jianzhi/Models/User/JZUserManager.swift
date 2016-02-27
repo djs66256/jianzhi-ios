@@ -81,6 +81,7 @@ class JZUserManager: NSObject {
         JZUserService.instance.db = db
         JZMessageService.instance.db = db
         JZMessageGroupService.instance.db = db
+        JZJobService.instance.db = db
         JZSocketManager.sharedManager.disconnect()
         JZMessageGroupService.instance.initGroups({
             JZSocketManager.sharedManager.connect()
@@ -92,6 +93,7 @@ class JZUserManager: NSObject {
         JZUserService.instance.db = nil
         JZMessageService.instance.db = nil
         JZMessageGroupService.instance.db = nil
+        JZJobService.instance.db = nil
         JZMessageGroupService.instance.initGroups({})
         
         if let cookies = cookieForUser() {

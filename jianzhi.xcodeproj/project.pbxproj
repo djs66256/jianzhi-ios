@@ -261,6 +261,7 @@
 		65E282CF1C46CA44006EDA4D /* JZEducationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E282CE1C46CA44006EDA4D /* JZEducationViewModel.swift */; };
 		65E5F7F71C7B004D00578648 /* JZChatGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E5F7F51C7B004D00578648 /* JZChatGroupTableViewCell.swift */; };
 		65E5F7F81C7B004D00578648 /* JZChatGroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65E5F7F61C7B004D00578648 /* JZChatGroupTableViewCell.xib */; };
+		65F76A951C81985B005A7142 /* JZJobService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F76A941C81985B005A7142 /* JZJobService.swift */; };
 		95C1483C73FDE6580499C012 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7AEAC2A50214FEB9F99D08 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -538,6 +539,7 @@
 		65E282CE1C46CA44006EDA4D /* JZEducationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZEducationViewModel.swift; sourceTree = "<group>"; };
 		65E5F7F51C7B004D00578648 /* JZChatGroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZChatGroupTableViewCell.swift; sourceTree = "<group>"; };
 		65E5F7F61C7B004D00578648 /* JZChatGroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JZChatGroupTableViewCell.xib; sourceTree = "<group>"; };
+		65F76A941C81985B005A7142 /* JZJobService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JZJobService.swift; sourceTree = "<group>"; };
 		6AC23298B865EEA240B13B90 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1852,6 +1854,7 @@
 				65BBAAB61C7477F400B6412E /* JZUserService.swift */,
 				652884E91C5AB7590039BFB6 /* JZMessageService.swift */,
 				65363AF31C71D10700ACFBC7 /* JZMessageGroupService.swift */,
+				65F76A941C81985B005A7142 /* JZJobService.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -2247,6 +2250,7 @@
 				65BD11AA1C36DE4700EB79F9 /* jianzhi.xcdatamodeld in Sources */,
 				652884D81C59C5370039BFB6 /* SocketIOClientStatus.swift in Sources */,
 				6590241D1C55377900A9255E /* JZJobDetailInfo.swift in Sources */,
+				65F76A951C81985B005A7142 /* JZJobService.swift in Sources */,
 				656747361C7EE4DE0045D27F /* JZViewController.swift in Sources */,
 				652884AF1C5976180039BFB6 /* JZDatePickerComponentView.swift in Sources */,
 				652754481C56DB01007672EF /* JZJobListHeaderView.swift in Sources */,

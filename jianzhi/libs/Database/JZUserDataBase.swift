@@ -203,7 +203,20 @@ class JZUserDataBase: JZDataBase {
         
     }
     
-    func insertMessageGroup(group: JZMessageGroup, ignoreIfExists: Bool) {
+    func insertMessageGroup(group: JZMessageGroup, ignoreIfExists: Bool, callback:(JZMessageGroup?)->Void) {
+        execuse {
+            if group.type == .Post, let job = group.job {
+                self.insertJobSync(job, ignoreIfExist: false, callback: {})
+            }
+            self.insertMessageGroupSync(group, ignoreIfExists: ignoreIfExists, callback: { group in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    callback(group)
+                })
+            })
+        }
+    }
+    
+    func insertMessageGroupSync(group: JZMessageGroup, ignoreIfExists: Bool, callback:(JZMessageGroup?)->Void) {
         let sql = "INSERT OR \(ignoreIfExists ? "IGNORE" : "REPLACE") INTO message_group"
             + " (id, title, type, uid, jid, create_date)"
             + " VALUES (:id, :title, :type, :uid, :jid, :create_date)"
@@ -216,7 +229,16 @@ class JZUserDataBase: JZDataBase {
             "create_date": group.createDate
         ]
         
-        update(sql, params)
+        insertSync(sql, params) { (rowId) -> Void in
+            if let rowId = rowId {
+                group.id = rowId
+                callback(group)
+            }
+            else {
+                callback(nil)
+            }
+        }
+//        update(sql, params)
 //        insert(sql, params) { (rowId) -> Void in
 //            if let rowId = rowId {
 //                group.id = rowId
@@ -370,6 +392,16 @@ class JZUserDataBase: JZDataBase {
             group.title = result.stringForColumn("title")
             return group
             }, callback: callback)
+    }
+    
+    func insertJob(job: JZJob, ignoreIfExist: Bool, callback:()->Void) {
+        execuse {
+            self.insertJobSync(job, ignoreIfExist: ignoreIfExist, callback: {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    callback()
+                })
+            })
+        }
     }
     
     private func insertJobSync(job: JZJob, ignoreIfExist: Bool, callback:()->Void) {
