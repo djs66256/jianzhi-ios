@@ -205,14 +205,14 @@ class JZUserDataBase: JZDataBase {
     
     func insertMessageGroup(group: JZMessageGroup, ignoreIfExists: Bool) {
         let sql = "INSERT OR \(ignoreIfExists ? "IGNORE" : "REPLACE") INTO message_group"
-            + " (id, title, type, uid, rid, create_date)"
-            + " VALUES (:id, :title, :type, :uid, :rid, :create_date)"
+            + " (id, title, type, uid, jid, create_date)"
+            + " VALUES (:id, :title, :type, :uid, :jid, :create_date)"
         let params = [
             "id": group.id,
             "title": group.title,
             "type": group.type.rawValue,
             "uid": group.user?.uid ?? 0,
-            "rid": 0,
+            "jid": 0,
             "create_date": group.createDate
         ]
         
@@ -363,7 +363,7 @@ class JZUserDataBase: JZDataBase {
 //    }
     
     func findGroupByFilter(filter:String, params:[String:AnyObject], callback:([JZMessageGroup])->Void) {
-        let sql = "SELECT id, title, type, uid, rid, create_date FROM message_group g LEFT JOIN user u ON u.id=g.uid " + filter
+        let sql = "SELECT id, title, type, uid, jid, create_date FROM message_group g LEFT JOIN user u ON u.id=g.uid " + filter
         queryAll(sql, params: params, unpack: { (result) -> JZMessageGroup? in
             let group = JZMessageGroup()
             group.id = Int(result.intForColumn("id"))
@@ -434,7 +434,7 @@ class JZUserDataBase: JZDataBase {
         return (queryItems, aliasItems, unpack)
     }
     
-    let groupQueryItems = " message_group.id AS gid, message_group.title AS gtitle, message_group.type AS gtype, message_group.uid AS guid, message_group.rid AS grid, message_group.create_date AS gcreate_date "
+    let groupQueryItems = " message_group.id AS gid, message_group.title AS gtitle, message_group.type AS gtype, message_group.uid AS guid, message_group.jid AS gjid, message_group.create_date AS gcreate_date "
     func unpackGroup(result: FMResultSet) -> JZMessageGroup? {
         let group = JZMessageGroup()
         group.id = Int(result.intForColumn("gid"))
@@ -445,7 +445,7 @@ class JZUserDataBase: JZDataBase {
     }
     
     func groupQueryItemsAndUnpackage(alias:String) -> (String, (FMResultSet)->JZMessageGroup?) {
-        let groupQueryItems = "\(alias).id AS \(alias)id, \(alias).title AS \(alias)title, \(alias).type AS \(alias)type, \(alias).uid AS \(alias)uid, \(alias).rid AS \(alias)rid, \(alias).create_date AS \(alias)create_date"
+        let groupQueryItems = "\(alias).id AS \(alias)id, \(alias).title AS \(alias)title, \(alias).type AS \(alias)type, \(alias).uid AS \(alias)uid, \(alias).jid AS \(alias)jid, \(alias).create_date AS \(alias)create_date"
         let unpack = { (result:FMResultSet)->JZMessageGroup? in
             let group = JZMessageGroup()
             group.id = Int(result.intForColumn("\(alias)id"))
