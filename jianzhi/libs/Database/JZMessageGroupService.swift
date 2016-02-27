@@ -65,50 +65,6 @@ class JZMessageGroupService: JZService {
         }
     }
     
-    private func maxGroupId() -> Int {
-        var id = 0
-        groups.forEach { (group) -> () in
-            if id < group.id {
-                id = group.id
-            }
-        }
-        return id
-    }
-    
-    private func createChatGroup(uid: Int) -> JZMessageGroup {
-        let user = JZUserInfo()
-        user.uid = uid
-        let group = JZMessageGroup()
-        group.id = maxGroupId() + 1
-        group.type = .Chat
-        group.user = user
-        
-        JZUserService.instance.findUserById(uid) { (user) -> Void in
-            group.user = user
-            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
-        }
-        db?.insertMessageGroup(group, ignoreIfExists: false) {_ in}
-        
-        self.groups.insert(group, atIndex: 0)
-        
-        return group
-    }
-    
-    func findJobGroupByJob(job: JZJob, callback:(JZMessageGroup)->Void) {
-        let group = JZMessageGroup()
-        group.type = .Post
-        group.job = job;
-        if let localGroup = findMemoryCacheGroupByGroup(group) {
-            callback(localGroup)
-        }
-        else {
-            groups.insert(group, atIndex: 0)
-            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
-            
-            db?.insertMessageGroup(group, ignoreIfExists: true) { _ in }
-        }
-    }
-    
     func findGroupByGroup(group: JZMessageGroup, callback:(JZMessageGroup)->Void) {
         if let localGroup = findMemoryCacheGroupByGroup(group) {
             callback(localGroup)
@@ -131,16 +87,16 @@ class JZMessageGroupService: JZService {
     
     func findGroupByReceivedMessage(message: JZSockMessage, callback:(JZMessageGroup)->Void) {
         let groupType : JZMessageGroupType = (message.type == .Post) ? .Post : .Chat
-        if let index = groups.indexOf({
+        let group = JZMessageGroup()
+        group.job = message.job
+        group.type = groupType
+        JZUserService.instance.findUserById(message.uid, callback: { (user) -> Void in
+            group.user = user
             
-            ($0.user?.uid == message.uid) }) {
-            callback(groups[index])
-        }
-        else {
-            let group = createChatGroup(message.uid)
-            
-            callback(group)
-        }
+            self.findGroupByGroup(group, callback: { (group) -> Void in
+                callback(group)
+            })
+        })
     }
     
     func remove(group: JZMessageGroup) {
