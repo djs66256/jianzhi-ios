@@ -14,4 +14,5 @@ class JZNotification: NSObject {
     static let Logout = "logout"
     static let Login = "login"
     static let UserUpdated = "userUpdated"
+    static let UserLocationUpdated = "userLocationUpdated";
 }

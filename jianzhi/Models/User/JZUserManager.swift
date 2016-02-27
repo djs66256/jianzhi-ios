@@ -8,18 +8,13 @@
 
 import UIKit
 
-protocol JZUserUpdateProtocol: NSObjectProtocol {
-    func didUpdateUser(user: JZUserInfo)
-}
-
-class JZUserManager: NSObject {
+class JZUserManager: NSObject, BMKLocationServiceDelegate {
     static let sharedManager = JZUserManager()
     
-    private var autoUpdateUsers = [JZAutoUpdateUserInfo]()
-    private var autoUpdateUsersListeners = [JZUserUpdateProtocol]()
+    let locationService = BMKLocationService()
+    var userLocation: BMKUserLocation?
     
     let myInfoKey = "myInfoKey"
-    
     var isLogin: Bool {
         get {
             return self.currentUser != nil && cookieForUser()?.count > 0
@@ -27,7 +22,6 @@ class JZUserManager: NSObject {
     }
     
     private var user: JZUserInfo?
-    
     var currentUser: JZUserInfo? {
         get {
             if self.user == nil {
@@ -63,7 +57,7 @@ class JZUserManager: NSObject {
     
     override init() {
         super.init()
-        
+        locationService.delegate = self
         if isLogin {
             setupUserService()
         }
@@ -86,6 +80,9 @@ class JZUserManager: NSObject {
         JZMessageGroupService.instance.initGroups({
             JZSocketManager.sharedManager.connect()
         })
+        
+        locationService.startUserLocationService()
+        NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.Login, object: nil)
     }
     
     private func clearUserService() {
@@ -95,36 +92,35 @@ class JZUserManager: NSObject {
         JZMessageGroupService.instance.db = nil
         JZJobService.instance.db = nil
         JZMessageGroupService.instance.initGroups({})
+        userLocation = nil
+        
+        locationService.stopUserLocationService()
         
         if let cookies = cookieForUser() {
             cookies.forEach {
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie($0)
             }
         }
+        NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.Logout, object: nil)
     }
     
-//    func updateUser(user:JZUserInfo, callback:(JZUserInfo?)->Void) {
-//        JZUserViewModel.userInfo(user.uid, success: { (newUser) -> Void in
-//            user.nickName = newUser.nickName
-//            user.gender = newUser.gender
-//            user.avatar = newUser.avatar
-//            user.descriptions = newUser.descriptions
-//            user.userType = newUser.userType
-//            user.userName = newUser.userName
-//            callback(user)
-//            
-//            NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.UserUpdated, object: user.uid, userInfo: ["user" : user])
-//            }, failure: { _ in
-//                callback(nil)
-//        })
-//    }
-//    
-//    func addUpdateUserListener(listener: JZUserUpdateProtocol) {
-//        autoUpdateUsersListeners.append(listener)
-//    }
-//    func removeUpdateUserListener(listener: JZUserUpdateProtocol) {
-//        if let index = autoUpdateUsersListeners.indexOf({ $0 === listener }) {
-//            autoUpdateUsersListeners.removeAtIndex(index)
-//        }
-//    }
+    // MARK: - map delegate
+    func didUpdateUserHeading(userLocation: BMKUserLocation)
+    {
+        //NSLog(@"heading is %@",userLocation.heading);
+    }
+    //处理位置坐标更新
+    func didUpdateBMKUserLocation(userLocation: BMKUserLocation)
+    {
+        //NSLog("didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
+//        mapView.updateLocationData(userLocation)
+        self.userLocation = userLocation
+        
+        let coor = userLocation.location.coordinate
+        if JZLocationManager.sharedManager.updateCoordinate(coor) {
+            if isLogin {
+                NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.UserLocationUpdated, object: nil)
+            }
+        }
+    }
 }

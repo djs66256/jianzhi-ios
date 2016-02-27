@@ -8,20 +8,28 @@
 
 import UIKit
 
-class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDelegate, BMKLocationServiceDelegate {
+class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDelegate {
 
     let personAnnotationIdentifier = "person"
     let companyAnnotationIdentifier = "company"
     
+    var userLocation: BMKUserLocation?
+    
     @IBOutlet weak var mapView: BMKMapView!
     private let mapManager = BMKMapManager()
     
-    let locationService = BMKLocationService()
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
         mapManager.start(BaiduMap.accessKey, generalDelegate: self)
+        
         self.navigationItem.title = "Map"
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("userLocationUpdatedNotification:"), name: JZNotification.UserLocationUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("userLogoutNotification:"), name: JZNotification.Logout, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -32,8 +40,6 @@ class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDeleg
         super.viewDidLoad()
         self.edgesForExtendedLayout = UIRectEdge.None
         
-        locationService.delegate = self
-        locationService.startUserLocationService()
         mapView.showsUserLocation = true
         // Do any additional setup after loading the view.
         
@@ -103,36 +109,27 @@ class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDeleg
         
     }
     
-    // MARK: map delegate
-    func didUpdateUserHeading(userLocation: BMKUserLocation)
-    {
-    //NSLog(@"heading is %@",userLocation.heading);
-    }
-    //处理位置坐标更新
-    func didUpdateBMKUserLocation(userLocation: BMKUserLocation)
-    {
-        NSLog("didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
-        mapView.updateLocationData(userLocation)
-        
-        let coor = userLocation.location.coordinate
-        if JZLocationManager.sharedManager.coor == nil{
-            mapView.setCenterCoordinate(coor, animated:true)
-            let point = BMKMapPointForCoordinate(coor)
-            let range = 10000.0
-            let rect = BMKMapRect(origin: BMKMapPointMake(point.x - range/2, point.y - range/2), size: BMKMapSize(width: range, height: range))
-            mapView.setVisibleMapRect(rect, animated:true)
-        }
-        
-        if JZLocationManager.sharedManager.updateCoordinate(coor) {
-            if JZUserManager.sharedManager.isLogin {
-                JZSearchViewModel.mapSearch("all", coor:coor, range: 1, success:{ (annotations) -> Void in
-                    self.mapView.addAnnotations(annotations)
-                    }, failure: {
-                        JZAlertView.show($0)
-                })
+    func userLocationUpdatedNotification(noti:NSNotification) {
+        if let coor = JZUserManager.sharedManager.userLocation?.location.coordinate {
+            if userLocation == nil{
+                mapView.setCenterCoordinate(coor, animated:true)
+                let point = BMKMapPointForCoordinate(coor)
+                let range = 10000.0
+                let rect = BMKMapRect(origin: BMKMapPointMake(point.x - range/2, point.y - range/2), size: BMKMapSize(width: range, height: range))
+                mapView.setVisibleMapRect(rect, animated:true)
             }
+            
+            JZSearchViewModel.mapSearch("all", coor:coor, range: 1, success:{ (annotations) -> Void in
+                self.mapView.addAnnotations(annotations)
+                }, failure: {
+                    JZAlertView.show($0)
+            })
         }
-        
+        userLocation = JZUserManager.sharedManager.userLocation
+    }
+    
+    func userLogoutNotification(noti: NSNotification) {
+        userLocation = nil
     }
     
 }

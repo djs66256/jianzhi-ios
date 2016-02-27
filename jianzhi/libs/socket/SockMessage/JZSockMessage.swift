@@ -10,11 +10,10 @@ import UIKit
 
 class JZSockMessage: NSObject, Mappable {
     
-//    var id: Int = 0
     var uuid: String = ""
     var uid: Int = 0
     var text: String = ""
-//    var date = NSDate()
+
     var type : JZMessageType = .None
     var time: NSDate?
     
@@ -23,8 +22,7 @@ class JZSockMessage: NSObject, Mappable {
     
     var job: JZJob?
     var nameCard: JZUserInfo?
-//    var group: JZMessageGroup
-    
+
 //    var readed = false
 //    var uploaded = false
     
