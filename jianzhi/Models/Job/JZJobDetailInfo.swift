@@ -48,4 +48,20 @@ class JZJobDetailInfo: NSObject, Mappable {
         cdescription <- map["cdescription"]
         address     <- map["address"]
     }
+    
+    func toJobObject() -> JZJob {
+        let job = JZJob()
+        job.id = id
+        job.title = title
+        job.detail = detail
+        job.salary = salary
+        job.salaryType = salaryType ?? .none
+        
+        let user = JZBossUserInfo()
+        user.uid = uid ?? 0
+        user.nickName = nickName
+        
+        job.user = user
+        return job
+    }
 }

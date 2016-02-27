@@ -47,7 +47,28 @@ class JZDetialJobInfoViewController: JZViewController {
     
 
     @IBAction func postResume(sender: AnyObject) {
-        UIAlertView(title: "投递成功", message: nil, delegate: nil, cancelButtonTitle: "确定").show()
+        if let uid = job?.uid {
+            JZUserService.instance.findUserById(uid, callback: { (user) -> Void in
+                let group = JZMessageGroup()
+                group.type = .Chat
+                group.user = user
+                if let curUser = JZUserManager.sharedManager.currentUser, let job = self.job?.toJobObject() {
+                    JZMessageGroupService.instance.findGroupByGroup(group, callback: { (group) -> Void in
+                        let message = JZMessage(fromUser: curUser, toUser: user, type: .Post, group: group)
+                        message.job = job
+                        JZMessageManager.sharedManager.send(message, callback: { (success) -> Void in
+                            if success {
+                                JZAlertView.show("投递成功")
+                            }
+                            else {
+                                JZAlertView.show("投递失败，请稍后再试")
+                            }
+                        })
+                    })
+                }
+            })
+            
+        }
     }
     
     func reloadData() {
