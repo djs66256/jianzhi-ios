@@ -26,44 +26,58 @@ class JZMessageManager: UIView {
             receivers.removeAtIndex(index)
         }
     }
-
+    
     func send(message: JZMessage) {
+        send(message, callback: nil)
+    }
+
+    func send(message: JZMessage, callback:((Bool)->Void)?) {
         if let msg = message.toSendMessage() {
-            JZSocketManager.sharedManager.sendMessage(msg)
-            JZMessageService.instance.insert(message)
+            if let currentUid = JZUserManager.sharedManager.currentUser?.uid, let fromUid = message.fromUser?.uid {
+                JZUserService.instance.findUserById(currentUid, callback: { _ in
+                    JZUserService.instance.findUserById(fromUid, callback: { _ in
+                        JZSocketManager.sharedManager.sendMessage(msg, callback: callback)
+                        JZMessageService.instance.insert(message)
+                    })
+                })
+                return
+            }
         }
+        callback?(false)
     }
     
     func parse(data: [String: AnyObject]) -> JZSockMessage? {
         if let message = Mapper<JZSockMessage>().map(data) {
             JZMessageService.instance.findByUuid(message.uuid, callback: { (localMessage) -> Void in
-                if localMessage == nil {
-                    JZUserService.instance.findUserById(message.uid) { (user) -> Void in
-                        JZMessageGroupService.instance.findGroupByReceivedMessage(message, callback: { (group) -> Void in
-                            let msg = JZMessage()
-                            msg.text = message.text
-                            msg.type = message.type
-                            msg.date = message.time
-                            msg.uuid = message.uuid
-                            msg.toUser = JZUserManager.sharedManager.currentUser
-                            msg.fromUser = user
-                            msg.group = group
-                            msg.uploaded = true
-                            msg.job = message.job
-                            msg.nameCard = message.nameCard
-                            
-                            JZMessageService.instance.insert(msg)
-                            self.receivers.forEach { $0.didReceiveMessage(msg) }
-                            
-                            if !msg.unread {
-                                JZMessageService.instance.clearUnread(msg)
-                            }
-                            else {
-                                group.unread++
-                                NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
-                            }
-                        })
-                    }
+                if localMessage == nil, let currentUid = JZUserManager.sharedManager.currentUser?.uid {
+                    JZUserService.instance.findUserById(currentUid, callback: { (currentUser) -> Void in
+                        JZUserService.instance.findUserById(message.uid) { (user) -> Void in
+                            JZMessageGroupService.instance.findGroupByReceivedMessage(message, callback: { (group) -> Void in
+                                let msg = JZMessage()
+                                msg.text = message.text
+                                msg.type = message.type
+                                msg.date = message.time
+                                msg.uuid = message.uuid
+                                msg.toUser = JZUserManager.sharedManager.currentUser
+                                msg.fromUser = user
+                                msg.group = group
+                                msg.uploaded = true
+                                msg.job = message.job
+                                msg.nameCard = message.nameCard
+                                
+                                JZMessageService.instance.insert(msg)
+                                self.receivers.forEach { $0.didReceiveMessage(msg) }
+                                
+                                if !msg.unread {
+                                    JZMessageService.instance.clearUnread(msg)
+                                }
+                                else {
+                                    group.unread++
+                                    NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
+                                }
+                            })
+                        }
+                    })
                 }
             })
             

@@ -50,7 +50,7 @@ class JZBossInfoViewController: JZViewController {
 
     @IBAction func postResume(sender: AnyObject) {
         if let userId = userId {
-            JZResumeViewModel.post(userId, success: {
+            JZResumeViewModel.post(userId, success: {_ in 
                 JZAlertView.show("投递成功")
                 }, failure: {
                     JZAlertView.show($0)

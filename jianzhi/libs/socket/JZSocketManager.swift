@@ -52,43 +52,22 @@ class JZSocketManager: NSObject {
         }
         
         socket.on("message") { (data, ack) -> Void in
-            if let jsons = data[0] as? [[String:AnyObject]] {
-                var uuids = [String]()
+            ack.with("ok")
+            if let jsons = data.first as? [[String:AnyObject]] {
+//                var uuids = [String]()
                 jsons.forEach {
                     if let message = JZMessageManager.sharedManager.parse($0) {
-                        uuids.append(message.uuid)
+//                        uuids.append(message.uuid)
                     }
                 }
-                
-                if !uuids.isEmpty {
-                    self.socket.emit("messageAck", uuids)
-                }
             }
-            else if let json = data[0] as? [String:AnyObject] {
+            else if let json = data.first as? [String:AnyObject] {
                 if let message = JZMessageManager.sharedManager.parse(json) {
-                    self.socket.emit("messageAck", message.uuid)
+//                    self.socket.emit("messageAck", message.uuid)
                 }
             }
         }
         
-        socket.on("messageAck") { (data, ack) -> Void in
-            if let uuids = data[0] as? [String] {
-                uuids.forEach {
-                    JZMessageManager.sharedManager.uploaded($0)
-                }
-            }
-            else if let uuid = data[0] as? String {
-                JZMessageManager.sharedManager.uploaded(uuid)
-            }
-        }
-        
-        socket.on("messageError") { (data, ack) -> Void in
-            if let uuids = data as? [String] {
-                uuids.forEach {
-                    JZMessageManager.sharedManager.error($0)
-                }
-            }
-        }
     }
 
     func connect() {
@@ -116,7 +95,22 @@ class JZSocketManager: NSObject {
     }
     
     func sendMessage(message:JZSockMessage) {
+        sendMessage(message, callback: nil)
+    }
+    
+    func sendMessage(message:JZSockMessage, callback:((Bool)->Void)?) {
         let json = message.toJSON()
-        socket.emit("message", json)
+        socket.emitWithAck("message", json)(timeoutAfter: UInt64(Socket.timeout)) { (data) -> Void in
+            if let ret = data.first as? String {
+                if ret == "ok" {
+                    JZMessageManager.sharedManager.uploaded(message.uuid)
+                    callback?(true)
+                }
+                else {
+                    JZMessageManager.sharedManager.error(message.uuid)
+                    callback?(false)
+                }
+            }
+        }
     }
 }

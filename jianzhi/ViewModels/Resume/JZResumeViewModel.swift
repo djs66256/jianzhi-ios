@@ -70,7 +70,15 @@ class JZResumeViewModel: NSObject {
         
     }
     
-    class func post(uid:Int, success:()->Void, failure:(String?)->Void) {
-        success()
+    class func post(uid:Int, success:(String?)->Void, failure:(String?)->Void) {
+        let params = ["uid": uid]
+        JZRequestOperationManager.POSTParams("json/user/resume/post", params: params, success: { (json) -> Void in
+            if json["retCode"] as? Int == JZRequestResult.Success.rawValue {
+                success(json["content"] as? String)
+            }
+            else {
+                failure(json["content"] as? String)
+            }
+            }, failure: failure)
     }
 }
