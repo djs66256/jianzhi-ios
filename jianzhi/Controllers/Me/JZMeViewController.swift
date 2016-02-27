@@ -12,20 +12,15 @@ class JZMeViewController: JZTableViewController {
     
     let dataArray = [
         ["title":"个人信息"],
-        ["title":"我的简历", "controller":JZJobSeekerTableViewController.self],
+//        ["title":"我的简历", "controller":JZJobSeekerTableViewController.self],
         ["title":"修改密码","controller":JZChangePasswordTableViewController.self],
         ["title":"关于我们","controller":JZAboutUsViewController.self],
         ["title":"意见反馈","controller":JZFeedbackViewController.self],
         ["title":"退出登录"]]
-    
-    let imageController = JZImagePickerComponentViewController()
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addChildViewController(imageController)
-
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "create", style: UIBarButtonItemStyle.Bordered, target: self, action: Selector("createResume"))
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,14 +28,6 @@ class JZMeViewController: JZTableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func createResume() {
-//        let createResumeController = JZCreateResumeTableViewController()
-//        self.navigationController?.pushViewController(createResumeController, animated: true)
-//        let viewController = JZImagePickerViewController()
-//        viewController.showInController(self)
-        imageController.showController()
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

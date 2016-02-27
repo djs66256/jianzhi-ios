@@ -84,16 +84,7 @@ class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDeleg
     }
     
     func mapView(mapView: BMKMapView!, didSelectAnnotationView view: BMKAnnotationView!) {
-//        if let anno = view.annotation as? JZPersonMapAnnotation {
-//            let controller = JZMyJobSeekerTableViewController()
-//            
-//            navigationController?.pushViewController(controller, animated: true)
-//        }
-//        else if let anno = view.annotation as? JZCompanyMapAnnotation {
-//            let controller = JZMyBossTableViewController()
-//            
-//            navigationController?.pushViewController(controller, animated: true)
-//        }
+
     }
     
     func mapView(mapView: BMKMapView!, annotationViewForBubble view: BMKAnnotationView!) {

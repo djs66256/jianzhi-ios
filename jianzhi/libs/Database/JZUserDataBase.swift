@@ -9,12 +9,6 @@
 import UIKit
 
 class JZUserDataBase: JZDataBase {
-//    static let sharedDataBase = JZUserDataBase()
-    
-//    override func dbPath() -> String? {
-//        let path = JZPath.userPath("db", file: "user.db")
-//        return path
-//    }
     
     override func prepareDatabase() {
         let sqls = [
@@ -135,19 +129,6 @@ class JZUserDataBase: JZDataBase {
     }
     
     func insertUser(user: JZUserInfo, ignoreIfExists: Bool) {
-//        let sql = "INSERT OR \(ignoreIfExists ? "IGNORE" : "REPLACE") INTO user" +
-//        " (id, nickname, avatar, description, gender, user_type)" +
-//        " VALUES (:id, :nickname, :avatar, :description, :gender, :userType)"
-//        let params : [String:NSObject] = [
-//            "id": user.uid,
-//            "nickname": user.nickName ?? "",
-//            "avatar": user.avatar ?? "",
-//            "description": user.descriptions ?? "",
-//            "gender": user.gender.rawValue,
-//            "userType": user.userType.rawValue
-//        ]
-//        
-//        update(sql, params)
         execuse {
             self.insertUserSync(user, ignoreIfExists: ignoreIfExists)
         }
@@ -168,22 +149,6 @@ class JZUserDataBase: JZDataBase {
         
         insertSync(sql, params) {_ in }
     }
-    
-//    func updateUser(user: JZUserInfo) {
-//        let sql = "UPDATE user" +
-//            " SET nickname=:nickname, avatar=:avatar, description=:description, gender=:gender, user_type=:user_type" +
-//        " WHERE id=:id"
-//        let params : [String:NSObject] = [
-//            "id": user.uid,
-//            "nickname": user.nickName ?? "",
-//            "avatar": user.avatar ?? "",
-//            "description": user.descriptions ?? "",
-//            "gender": user.gender.rawValue,
-//            "userType": user.userType.rawValue
-//        ]
-//        
-//        update(sql, params)
-//    }
     
     func findUserById(uid: Int, callback: (JZUserInfo?)->Void){
         let sql = "SELECT id, nickname, avatar, description, gender, user_type"
@@ -238,29 +203,7 @@ class JZUserDataBase: JZDataBase {
                 callback(nil)
             }
         }
-//        update(sql, params)
-//        insert(sql, params) { (rowId) -> Void in
-//            if let rowId = rowId {
-//                group.id = rowId
-//                callback(group)
-//            }
-//            else {
-//                callback(nil)
-//            }
-//        }
     }
-    
-//    func updateMessageGroup(group: JZMessageGroup) {
-//        let sql = "UPDATE message_group"
-//            + " SET title=:title, date=:date"
-//            + " WHERE id = :gid"
-//        let params : [String:NSObject] = [
-//            "title": group.title,
-//            //            "date": group.date,
-//            "gid": group.id
-//        ]
-//        update(sql, params)
-//    }
     
     func findMessageByUUID(uuid: String, callback: (JZMessage?)->Void) {
         let (_, messageItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
@@ -341,31 +284,6 @@ class JZUserDataBase: JZDataBase {
             }
             return nil
             }, callback: callback)
-        
-//        execuse {
-//            var ret = [JZMessageGroup]()
-//            if let result = self.db.executeQuery(sql, withParameterDictionary: nil) {
-//                while result.next() {
-//                    if let group = self.unpackGroup(result) {
-//                        group.user = userUnpack(result)
-//                        ret.append(group)
-//                    }
-//                }
-//                result.close()
-//            }
-//            for group in ret {
-//                let sql = "SELECT COUNT(*) AS count FROM message WHERE gid=:gid AND unread=:unread"
-//                let params: [String: AnyObject] = ["gid": group.id, "unread":true]
-//                if let result = self.db.executeQuery(sql, withParameterDictionary: params) {
-//                    while result.next() {
-//                        group.unread = Int(result.intForColumn("count"))
-//                    }
-//                }
-//            }
-//            dispatch_async(dispatch_get_main_queue()) {
-//                callback(ret)
-//            }
-//        }
     }
     
     func removeGroupById(id:Int) {
@@ -373,16 +291,6 @@ class JZUserDataBase: JZDataBase {
         let params = ["id": id]
         update(sql, params)
     }
-    
-//    func findGroupByToUser(toUser: JZUserInfo, callback:(JZMessageGroup?)->Void) {
-//        let filter = "WHERE g.type=:gtype AND u.id=:uid"
-//        let params = [
-//            "gtype": JZMessageGroupType.Chat.rawValue,
-//            "uid": toUser.uid]
-//        findGroupByFilter(filter, params: params) { (groups:[JZMessageGroup]) -> Void in
-//            callback(groups.first)
-//        }
-//    }
     
     func findGroupByFilter(filter:String, params:[String:AnyObject], callback:([JZMessageGroup])->Void) {
         let sql = "SELECT id, title, type, uid, jid, create_date FROM message_group g LEFT JOIN user u ON u.id=g.uid " + filter
@@ -441,8 +349,7 @@ class JZUserDataBase: JZDataBase {
         }
         return (qureyItems, aliasItems, unpack)
     }
-    
-//    let userQueryItems = " user.id AS uid, user.nickname AS unickname, user.description AS udescription, user.gender AS ugender, user.user_type AS utype "
+   
     func userQueryItemsAndUnpackage(alias:String) -> (String, String, (FMResultSet) -> JZUserInfo?) {
         let queryItems = "\(alias)id, \(alias)nickname, \(alias)description, \(alias)gender, \(alias)user_type, \(alias)avatar"
         let aliasItems = "\(alias).id AS \(alias)id, \(alias).nickname AS \(alias)nickname, \(alias).description AS \(alias)description, \(alias).gender AS \(alias)gender, \(alias).user_type AS \(alias)user_type, \(alias).avatar AS \(alias)avatar"
