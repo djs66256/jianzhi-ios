@@ -56,6 +56,7 @@ class JZDetialJobInfoViewController: JZViewController {
                     JZMessageGroupService.instance.findGroupByGroup(group, callback: { (group) -> Void in
                         let message = JZMessage(fromUser: curUser, toUser: user, type: .Post, group: group)
                         message.job = job
+                        message.unread = false
                         JZMessageManager.sharedManager.send(message, callback: { (success) -> Void in
                             if success {
                                 JZAlertView.show("投递成功")

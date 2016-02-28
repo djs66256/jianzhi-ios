@@ -48,6 +48,7 @@ class JZPostJobTableViewController: JZStaticTableViewController, JZSelectMyJobTa
             
             JZMessageGroupService.instance.findGroupByGroup(group, callback: { (group) -> Void in
                 let message = JZMessage(fromUser: currentUser, toUser: toUser, type: .Job, group: group)
+                message.unread = false
                 message.job = job
                 message.text = self.descriptionCell.textView?.text
                 

@@ -183,10 +183,10 @@ class JZUserDataBase: JZDataBase {
     
     func insertMessageGroupSync(group: JZMessageGroup, ignoreIfExists: Bool, callback:(JZMessageGroup?)->Void) {
         let sql = "INSERT OR \(ignoreIfExists ? "IGNORE" : "REPLACE") INTO message_group"
-            + " (id, title, type, uid, jid, create_date)"
-            + " VALUES (:id, :title, :type, :uid, :jid, :create_date)"
+            + " (title, type, uid, jid, create_date)"
+            + " VALUES (:title, :type, :uid, :jid, :create_date)"
         let params = [
-            "id": group.id,
+//            "id": group.id,
             "title": group.title,
             "type": group.type.rawValue,
             "uid": group.user?.uid ?? 0,

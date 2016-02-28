@@ -88,7 +88,7 @@ class JZJobSeekerTableViewController: JZStaticTableViewController {
     
     func reloadData() {
         if let url = userInfo?.avatarUrl {
-            headImageView.setImageWithURL(url, placeholderImage: nil)
+            headImageView.sd_setImageWithURL(url, placeholderImage: nil)
         }
         nameLabel.text = userInfo?.nickName
         genderLabel.text = userInfo?.gender.nameValue()

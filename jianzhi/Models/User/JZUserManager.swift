@@ -11,10 +11,10 @@ import UIKit
 class JZUserManager: NSObject, BMKLocationServiceDelegate {
     static let sharedManager = JZUserManager()
     
-    let locationService = BMKLocationService()
+    private let locationService = BMKLocationService()
     var userLocation: BMKUserLocation?
     
-    let myInfoKey = "myInfoKey"
+    private let myInfoKey = "myInfoKey"
     var isLogin: Bool {
         get {
             return self.currentUser != nil && cookieForUser()?.count > 0
