@@ -48,43 +48,50 @@ class JZMessageManager: UIView {
     
     func parse(data: [String: AnyObject]) -> JZSockMessage? {
         if let message = Mapper<JZSockMessage>().map(data) {
-            JZMessageService.instance.findByUuid(message.uuid, callback: { (localMessage) -> Void in
-                if localMessage == nil, let currentUid = JZUserManager.sharedManager.currentUser?.uid {
-                    JZUserService.instance.findUserById(currentUid, callback: { (currentUser) -> Void in
-                        JZUserService.instance.findUserById(message.uid) { (user) -> Void in
-                            JZMessageGroupService.instance.findGroupByReceivedMessage(message, callback: { (group) -> Void in
-                                let msg = JZMessage()
-                                msg.text = message.text
-                                msg.type = message.type
-                                msg.date = message.time
-                                msg.uuid = message.uuid
-                                msg.toUser = JZUserManager.sharedManager.currentUser
-                                msg.fromUser = user
-                                msg.group = group
-                                msg.uploaded = true
-                                msg.job = message.job
-                                msg.nameCard = message.nameCard
-                                
-                                JZMessageService.instance.insert(msg)
-                                self.receivers.forEach { $0.didReceiveMessage(msg) }
-                                
-                                // 接收者可能已经阅读过
-                                if !msg.unread {
-                                    JZMessageService.instance.clearUnread(msg)
-                                }
-                                else {
-                                    group.unread++
-                                    NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
-                                }
-                            })
-                        }
-                    })
-                }
-            })
+            handleMessage(message)
             
             return message
         }
         return nil
+    }
+    
+    private func handleMessage(message: JZSockMessage) {
+        JZMessageService.instance.findByUuid(message.uuid, callback: { (localMessage) -> Void in
+            if localMessage == nil, let currentUid = JZUserManager.sharedManager.currentUser?.uid {
+                JZUserService.instance.findUserById(currentUid, callback: { (currentUser) -> Void in
+                    JZUserService.instance.findUserById(message.uid) { (user) -> Void in
+                        JZMessageGroupService.instance.findGroupByReceivedMessage(message, callback: { (group) -> Void in
+                            let msg = JZMessage()
+                            msg.text = message.text
+                            msg.type = message.type
+                            msg.date = message.time
+                            msg.uuid = message.uuid
+                            msg.toUser = JZUserManager.sharedManager.currentUser
+                            msg.fromUser = user
+                            msg.group = group
+                            msg.uploaded = true
+                            msg.job = message.job
+                            msg.nameCard = message.nameCard
+                            
+                            JZMessageService.instance.insert(msg)
+                            self.receivers.forEach { $0.didReceiveMessage(msg) }
+                            
+                            // 接收者可能已经阅读过
+                            if !msg.unread {
+                                JZMessageService.instance.clearUnread(msg)
+                            }
+                            else {
+                                group.unread++
+                                NSNotificationCenter.defaultCenter().postNotificationName(JZNotification.MessageGroupReload, object: nil)
+                            }
+                        })
+                    }
+                })
+            }
+            else {
+                
+            }
+        })
     }
     
     func uploaded(uuid: String) {

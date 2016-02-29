@@ -25,15 +25,14 @@ class JZSocketManager: NSObject {
 //        "log":true
     ]
     
-    private let socket = SocketIOClient(socketURL: Socket.url(), options: options)
+    private var socket = SocketIOClient(socketURL: Socket.url(), options: options)
     
     private override init() {
         super.init()
-        
-        initListener()
+        initSocket()
     }
     
-    private func initListener() {
+    private func initSocket() {
         socket.on("connect") { (data, ack) -> Void in
             JZLogInfo("[SOCK] connect")
             self.status = .Connect
@@ -90,9 +89,11 @@ class JZSocketManager: NSObject {
     }
     
     func disconnect() {
-        socket.options.remove(.Cookies([]))
         socket.disconnect()
         status = .Unconnect
+        
+        socket = SocketIOClient(socketURL: Socket.url(), options: JZSocketManager.options)
+        initSocket()
     }
     
     func sendMessage(message:JZSockMessage) {
