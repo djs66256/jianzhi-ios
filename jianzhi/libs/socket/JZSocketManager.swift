@@ -90,6 +90,7 @@ class JZSocketManager: NSObject {
     }
     
     func disconnect() {
+        socket.options.remove(.Cookies([]))
         socket.disconnect()
         status = .Unconnect
     }

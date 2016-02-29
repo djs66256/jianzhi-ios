@@ -76,11 +76,11 @@ class JZUserDataBase: JZDataBase {
                 "cid": ""
             ]
             
-            if message.type == .Job, let job = message.job {
+            if message.type == .Job || message.type == .Post, let job = message.job {
                 self.insertJobSync(job, ignoreIfExist: false, callback: {})
                 params["jid"] = job.id
             }
-            else if message.type == .Person, let user = message.nameCard {
+            if message.type == .Person || message.type == .Post, let user = message.nameCard {
                 self.insertUserSync(user, ignoreIfExists: false)
                 params["cid"] = user.uid
             }
@@ -190,7 +190,7 @@ class JZUserDataBase: JZDataBase {
             "title": group.title,
             "type": group.type.rawValue,
             "uid": group.user?.uid ?? 0,
-            "jid": 0,
+            "jid": group.job?.id ?? 0,
             "create_date": group.createDate
         ]
         
@@ -233,10 +233,10 @@ class JZUserDataBase: JZDataBase {
             message?.fromUser = fromUserUnpack(result)
             message?.toUser = toUserUnpack(result)
             message?.group = group
-            if message?.type == .Job {
+            if message?.type == .Job || message?.type == .Post {
                 message?.job = jobUnpack(result)
             }
-            if message?.type == .Person {
+            if message?.type == .Person || message?.type == .Post {
                 message?.nameCard = nameCardUnpack(result)
             }
             return message
@@ -256,11 +256,13 @@ class JZUserDataBase: JZDataBase {
         let (messageQueryItems, messageAliasItems, messageUnpack) = messageQueryItemsAndUnpackage("m")
         let (fromUserQueryItems, fromUserAliasItems, fromUserUnpack) = userQueryItemsAndUnpackage("fu")
         let (toUserQueryItems, toUserAliasItems, toUserUnpack) = userQueryItemsAndUnpackage("tu")
+        let (_, jobAliasItems, jobUnpack) = jobQueryItemsAndUnpackage("j")
         
-        let sql = "SELECT \(groupQueryItems), \(userQueryItems), unread, \(messageQueryItems), \(toUserQueryItems), \(fromUserQueryItems)"
+        let sql = "SELECT \(groupQueryItems), \(userQueryItems), unread, \(messageQueryItems), \(toUserQueryItems), \(fromUserQueryItems), \(jobAliasItems)"
             + " FROM message_group"
             + " LEFT JOIN user u ON u.id=message_group.uid"
             + " LEFT JOIN (SELECT COUNT(*) AS unread, gid AS gid from message WHERE unread=:unread GROUP BY gid) ON gid=message_group.id"
+            + " LEFT JOIN job j ON j.id=message_group.jid"
             + " LEFT JOIN ("
             + "SELECT \(messageAliasItems), \(toUserAliasItems), \(fromUserAliasItems)"
             + " FROM message m"
@@ -277,6 +279,9 @@ class JZUserDataBase: JZDataBase {
                     lastMessage.fromUser = fromUserUnpack(result)
                     lastMessage.toUser = toUserUnpack(result)
                     group.lastMessage = lastMessage
+                }
+                if group.type == .Post {
+                    group.job = jobUnpack(result)
                 }
                 let unread = result.intForColumn("unread")
                 group.unread = Int(unread)
@@ -328,7 +333,6 @@ class JZUserDataBase: JZDataBase {
             "salary_type": job.salaryType.rawValue
         ]
         insertSync(sql, params) { (rowId) -> Void in
-            job.id = rowId
             callback()
         }
     }

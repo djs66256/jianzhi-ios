@@ -16,7 +16,12 @@ class JZMessageGroup: NSObject {
     var id: Int = 0
     var title: String {
         get {
-            return user?.nickName ?? ""
+            if type == .Chat {
+                return user?.nickName ?? ""
+            }
+            else {
+                return job?.title ?? ""
+            }
         }
         set {
             
@@ -58,6 +63,9 @@ class JZMessageGroup: NSObject {
 }
 
 func ==(lhs: JZMessageGroup, rhs: JZMessageGroup) -> Bool {
+    if lhs === rhs {
+        return true
+    }
     if lhs.type == rhs.type {
         switch lhs.type {
         case .Chat: return lhs.user != nil && lhs.user?.uid == rhs.user?.uid

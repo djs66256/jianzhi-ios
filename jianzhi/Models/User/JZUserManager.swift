@@ -76,7 +76,6 @@ class JZUserManager: NSObject, BMKLocationServiceDelegate {
         JZMessageService.instance.db = db
         JZMessageGroupService.instance.db = db
         JZJobService.instance.db = db
-        JZSocketManager.sharedManager.disconnect()
         JZMessageGroupService.instance.initGroups({
             JZSocketManager.sharedManager.connect()
         })

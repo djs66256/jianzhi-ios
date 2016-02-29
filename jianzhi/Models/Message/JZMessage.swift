@@ -77,7 +77,7 @@ class JZMessage: JZBaseMessage {
             self.mediaData = media
             return media
         }
-        else if type == .Person{
+        else if type == .Person || type == .Post {
             let media = JZNameCardMediaItem()
             media.message = self
             self.mediaData = media

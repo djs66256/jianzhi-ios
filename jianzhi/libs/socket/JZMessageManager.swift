@@ -68,6 +68,7 @@ class JZMessageManager: UIView {
                                 JZMessageService.instance.insert(msg)
                                 self.receivers.forEach { $0.didReceiveMessage(msg) }
                                 
+                                // 接收者可能已经阅读过
                                 if !msg.unread {
                                     JZMessageService.instance.clearUnread(msg)
                                 }

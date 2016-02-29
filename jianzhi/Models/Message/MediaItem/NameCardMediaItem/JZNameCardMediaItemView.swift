@@ -14,8 +14,8 @@ class JZNameCardMediaItemView: UIView {
     @IBOutlet weak var descriptionLabel: UILabel!
     
     func updateData(data: JZMessage) {
-        if data.type == .Person {
-            nameLabel.text = data.nameCard?.nickName
+        if let nameCard = data.nameCard {
+            nameLabel.text = nameCard.nickName
             descriptionLabel.text = data.text
         }
     }
