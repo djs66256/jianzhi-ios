@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDelegate {
+class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDelegate, BMKLocationServiceDelegate {
 
     let personAnnotationIdentifier = "person"
     let companyAnnotationIdentifier = "company"
@@ -30,6 +30,7 @@ class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDeleg
         self.navigationItem.title = "Map"
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("userLocationUpdatedNotification:"), name: JZNotification.UserLocationUpdated, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("userLogoutNotification:"), name: JZNotification.Logout, object: nil)
+        JZUserManager.sharedManager.userLocationDelegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -90,7 +91,7 @@ class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDeleg
     }
     
     func mapView(mapView: BMKMapView!, didSelectAnnotationView view: BMKAnnotationView!) {
-
+        
     }
     
     func mapView(mapView: BMKMapView!, annotationViewForBubble view: BMKAnnotationView!) {
@@ -109,23 +110,33 @@ class JZMapViewController: JZViewController, BMKGeneralDelegate, BMKMapViewDeleg
         
     }
     
+    func didUpdateUserHeading(userLocation: BMKUserLocation)
+    {
+        
+    }
+    //处理位置坐标更新
+    func didUpdateBMKUserLocation(userLocation: BMKUserLocation)
+    {
+        let coor = userLocation.location.coordinate
+        if self.userLocation == nil {
+            mapView.updateLocationData(JZUserManager.sharedManager.userLocation)
+            mapView.setCenterCoordinate(coor, animated:true)
+            let point = BMKMapPointForCoordinate(coor)
+            let range = 10000.0
+            let rect = BMKMapRect(origin: BMKMapPointMake(point.x - range/2, point.y - range/2), size: BMKMapSize(width: range, height: range))
+            mapView.setVisibleMapRect(rect, animated:true)
+        }
+        self.userLocation = userLocation
+    }
+    
     func userLocationUpdatedNotification(noti:NSNotification) {
         if let coor = JZUserManager.sharedManager.userLocation?.location.coordinate {
-            if userLocation == nil{
-                mapView.setCenterCoordinate(coor, animated:true)
-                let point = BMKMapPointForCoordinate(coor)
-                let range = 10000.0
-                let rect = BMKMapRect(origin: BMKMapPointMake(point.x - range/2, point.y - range/2), size: BMKMapSize(width: range, height: range))
-                mapView.setVisibleMapRect(rect, animated:true)
-            }
-            
             JZSearchViewModel.mapSearch("all", coor:coor, range: 1, success:{ (annotations) -> Void in
                 self.mapView.addAnnotations(annotations)
                 }, failure: {
                     JZAlertView.show($0)
             })
         }
-        userLocation = JZUserManager.sharedManager.userLocation
     }
     
     func userLogoutNotification(noti: NSNotification) {

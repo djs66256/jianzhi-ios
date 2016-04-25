@@ -33,8 +33,8 @@ class JZMessageManager: UIView {
 
     func send(message: JZMessage, callback:((Bool)->Void)?) {
         if let msg = message.toSendMessage() {
-            if let currentUid = JZUserManager.sharedManager.currentUser?.uid, let fromUid = message.fromUser?.uid {
-                JZUserService.instance.findUserById(currentUid, callback: { _ in
+            if let toUid = message.toUser?.uid, let fromUid = message.fromUser?.uid {
+                JZUserService.instance.findUserById(toUid, callback: { _ in
                     JZUserService.instance.findUserById(fromUid, callback: { _ in
                         JZSocketManager.sharedManager.sendMessage(msg, callback: callback)
                         JZMessageService.instance.insert(message)

@@ -48,6 +48,19 @@ class JZMessageGroup: NSObject {
         }
     }
     
+    var detail: String? {
+        if let messageType = lastMessage?.type {
+            switch messageType {
+            case .Job: return "你有一个新的职位邀请"
+            case .Post: return "你有一个新的名片"
+            case .Person: return "你有一个新的名片"
+            case .Message: return lastMessage?.text
+            default: return nil
+            }
+        }
+        return nil
+    }
+    
     override func isEqual(object: AnyObject?) -> Bool {
         if let object = object as? JZMessageGroup {
             guard type == object.type else { return false }

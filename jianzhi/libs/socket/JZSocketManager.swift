@@ -89,11 +89,13 @@ class JZSocketManager: NSObject {
     }
     
     func disconnect() {
-        socket.disconnect()
-        status = .Unconnect
-        
-        socket = SocketIOClient(socketURL: Socket.url(), options: JZSocketManager.options)
-        initSocket()
+        if socket.status != .NotConnected {
+            socket.disconnect()
+            status = .Unconnect
+            
+            socket = SocketIOClient(socketURL: Socket.url(), options: JZSocketManager.options)
+            initSocket()
+        }
     }
     
     func sendMessage(message:JZSockMessage) {

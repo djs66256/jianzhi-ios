@@ -13,6 +13,7 @@ class JZUserManager: NSObject, BMKLocationServiceDelegate {
     
     private let locationService = BMKLocationService()
     var userLocation: BMKUserLocation?
+    weak var userLocationDelegate: BMKLocationServiceDelegate?
     
     private let myInfoKey = "myInfoKey"
     var isLogin: Bool {
@@ -107,10 +108,12 @@ class JZUserManager: NSObject, BMKLocationServiceDelegate {
     func didUpdateUserHeading(userLocation: BMKUserLocation)
     {
         //NSLog(@"heading is %@",userLocation.heading);
+        userLocationDelegate?.didUpdateUserHeading?(userLocation)
     }
     //处理位置坐标更新
     func didUpdateBMKUserLocation(userLocation: BMKUserLocation)
     {
+        userLocationDelegate?.didUpdateBMKUserLocation?(userLocation)
         //NSLog("didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
 //        mapView.updateLocationData(userLocation)
         self.userLocation = userLocation

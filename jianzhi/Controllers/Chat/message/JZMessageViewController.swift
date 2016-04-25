@@ -20,15 +20,10 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver, JZS
         super.init(nibName: nil, bundle: nil)
         self.group = group
         
-        JZMessageManager.sharedManager.addReceiver(self)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        JZMessageManager.sharedManager.removeReceiver(self)
     }
 
     override func viewDidLoad() {
@@ -45,6 +40,24 @@ class JZMessageViewController: JSQMessagesViewController, JZMessageReceiver, JZS
         collectionView?.registerNib(UINib(nibName: "JZJobMessageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier:jobCellIdentifier)
         
         loadMessages()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        JZMessageManager.sharedManager.addReceiver(self)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        JZMessageManager.sharedManager.removeReceiver(self)
     }
     
     override func didReceiveMemoryWarning() {
